@@ -1,0 +1,400 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B34788811AB75584009FF25C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788801AB75584009FF25C /* main.m */; };
+		B34788841AB75584009FF25C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788831AB75584009FF25C /* AppDelegate.m */; };
+		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
+		B347889B1AB75584009FF25C /* Photo_StunnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B347889A1AB75584009FF25C /* Photo_StunnerTests.m */; };
+		B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788A41AB755A9009FF25C /* LaunchScreen.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B34788951AB75584009FF25C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B34788731AB75584009FF25C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B347887A1AB75584009FF25C;
+			remoteInfo = "Photo Stunner";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B34788801AB75584009FF25C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B34788821AB75584009FF25C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B34788831AB75584009FF25C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B347888B1AB75584009FF25C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B34788941AB75584009FF25C /* Photo StunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Photo StunnerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B34788991AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B347889A1AB75584009FF25C /* Photo_StunnerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo_StunnerTests.m; sourceTree = "<group>"; };
+		B34788A41AB755A9009FF25C /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B34788781AB75584009FF25C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B34788911AB75584009FF25C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B34788721AB75584009FF25C = {
+			isa = PBXGroup;
+			children = (
+				B347887D1AB75584009FF25C /* Photo Stunner */,
+				B34788971AB75584009FF25C /* Photo StunnerTests */,
+				B347887C1AB75584009FF25C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B347887C1AB75584009FF25C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B347887B1AB75584009FF25C /* Photo Stunner.app */,
+				B34788941AB75584009FF25C /* Photo StunnerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B347887D1AB75584009FF25C /* Photo Stunner */ = {
+			isa = PBXGroup;
+			children = (
+				B34788821AB75584009FF25C /* AppDelegate.h */,
+				B34788831AB75584009FF25C /* AppDelegate.m */,
+				B347888B1AB75584009FF25C /* Images.xcassets */,
+				B34788A41AB755A9009FF25C /* LaunchScreen.xib */,
+				B347887E1AB75584009FF25C /* Supporting Files */,
+			);
+			path = "Photo Stunner";
+			sourceTree = "<group>";
+		};
+		B347887E1AB75584009FF25C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B347887F1AB75584009FF25C /* Info.plist */,
+				B34788801AB75584009FF25C /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B34788971AB75584009FF25C /* Photo StunnerTests */ = {
+			isa = PBXGroup;
+			children = (
+				B347889A1AB75584009FF25C /* Photo_StunnerTests.m */,
+				B34788981AB75584009FF25C /* Supporting Files */,
+			);
+			path = "Photo StunnerTests";
+			sourceTree = "<group>";
+		};
+		B34788981AB75584009FF25C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B34788991AB75584009FF25C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B347887A1AB75584009FF25C /* Photo Stunner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B347889E1AB75584009FF25C /* Build configuration list for PBXNativeTarget "Photo Stunner" */;
+			buildPhases = (
+				B34788771AB75584009FF25C /* Sources */,
+				B34788781AB75584009FF25C /* Frameworks */,
+				B34788791AB75584009FF25C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Photo Stunner";
+			productName = "Photo Stunner";
+			productReference = B347887B1AB75584009FF25C /* Photo Stunner.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B34788931AB75584009FF25C /* Photo StunnerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B34788A11AB75584009FF25C /* Build configuration list for PBXNativeTarget "Photo StunnerTests" */;
+			buildPhases = (
+				B34788901AB75584009FF25C /* Sources */,
+				B34788911AB75584009FF25C /* Frameworks */,
+				B34788921AB75584009FF25C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B34788961AB75584009FF25C /* PBXTargetDependency */,
+			);
+			name = "Photo StunnerTests";
+			productName = "Photo StunnerTests";
+			productReference = B34788941AB75584009FF25C /* Photo StunnerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B34788731AB75584009FF25C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Connor Lirot";
+				TargetAttributes = {
+					B347887A1AB75584009FF25C = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					B34788931AB75584009FF25C = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = B347887A1AB75584009FF25C;
+					};
+				};
+			};
+			buildConfigurationList = B34788761AB75584009FF25C /* Build configuration list for PBXProject "Photo Stunner" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B34788721AB75584009FF25C;
+			productRefGroup = B347887C1AB75584009FF25C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B347887A1AB75584009FF25C /* Photo Stunner */,
+				B34788931AB75584009FF25C /* Photo StunnerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B34788791AB75584009FF25C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */,
+				B347888C1AB75584009FF25C /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B34788921AB75584009FF25C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B34788771AB75584009FF25C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B34788841AB75584009FF25C /* AppDelegate.m in Sources */,
+				B34788811AB75584009FF25C /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B34788901AB75584009FF25C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B347889B1AB75584009FF25C /* Photo_StunnerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B34788961AB75584009FF25C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B347887A1AB75584009FF25C /* Photo Stunner */;
+			targetProxy = B34788951AB75584009FF25C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B347889C1AB75584009FF25C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B347889D1AB75584009FF25C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B347889F1AB75584009FF25C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "Photo Stunner/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B34788A01AB75584009FF25C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "Photo Stunner/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		B34788A21AB75584009FF25C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Photo StunnerTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Photo Stunner.app/Photo Stunner";
+			};
+			name = Debug;
+		};
+		B34788A31AB75584009FF25C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Photo StunnerTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Photo Stunner.app/Photo Stunner";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B34788761AB75584009FF25C /* Build configuration list for PBXProject "Photo Stunner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B347889C1AB75584009FF25C /* Debug */,
+				B347889D1AB75584009FF25C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B347889E1AB75584009FF25C /* Build configuration list for PBXNativeTarget "Photo Stunner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B347889F1AB75584009FF25C /* Debug */,
+				B34788A01AB75584009FF25C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		B34788A11AB75584009FF25C /* Build configuration list for PBXNativeTarget "Photo StunnerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B34788A21AB75584009FF25C /* Debug */,
+				B34788A31AB75584009FF25C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B34788731AB75584009FF25C /* Project object */;
+}
