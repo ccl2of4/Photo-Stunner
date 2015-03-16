@@ -30,8 +30,6 @@ static NSString * const CellReuseIdentifier = @"cell";
     
     [self.collectionView registerClass:[UICollectionViewImageCell class] forCellWithReuseIdentifier:CellReuseIdentifier];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ALAssetsLibraryChangedNotification object:nil];
-    
-    [self reloadData];
 }
 
 - (void) reloadData {
