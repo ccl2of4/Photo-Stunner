@@ -19,6 +19,8 @@
 
 @implementation ImageManager
 
+#pragma mark class methods
+
 + (ImageManager *)sharedManager {
     ImageManager *singleton = nil;
     if (!singleton) {
@@ -27,6 +29,7 @@
     return singleton;
 }
 
+#pragma mark instance methods
 
 - (instancetype) init {
     self = [super init];

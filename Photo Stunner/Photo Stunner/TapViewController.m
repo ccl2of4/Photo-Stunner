@@ -20,10 +20,27 @@
 
 @implementation TapViewController
 
+#pragma mark life cycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUpAssetPlayer];
 }
+
+#pragma mark UI events
+
+- (IBAction)handleUIGestureRecognizerRecognized:(id)sender {
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.playbackView) {
+        [self extractImageAtTime:[self.player currentTime] completion:^(CMTime time, CGImageRef result) {
+            UIImage *image = [UIImage imageWithCGImage:result];
+            [[ImageManager sharedManager] setImage:image forTime:time];
+        }];
+    } else {
+        assert (NO);
+    }
+}
+
+#pragma mark logic
 
 - (void)setUpAssetPlayer {
     AVPlayer *player = [AVPlayer playerWithURL:[self assetURL]];
@@ -34,7 +51,6 @@
     
     [self.playbackView.layer addSublayer:playerLayer];
 }
-
 
 - (void) extractImageAtTime:(CMTime)time completion:(void(^)(CMTime time, CGImageRef result))completion {
     if (![self imageGenerator]) {
@@ -53,17 +69,6 @@
             completion (requestedTime, nil);
         }
     }];
-}
-
-- (IBAction)handleUIGestureRecognizerRecognized:(id)sender {
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.playbackView) {
-        [self extractImageAtTime:[self.player currentTime] completion:^(CMTime time, CGImageRef result) {
-            UIImage *image = [UIImage imageWithCGImage:result];
-            [[ImageManager sharedManager] setImage:image forTime:time];
-        }];
-    } else {
-        assert (NO);
-    }
 }
 
 @end
