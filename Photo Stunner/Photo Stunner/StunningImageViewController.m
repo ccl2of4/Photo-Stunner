@@ -25,6 +25,9 @@ static NSString * const CellIdentifier = @"cell";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self.collectionView registerClass:[UICollectionViewImageCell class] forCellWithReuseIdentifier:CellIdentifier];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
+
 }
 
 
@@ -53,6 +56,30 @@ static NSString * const CellIdentifier = @"cell";
 }
 
 
+- (void) handleNotification:(NSNotification *)notification {
+    
+    if ([notification name] == ImageManagerSortedTimesChangedNotification) {
+        NSDictionary *userInfo = [notification userInfo];
+        NSNumber *changedIndex;
+        
+        // added an image
+        if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesAddedIndexKey]) ) {
+            NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
+            [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
+            
+            // removed an image
+        } else if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesRemovedIndexKey]) ) {
+            NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
+            [self.collectionView insertItemsAtIndexPaths:@[removedIndexPath]];
+            
+        } else {
+            assert (NO);
+        }
+        
+    } else {
+        assert (NO);
+    }
+}
 
 
 
