@@ -24,6 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationItem setRightBarButtonItem: [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleFoo:)]];
     [self setUpAssetPlayer];
 }
 
@@ -38,6 +39,11 @@
     } else {
         assert (NO);
     }
+}
+
+- (void) handleFoo:(id)sender{
+    assert(self.navigationController);
+    [self.navigationController pushViewController:nil animated:YES];
 }
 
 #pragma mark logic
@@ -65,6 +71,7 @@
         if ( result == AVAssetImageGeneratorSucceeded ) {
             assert (image != nil);
             completion (requestedTime, image);
+            
         } else {
             completion (requestedTime, nil);
         }
