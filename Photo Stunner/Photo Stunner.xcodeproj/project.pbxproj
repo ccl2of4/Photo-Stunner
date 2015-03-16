@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		605129611AB78AED005891A2 /* StunningImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6051295F1AB78AED005891A2 /* StunningImageViewController.m */; };
+		605129621AB78AED005891A2 /* StunningImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 605129601AB78AED005891A2 /* StunningImageViewController.xib */; };
 		B34788811AB75584009FF25C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788801AB75584009FF25C /* main.m */; };
 		B34788841AB75584009FF25C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788831AB75584009FF25C /* AppDelegate.m */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
@@ -34,6 +36,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6051295E1AB78AED005891A2 /* StunningImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StunningImageViewController.h; sourceTree = "<group>"; };
+		6051295F1AB78AED005891A2 /* StunningImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StunningImageViewController.m; sourceTree = "<group>"; };
+		605129601AB78AED005891A2 /* StunningImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StunningImageViewController.xib; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B34788801AB75584009FF25C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -110,6 +115,9 @@
 				B34788B01AB768E0009FF25C /* TapViewController.h */,
 				B34788B11AB768E0009FF25C /* TapViewController.m */,
 				B34788B21AB768E0009FF25C /* TapViewController.xib */,
+				6051295E1AB78AED005891A2 /* StunningImageViewController.h */,
+				6051295F1AB78AED005891A2 /* StunningImageViewController.m */,
+				605129601AB78AED005891A2 /* StunningImageViewController.xib */,
 				B34788B51AB77004009FF25C /* ImageManager.h */,
 				B34788B61AB77004009FF25C /* ImageManager.m */,
 				B34788AB1AB7660D009FF25C /* UICollectionViewImageCell.h */,
@@ -230,6 +238,7 @@
 			files = (
 				B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */,
 				B34788BC1AB77E20009FF25C /* ThumbnailsViewController.xib in Resources */,
+				605129621AB78AED005891A2 /* StunningImageViewController.xib in Resources */,
 				B34788B41AB768E0009FF25C /* TapViewController.xib in Resources */,
 				B347888C1AB75584009FF25C /* Images.xcassets in Resources */,
 				B34788AF1AB7660D009FF25C /* UICollectionViewImageCell.xib in Resources */,
@@ -251,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				605129611AB78AED005891A2 /* StunningImageViewController.m in Sources */,
 				B34788A91AB75E03009FF25C /* LibraryViewController.m in Sources */,
 				B34788B31AB768E0009FF25C /* TapViewController.m in Sources */,
 				B34788841AB75584009FF25C /* AppDelegate.m in Sources */,
@@ -431,6 +441,7 @@
 				B34788A01AB75584009FF25C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B34788A11AB75584009FF25C /* Build configuration list for PBXNativeTarget "Photo StunnerTests" */ = {
 			isa = XCConfigurationList;
@@ -439,6 +450,7 @@
 				B34788A31AB75584009FF25C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
