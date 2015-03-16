@@ -16,8 +16,6 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-@property NSArray *sortedTimes;
-
 @end
 
 static NSString * const CellReuseIdentifier = @"cell";
@@ -30,21 +28,13 @@ static NSString * const CellReuseIdentifier = @"cell";
     [super viewDidLoad];
     
     [self.collectionView registerClass:[UICollectionViewImageCell class] forCellWithReuseIdentifier:CellReuseIdentifier];
+    [self.collectionView reloadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
 }
 
-- (void) reloadData {
-    self.sortedTimes = [[[ImageManager sharedManager] sortedTimes] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        CMTime time1 = [obj1 CMTimeValue];
-        CMTime time2 = [obj2 CMTimeValue];
-        
-        int32_t compare = CMTimeCompare(time1, time2);
-        
-        return
-            compare < 0 ?   NSOrderedAscending  :
-            compare > 0 ?   NSOrderedDescending :
-                            NSOrderedSame;
-    }];
-    [self.collectionView reloadData];
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark UICollectionViewDelegate/UICollectionViewDataSource methods
@@ -52,7 +42,9 @@ static NSString * const CellReuseIdentifier = @"cell";
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
     
-    CMTime time = [self.sortedTimes[indexPath.item] CMTimeValue];
+    ImageManager *imageManager = [ImageManager sharedManager];
+    
+    CMTime time = [[imageManager sortedTimes][indexPath.item] CMTimeValue];
     UIImage *image = [[ImageManager sharedManager] imageForTime:time];
     
     [cell.imageView setImage:image];
@@ -61,11 +53,36 @@ static NSString * const CellReuseIdentifier = @"cell";
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return !![self sortedTimes];
+    return !![[ImageManager sharedManager] sortedTimes];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.sortedTimes count];
+    return [[[ImageManager sharedManager] sortedTimes] count];
+}
+
+- (void) handleNotification:(NSNotification *)notification {
+
+    if ([notification name] == ImageManagerSortedTimesChangedNotification) {
+        NSDictionary *userInfo = [notification userInfo];
+        NSNumber *changedIndex;
+        
+        // added an image
+        if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesAddedIndexKey]) ) {
+            NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
+            [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
+            
+        // removed an image
+        } else if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesRemovedIndexKey]) ) {
+            NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
+            [self.collectionView insertItemsAtIndexPaths:@[removedIndexPath]];
+            
+        } else {
+            assert (NO);
+        }
+        
+    } else {
+        assert (NO);
+    }
 }
 
 @end

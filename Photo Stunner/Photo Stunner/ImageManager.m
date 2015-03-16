@@ -83,6 +83,7 @@ ImageManager *singleton = nil;
     [self.sortedTimes sortUsingComparator:[ImageManager comparatorForSorting]];
     NSUInteger addedIndex = [self.sortedTimes indexOfObject:wrappedTime];
     
+    assert (addedIndex != NSNotFound);
     [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
                                                         object:@{ImageManagerSortedTimesAddedIndexKey : @(addedIndex)}];
 }
@@ -101,6 +102,7 @@ ImageManager *singleton = nil;
     [self.times removeObjectForKey:wrappedTime];
     [self.sortedTimes removeObject:wrappedTime];
     
+    assert(removedIndex != NSNotFound);
     [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
                                                         object:@{ImageManagerSortedTimesRemovedIndexKey : @(removedIndex)}];
 }
