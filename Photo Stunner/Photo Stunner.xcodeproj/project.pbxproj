@@ -21,7 +21,7 @@
 		B34788E11AB7964C009FF25C /* ThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788D91AB7964C009FF25C /* ThumbnailsViewController.m */; };
 		B34788E21AB7964C009FF25C /* ThumbnailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788DA1AB7964C009FF25C /* ThumbnailsViewController.xib */; };
 		B34788EA1AB79651009FF25C /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E51AB79651009FF25C /* ImageManager.m */; };
-		B34788EB1AB79651009FF25C /* LibraryLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E91AB79651009FF25C /* LibraryLoader.m */; };
+		B34788EB1AB79651009FF25C /* VideoLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E91AB79651009FF25C /* VideoLoader.m */; };
 		B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */; };
 		B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */; };
 /* End PBXBuildFile section */
@@ -61,8 +61,8 @@
 		B34788DA1AB7964C009FF25C /* ThumbnailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailsViewController.xib; sourceTree = "<group>"; };
 		B34788E41AB79651009FF25C /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
 		B34788E51AB79651009FF25C /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
-		B34788E81AB79651009FF25C /* LibraryLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryLoader.h; sourceTree = "<group>"; };
-		B34788E91AB79651009FF25C /* LibraryLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryLoader.m; sourceTree = "<group>"; };
+		B34788E81AB79651009FF25C /* VideoLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoLoader.h; sourceTree = "<group>"; };
+		B34788E91AB79651009FF25C /* VideoLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoLoader.m; sourceTree = "<group>"; };
 		B34788ED1AB79655009FF25C /* UICollectionViewImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewImageCell.h; sourceTree = "<group>"; };
 		B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewImageCell.m; sourceTree = "<group>"; };
 		B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICollectionViewImageCell.xib; sourceTree = "<group>"; };
@@ -108,12 +108,12 @@
 			isa = PBXGroup;
 			children = (
 				B34788CA1AB7964C009FF25C /* Controller */,
+				B34788E31AB79651009FF25C /* Model */,
+				B34788EC1AB79655009FF25C /* View */,
 				B34788821AB75584009FF25C /* AppDelegate.h */,
 				B34788831AB75584009FF25C /* AppDelegate.m */,
 				B347888B1AB75584009FF25C /* Images.xcassets */,
 				B34788A41AB755A9009FF25C /* LaunchScreen.xib */,
-				B34788E31AB79651009FF25C /* Model */,
-				B34788EC1AB79655009FF25C /* View */,
 				B347887E1AB75584009FF25C /* Supporting Files */,
 			);
 			path = "Photo Stunner";
@@ -199,9 +199,9 @@
 		B34788E31AB79651009FF25C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B34788E61AB79651009FF25C /* Library */,
 				B34788E41AB79651009FF25C /* ImageManager.h */,
 				B34788E51AB79651009FF25C /* ImageManager.m */,
-				B34788E61AB79651009FF25C /* Library */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -217,8 +217,8 @@
 		B34788E71AB79651009FF25C /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				B34788E81AB79651009FF25C /* LibraryLoader.h */,
-				B34788E91AB79651009FF25C /* LibraryLoader.m */,
+				B34788E81AB79651009FF25C /* VideoLoader.h */,
+				B34788E91AB79651009FF25C /* VideoLoader.m */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -344,7 +344,7 @@
 				B34788DF1AB7964C009FF25C /* TapViewController.m in Sources */,
 				B34788DB1AB7964C009FF25C /* LibraryViewController.m in Sources */,
 				B34788841AB75584009FF25C /* AppDelegate.m in Sources */,
-				B34788EB1AB79651009FF25C /* LibraryLoader.m in Sources */,
+				B34788EB1AB79651009FF25C /* VideoLoader.m in Sources */,
 				B34788811AB75584009FF25C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,12 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LibraryLoader : NSObject
+@interface VideoLoader : NSObject
 
-extern NSString const * LibraryLoadeVideosChangedNotification;
+extern NSString const * VideoLoaderModelChangedNotification;
 
-+ (LibraryLoader *) sharedInstance;
++ (VideoLoader *) sharedInstance;
 - (void) loadVideos:(void(^)(NSArray *videos))completion;
-
 
 @end
