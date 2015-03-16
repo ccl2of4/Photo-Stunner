@@ -29,6 +29,7 @@ static NSString * const CellReuseIdentifier = @"cell";
     [super viewDidLoad];
     
     [self.collectionView registerClass:[UICollectionViewImageCell class] forCellWithReuseIdentifier:CellReuseIdentifier];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ALAssetsLibraryChangedNotification object:nil];
     
     [self reloadData];
 }
@@ -66,7 +67,9 @@ static NSString * const CellReuseIdentifier = @"cell";
             [group setAssetsFilter:[ALAssetsFilter allVideos]];
             [result addObject:group];
         } else {
-            completion (result);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion (result);
+            });
         }
     } failureBlock:^(NSError *error) {
         assert (NO);
@@ -111,6 +114,13 @@ static NSString * const CellReuseIdentifier = @"cell";
     [self.navigationController pushViewController:tapViewController animated:YES];
 
     return;
+}
+
+- (void) handleNotification:(NSNotification *)notification {
+    id userInfo = [notification userInfo];
+    if (!userInfo || [userInfo count]) {
+        [self reloadData];
+    }
 }
 
 @end

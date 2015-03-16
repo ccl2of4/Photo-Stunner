@@ -19,6 +19,8 @@
 		B34788B31AB768E0009FF25C /* TapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788B11AB768E0009FF25C /* TapViewController.m */; };
 		B34788B41AB768E0009FF25C /* TapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788B21AB768E0009FF25C /* TapViewController.xib */; };
 		B34788B71AB77004009FF25C /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788B61AB77004009FF25C /* ImageManager.m */; };
+		B34788BB1AB77E20009FF25C /* ThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788B91AB77E20009FF25C /* ThumbnailsViewController.m */; };
+		B34788BC1AB77E20009FF25C /* ThumbnailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788BA1AB77E20009FF25C /* ThumbnailsViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,9 @@
 		B34788B21AB768E0009FF25C /* TapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapViewController.xib; sourceTree = "<group>"; };
 		B34788B51AB77004009FF25C /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
 		B34788B61AB77004009FF25C /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
+		B34788B81AB77E20009FF25C /* ThumbnailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailsViewController.h; sourceTree = "<group>"; };
+		B34788B91AB77E20009FF25C /* ThumbnailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailsViewController.m; sourceTree = "<group>"; };
+		B34788BA1AB77E20009FF25C /* ThumbnailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailsViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +104,9 @@
 				B34788A61AB75E03009FF25C /* LibraryViewController.h */,
 				B34788A71AB75E03009FF25C /* LibraryViewController.m */,
 				B34788A81AB75E03009FF25C /* LibraryViewController.xib */,
+				B34788B81AB77E20009FF25C /* ThumbnailsViewController.h */,
+				B34788B91AB77E20009FF25C /* ThumbnailsViewController.m */,
+				B34788BA1AB77E20009FF25C /* ThumbnailsViewController.xib */,
 				B34788B01AB768E0009FF25C /* TapViewController.h */,
 				B34788B11AB768E0009FF25C /* TapViewController.m */,
 				B34788B21AB768E0009FF25C /* TapViewController.xib */,
@@ -221,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */,
+				B34788BC1AB77E20009FF25C /* ThumbnailsViewController.xib in Resources */,
 				B34788B41AB768E0009FF25C /* TapViewController.xib in Resources */,
 				B347888C1AB75584009FF25C /* Images.xcassets in Resources */,
 				B34788AF1AB7660D009FF25C /* UICollectionViewImageCell.xib in Resources */,
@@ -246,6 +255,7 @@
 				B34788B31AB768E0009FF25C /* TapViewController.m in Sources */,
 				B34788841AB75584009FF25C /* AppDelegate.m in Sources */,
 				B34788B71AB77004009FF25C /* ImageManager.m in Sources */,
+				B34788BB1AB77E20009FF25C /* ThumbnailsViewController.m in Sources */,
 				B34788AE1AB7660D009FF25C /* UICollectionViewImageCell.m in Sources */,
 				B34788811AB75584009FF25C /* main.m in Sources */,
 			);

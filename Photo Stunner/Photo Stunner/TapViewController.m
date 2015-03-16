@@ -13,6 +13,7 @@
 @interface TapViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *playbackView;
+
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic) AVPlayer *player;
 
