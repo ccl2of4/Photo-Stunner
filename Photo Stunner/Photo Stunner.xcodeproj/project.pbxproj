@@ -12,6 +12,13 @@
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
 		B347889B1AB75584009FF25C /* Photo_StunnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B347889A1AB75584009FF25C /* Photo_StunnerTests.m */; };
 		B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788A41AB755A9009FF25C /* LaunchScreen.xib */; };
+		B34788A91AB75E03009FF25C /* LibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788A71AB75E03009FF25C /* LibraryViewController.m */; };
+		B34788AA1AB75E03009FF25C /* LibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788A81AB75E03009FF25C /* LibraryViewController.xib */; };
+		B34788AE1AB7660D009FF25C /* UICollectionViewImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788AC1AB7660D009FF25C /* UICollectionViewImageCell.m */; };
+		B34788AF1AB7660D009FF25C /* UICollectionViewImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788AD1AB7660D009FF25C /* UICollectionViewImageCell.xib */; };
+		B34788B31AB768E0009FF25C /* TapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788B11AB768E0009FF25C /* TapViewController.m */; };
+		B34788B41AB768E0009FF25C /* TapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788B21AB768E0009FF25C /* TapViewController.xib */; };
+		B34788B71AB77004009FF25C /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788B61AB77004009FF25C /* ImageManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +42,17 @@
 		B34788991AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B347889A1AB75584009FF25C /* Photo_StunnerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo_StunnerTests.m; sourceTree = "<group>"; };
 		B34788A41AB755A9009FF25C /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		B34788A61AB75E03009FF25C /* LibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryViewController.h; sourceTree = "<group>"; };
+		B34788A71AB75E03009FF25C /* LibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryViewController.m; sourceTree = "<group>"; };
+		B34788A81AB75E03009FF25C /* LibraryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LibraryViewController.xib; sourceTree = "<group>"; };
+		B34788AB1AB7660D009FF25C /* UICollectionViewImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewImageCell.h; sourceTree = "<group>"; };
+		B34788AC1AB7660D009FF25C /* UICollectionViewImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewImageCell.m; sourceTree = "<group>"; };
+		B34788AD1AB7660D009FF25C /* UICollectionViewImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICollectionViewImageCell.xib; sourceTree = "<group>"; };
+		B34788B01AB768E0009FF25C /* TapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapViewController.h; sourceTree = "<group>"; };
+		B34788B11AB768E0009FF25C /* TapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapViewController.m; sourceTree = "<group>"; };
+		B34788B21AB768E0009FF25C /* TapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapViewController.xib; sourceTree = "<group>"; };
+		B34788B51AB77004009FF25C /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
+		B34788B61AB77004009FF25C /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +96,17 @@
 			children = (
 				B34788821AB75584009FF25C /* AppDelegate.h */,
 				B34788831AB75584009FF25C /* AppDelegate.m */,
+				B34788A61AB75E03009FF25C /* LibraryViewController.h */,
+				B34788A71AB75E03009FF25C /* LibraryViewController.m */,
+				B34788A81AB75E03009FF25C /* LibraryViewController.xib */,
+				B34788B01AB768E0009FF25C /* TapViewController.h */,
+				B34788B11AB768E0009FF25C /* TapViewController.m */,
+				B34788B21AB768E0009FF25C /* TapViewController.xib */,
+				B34788B51AB77004009FF25C /* ImageManager.h */,
+				B34788B61AB77004009FF25C /* ImageManager.m */,
+				B34788AB1AB7660D009FF25C /* UICollectionViewImageCell.h */,
+				B34788AC1AB7660D009FF25C /* UICollectionViewImageCell.m */,
+				B34788AD1AB7660D009FF25C /* UICollectionViewImageCell.xib */,
 				B347888B1AB75584009FF25C /* Images.xcassets */,
 				B34788A41AB755A9009FF25C /* LaunchScreen.xib */,
 				B347887E1AB75584009FF25C /* Supporting Files */,
@@ -192,7 +221,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */,
+				B34788B41AB768E0009FF25C /* TapViewController.xib in Resources */,
 				B347888C1AB75584009FF25C /* Images.xcassets in Resources */,
+				B34788AF1AB7660D009FF25C /* UICollectionViewImageCell.xib in Resources */,
+				B34788AA1AB75E03009FF25C /* LibraryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +242,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B34788A91AB75E03009FF25C /* LibraryViewController.m in Sources */,
+				B34788B31AB768E0009FF25C /* TapViewController.m in Sources */,
 				B34788841AB75584009FF25C /* AppDelegate.m in Sources */,
+				B34788B71AB77004009FF25C /* ImageManager.m in Sources */,
+				B34788AE1AB7660D009FF25C /* UICollectionViewImageCell.m in Sources */,
 				B34788811AB75584009FF25C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
