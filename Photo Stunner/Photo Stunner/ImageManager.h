@@ -10,12 +10,22 @@
 #import <UIKit/UIKit.h>
 #import <CoreMedia/CoreMedia.h>
 
+extern NSString * const ImageManagerSortedTimesChangedNotification;
+extern NSString * const ImageManagerSortedTimesRemovedIndexKey;
+extern NSString * const ImageManagerSortedTimesAddedIndexKey;
+
 @interface ImageManager : NSObject
 
 + (ImageManager *) sharedManager;
 
-- (NSArray *) sortedTimes;
 - (UIImage *) imageForTime:(CMTime)time;
 - (void) setImage:(UIImage *)image forTime:(CMTime)time;
+- (void) removeImageForTime:(CMTime)time;
+
+@end
+
+@interface ImageManager (SortedTimes)
+
+@property (readonly, nonatomic) NSArray *sortedTimes;
 
 @end
