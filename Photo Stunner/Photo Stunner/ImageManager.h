@@ -14,7 +14,7 @@
 
 + (ImageManager *) sharedManager;
 
-- (NSArray *) allTimes;
+- (NSArray *) sortedTimes;
 - (UIImage *) imageForTime:(CMTime)time;
 - (void) setImage:(UIImage *)image forTime:(CMTime)time;
 

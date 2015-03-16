@@ -33,7 +33,7 @@ static NSString * const CellReuseIdentifier = @"cell";
 }
 
 - (void) reloadData {
-    self.sortedTimes = [[[ImageManager sharedManager] allTimes] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+    self.sortedTimes = [[[ImageManager sharedManager] sortedTimes] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         CMTime time1 = [obj1 CMTimeValue];
         CMTime time2 = [obj2 CMTimeValue];
         

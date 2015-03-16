@@ -40,7 +40,7 @@
 }
 
 
-- (NSArray *)allTimes {
+- (NSArray *)sortedTimes {
     return [self.times allKeys];
 }
 
