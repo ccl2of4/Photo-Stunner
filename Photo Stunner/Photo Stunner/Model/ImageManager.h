@@ -10,11 +10,12 @@
 #import <UIKit/UIKit.h>
 #import <CoreMedia/CoreMedia.h>
 
+@interface ImageManager : NSObject
+
 extern NSString * const ImageManagerSortedTimesChangedNotification;
 extern NSString * const ImageManagerSortedTimesRemovedIndexKey;
 extern NSString * const ImageManagerSortedTimesAddedIndexKey;
 
-@interface ImageManager : NSObject
 
 + (ImageManager *) sharedManager;
 

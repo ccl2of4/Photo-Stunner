@@ -7,22 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		605129611AB78AED005891A2 /* StunningImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6051295F1AB78AED005891A2 /* StunningImageViewController.m */; };
-		605129621AB78AED005891A2 /* StunningImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 605129601AB78AED005891A2 /* StunningImageViewController.xib */; };
 		B34788811AB75584009FF25C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788801AB75584009FF25C /* main.m */; };
 		B34788841AB75584009FF25C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788831AB75584009FF25C /* AppDelegate.m */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
 		B347889B1AB75584009FF25C /* Photo_StunnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B347889A1AB75584009FF25C /* Photo_StunnerTests.m */; };
 		B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788A41AB755A9009FF25C /* LaunchScreen.xib */; };
-		B34788A91AB75E03009FF25C /* LibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788A71AB75E03009FF25C /* LibraryViewController.m */; };
-		B34788AA1AB75E03009FF25C /* LibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788A81AB75E03009FF25C /* LibraryViewController.xib */; };
-		B34788AE1AB7660D009FF25C /* UICollectionViewImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788AC1AB7660D009FF25C /* UICollectionViewImageCell.m */; };
-		B34788AF1AB7660D009FF25C /* UICollectionViewImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788AD1AB7660D009FF25C /* UICollectionViewImageCell.xib */; };
-		B34788B31AB768E0009FF25C /* TapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788B11AB768E0009FF25C /* TapViewController.m */; };
-		B34788B41AB768E0009FF25C /* TapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788B21AB768E0009FF25C /* TapViewController.xib */; };
-		B34788B71AB77004009FF25C /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788B61AB77004009FF25C /* ImageManager.m */; };
-		B34788BB1AB77E20009FF25C /* ThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788B91AB77E20009FF25C /* ThumbnailsViewController.m */; };
-		B34788BC1AB77E20009FF25C /* ThumbnailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788BA1AB77E20009FF25C /* ThumbnailsViewController.xib */; };
+		B34788DB1AB7964C009FF25C /* LibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788CD1AB7964C009FF25C /* LibraryViewController.m */; };
+		B34788DC1AB7964C009FF25C /* LibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788CE1AB7964C009FF25C /* LibraryViewController.xib */; };
+		B34788DD1AB7964C009FF25C /* StunningImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788D11AB7964C009FF25C /* StunningImageViewController.m */; };
+		B34788DE1AB7964C009FF25C /* StunningImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788D21AB7964C009FF25C /* StunningImageViewController.xib */; };
+		B34788DF1AB7964C009FF25C /* TapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788D51AB7964C009FF25C /* TapViewController.m */; };
+		B34788E01AB7964C009FF25C /* TapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788D61AB7964C009FF25C /* TapViewController.xib */; };
+		B34788E11AB7964C009FF25C /* ThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788D91AB7964C009FF25C /* ThumbnailsViewController.m */; };
+		B34788E21AB7964C009FF25C /* ThumbnailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788DA1AB7964C009FF25C /* ThumbnailsViewController.xib */; };
+		B34788EA1AB79651009FF25C /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E51AB79651009FF25C /* ImageManager.m */; };
+		B34788EB1AB79651009FF25C /* LibraryLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E91AB79651009FF25C /* LibraryLoader.m */; };
+		B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */; };
+		B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,9 +37,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6051295E1AB78AED005891A2 /* StunningImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StunningImageViewController.h; sourceTree = "<group>"; };
-		6051295F1AB78AED005891A2 /* StunningImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StunningImageViewController.m; sourceTree = "<group>"; };
-		605129601AB78AED005891A2 /* StunningImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StunningImageViewController.xib; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B34788801AB75584009FF25C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -49,20 +47,25 @@
 		B34788991AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B347889A1AB75584009FF25C /* Photo_StunnerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo_StunnerTests.m; sourceTree = "<group>"; };
 		B34788A41AB755A9009FF25C /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
-		B34788A61AB75E03009FF25C /* LibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryViewController.h; sourceTree = "<group>"; };
-		B34788A71AB75E03009FF25C /* LibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryViewController.m; sourceTree = "<group>"; };
-		B34788A81AB75E03009FF25C /* LibraryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LibraryViewController.xib; sourceTree = "<group>"; };
-		B34788AB1AB7660D009FF25C /* UICollectionViewImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewImageCell.h; sourceTree = "<group>"; };
-		B34788AC1AB7660D009FF25C /* UICollectionViewImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewImageCell.m; sourceTree = "<group>"; };
-		B34788AD1AB7660D009FF25C /* UICollectionViewImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICollectionViewImageCell.xib; sourceTree = "<group>"; };
-		B34788B01AB768E0009FF25C /* TapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapViewController.h; sourceTree = "<group>"; };
-		B34788B11AB768E0009FF25C /* TapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapViewController.m; sourceTree = "<group>"; };
-		B34788B21AB768E0009FF25C /* TapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapViewController.xib; sourceTree = "<group>"; };
-		B34788B51AB77004009FF25C /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
-		B34788B61AB77004009FF25C /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
-		B34788B81AB77E20009FF25C /* ThumbnailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailsViewController.h; sourceTree = "<group>"; };
-		B34788B91AB77E20009FF25C /* ThumbnailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailsViewController.m; sourceTree = "<group>"; };
-		B34788BA1AB77E20009FF25C /* ThumbnailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailsViewController.xib; sourceTree = "<group>"; };
+		B34788CC1AB7964C009FF25C /* LibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryViewController.h; sourceTree = "<group>"; };
+		B34788CD1AB7964C009FF25C /* LibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryViewController.m; sourceTree = "<group>"; };
+		B34788CE1AB7964C009FF25C /* LibraryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LibraryViewController.xib; sourceTree = "<group>"; };
+		B34788D01AB7964C009FF25C /* StunningImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StunningImageViewController.h; sourceTree = "<group>"; };
+		B34788D11AB7964C009FF25C /* StunningImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StunningImageViewController.m; sourceTree = "<group>"; };
+		B34788D21AB7964C009FF25C /* StunningImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StunningImageViewController.xib; sourceTree = "<group>"; };
+		B34788D41AB7964C009FF25C /* TapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapViewController.h; sourceTree = "<group>"; };
+		B34788D51AB7964C009FF25C /* TapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapViewController.m; sourceTree = "<group>"; };
+		B34788D61AB7964C009FF25C /* TapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapViewController.xib; sourceTree = "<group>"; };
+		B34788D81AB7964C009FF25C /* ThumbnailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailsViewController.h; sourceTree = "<group>"; };
+		B34788D91AB7964C009FF25C /* ThumbnailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailsViewController.m; sourceTree = "<group>"; };
+		B34788DA1AB7964C009FF25C /* ThumbnailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailsViewController.xib; sourceTree = "<group>"; };
+		B34788E41AB79651009FF25C /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
+		B34788E51AB79651009FF25C /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
+		B34788E81AB79651009FF25C /* LibraryLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryLoader.h; sourceTree = "<group>"; };
+		B34788E91AB79651009FF25C /* LibraryLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryLoader.m; sourceTree = "<group>"; };
+		B34788ED1AB79655009FF25C /* UICollectionViewImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewImageCell.h; sourceTree = "<group>"; };
+		B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewImageCell.m; sourceTree = "<group>"; };
+		B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICollectionViewImageCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,27 +107,13 @@
 		B347887D1AB75584009FF25C /* Photo Stunner */ = {
 			isa = PBXGroup;
 			children = (
+				B34788CA1AB7964C009FF25C /* Controller */,
 				B34788821AB75584009FF25C /* AppDelegate.h */,
 				B34788831AB75584009FF25C /* AppDelegate.m */,
-				B34788A61AB75E03009FF25C /* LibraryViewController.h */,
-				B34788A71AB75E03009FF25C /* LibraryViewController.m */,
-				B34788A81AB75E03009FF25C /* LibraryViewController.xib */,
-				B34788B81AB77E20009FF25C /* ThumbnailsViewController.h */,
-				B34788B91AB77E20009FF25C /* ThumbnailsViewController.m */,
-				B34788BA1AB77E20009FF25C /* ThumbnailsViewController.xib */,
-				B34788B01AB768E0009FF25C /* TapViewController.h */,
-				B34788B11AB768E0009FF25C /* TapViewController.m */,
-				B34788B21AB768E0009FF25C /* TapViewController.xib */,
-				6051295E1AB78AED005891A2 /* StunningImageViewController.h */,
-				6051295F1AB78AED005891A2 /* StunningImageViewController.m */,
-				605129601AB78AED005891A2 /* StunningImageViewController.xib */,
-				B34788B51AB77004009FF25C /* ImageManager.h */,
-				B34788B61AB77004009FF25C /* ImageManager.m */,
-				B34788AB1AB7660D009FF25C /* UICollectionViewImageCell.h */,
-				B34788AC1AB7660D009FF25C /* UICollectionViewImageCell.m */,
-				B34788AD1AB7660D009FF25C /* UICollectionViewImageCell.xib */,
 				B347888B1AB75584009FF25C /* Images.xcassets */,
 				B34788A41AB755A9009FF25C /* LaunchScreen.xib */,
+				B34788E31AB79651009FF25C /* Model */,
+				B34788EC1AB79655009FF25C /* View */,
 				B347887E1AB75584009FF25C /* Supporting Files */,
 			);
 			path = "Photo Stunner";
@@ -154,6 +143,94 @@
 				B34788991AB75584009FF25C /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B34788CA1AB7964C009FF25C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B34788CB1AB7964C009FF25C /* Library */,
+				B34788CF1AB7964C009FF25C /* StunningImage */,
+				B34788D31AB7964C009FF25C /* Tap */,
+				B34788D71AB7964C009FF25C /* Thumbnails */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B34788CB1AB7964C009FF25C /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				B34788CC1AB7964C009FF25C /* LibraryViewController.h */,
+				B34788CD1AB7964C009FF25C /* LibraryViewController.m */,
+				B34788CE1AB7964C009FF25C /* LibraryViewController.xib */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		B34788CF1AB7964C009FF25C /* StunningImage */ = {
+			isa = PBXGroup;
+			children = (
+				B34788D01AB7964C009FF25C /* StunningImageViewController.h */,
+				B34788D11AB7964C009FF25C /* StunningImageViewController.m */,
+				B34788D21AB7964C009FF25C /* StunningImageViewController.xib */,
+			);
+			path = StunningImage;
+			sourceTree = "<group>";
+		};
+		B34788D31AB7964C009FF25C /* Tap */ = {
+			isa = PBXGroup;
+			children = (
+				B34788D41AB7964C009FF25C /* TapViewController.h */,
+				B34788D51AB7964C009FF25C /* TapViewController.m */,
+				B34788D61AB7964C009FF25C /* TapViewController.xib */,
+			);
+			path = Tap;
+			sourceTree = "<group>";
+		};
+		B34788D71AB7964C009FF25C /* Thumbnails */ = {
+			isa = PBXGroup;
+			children = (
+				B34788D81AB7964C009FF25C /* ThumbnailsViewController.h */,
+				B34788D91AB7964C009FF25C /* ThumbnailsViewController.m */,
+				B34788DA1AB7964C009FF25C /* ThumbnailsViewController.xib */,
+			);
+			path = Thumbnails;
+			sourceTree = "<group>";
+		};
+		B34788E31AB79651009FF25C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B34788E41AB79651009FF25C /* ImageManager.h */,
+				B34788E51AB79651009FF25C /* ImageManager.m */,
+				B34788E61AB79651009FF25C /* Library */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B34788E61AB79651009FF25C /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				B34788E71AB79651009FF25C /* Repository */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		B34788E71AB79651009FF25C /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				B34788E81AB79651009FF25C /* LibraryLoader.h */,
+				B34788E91AB79651009FF25C /* LibraryLoader.m */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		B34788EC1AB79655009FF25C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B34788ED1AB79655009FF25C /* UICollectionViewImageCell.h */,
+				B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */,
+				B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,13 +313,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B34788DE1AB7964C009FF25C /* StunningImageViewController.xib in Resources */,
+				B34788E21AB7964C009FF25C /* ThumbnailsViewController.xib in Resources */,
+				B34788E01AB7964C009FF25C /* TapViewController.xib in Resources */,
 				B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */,
-				B34788BC1AB77E20009FF25C /* ThumbnailsViewController.xib in Resources */,
-				605129621AB78AED005891A2 /* StunningImageViewController.xib in Resources */,
-				B34788B41AB768E0009FF25C /* TapViewController.xib in Resources */,
+				B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */,
 				B347888C1AB75584009FF25C /* Images.xcassets in Resources */,
-				B34788AF1AB7660D009FF25C /* UICollectionViewImageCell.xib in Resources */,
-				B34788AA1AB75E03009FF25C /* LibraryViewController.xib in Resources */,
+				B34788DC1AB7964C009FF25C /* LibraryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,13 +337,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				605129611AB78AED005891A2 /* StunningImageViewController.m in Sources */,
-				B34788A91AB75E03009FF25C /* LibraryViewController.m in Sources */,
-				B34788B31AB768E0009FF25C /* TapViewController.m in Sources */,
+				B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */,
+				B34788DD1AB7964C009FF25C /* StunningImageViewController.m in Sources */,
+				B34788EA1AB79651009FF25C /* ImageManager.m in Sources */,
+				B34788E11AB7964C009FF25C /* ThumbnailsViewController.m in Sources */,
+				B34788DF1AB7964C009FF25C /* TapViewController.m in Sources */,
+				B34788DB1AB7964C009FF25C /* LibraryViewController.m in Sources */,
 				B34788841AB75584009FF25C /* AppDelegate.m in Sources */,
-				B34788B71AB77004009FF25C /* ImageManager.m in Sources */,
-				B34788BB1AB77E20009FF25C /* ThumbnailsViewController.m in Sources */,
-				B34788AE1AB7660D009FF25C /* UICollectionViewImageCell.m in Sources */,
+				B34788EB1AB79651009FF25C /* LibraryLoader.m in Sources */,
 				B34788811AB75584009FF25C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

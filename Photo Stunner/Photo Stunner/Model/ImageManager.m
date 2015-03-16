@@ -9,9 +9,6 @@
 #import "ImageManager.h"
 #import <AVFoundation/AVFoundation.h>
 
-NSString * const ImageManagerSortedTimesChangedNotification = @"image manager sortedtimes changed notification";
-NSString * const ImageManagerSortedTimesRemovedIndexKey = @"image manager sortedtimes removed index key";
-NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedtimes added index key";
 
 @interface ImageManager ()
 
@@ -20,9 +17,13 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 
 @end
 
-#define ImageMangerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
 
 @implementation ImageManager
+
+NSString * const ImageManagerSortedTimesChangedNotification = @"image manager sortedtimes changed notification";
+NSString * const ImageManagerSortedTimesRemovedIndexKey = @"image manager sortedtimes removed index key";
+NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedtimes added index key";
+#define ImageMangerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
 
 #pragma mark class methods
 
