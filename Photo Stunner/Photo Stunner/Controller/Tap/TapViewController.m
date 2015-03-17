@@ -28,6 +28,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)];
     [rightBarButtonItem setEnabled:NO];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
@@ -71,7 +73,9 @@
         UIImage *image = [UIImage imageWithCGImage:result];
         assert (image);
         
-        [[ImageManager sharedManager] setImage:image forTime:time];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[ImageManager sharedManager] setImage:image forTime:time];
+        });
     }];
 }
 
@@ -126,7 +130,6 @@
 #pragma mark notification handling
 
 - (void) handleNotification:(NSNotification *)notification {
-    
     if ([notification name] == ImageManagerSortedTimesChangedNotification) {
         BOOL rightBarButtonItemEnabled = [[[ImageManager sharedManager] sortedTimes] count] > 0;
         [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];

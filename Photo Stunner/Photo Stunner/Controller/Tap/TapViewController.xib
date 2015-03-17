@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TapViewController">
@@ -17,31 +18,64 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAO-PA-off" userLabel="playbackView">
-                    <rect key="frame" x="0.0" y="138" width="600" height="336"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="548"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SIF-Q5-orY">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="336"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SIF-Q5-orY" userLabel="imageView">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="548"/>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="SIF-Q5-orY" secondAttribute="bottom" id="7g2-Tk-Arc"/>
-                        <constraint firstItem="SIF-Q5-orY" firstAttribute="leading" secondItem="RAO-PA-off" secondAttribute="leading" id="GrA-gL-fAB"/>
-                        <constraint firstAttribute="trailing" secondItem="SIF-Q5-orY" secondAttribute="trailing" id="Lpt-Gl-rbn"/>
-                        <constraint firstItem="SIF-Q5-orY" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="top" id="daD-tE-Sbu"/>
+                        <constraint firstAttribute="bottom" secondItem="SIF-Q5-orY" secondAttribute="bottom" id="B5Q-8g-2Kn"/>
+                        <constraint firstItem="SIF-Q5-orY" firstAttribute="leading" secondItem="RAO-PA-off" secondAttribute="leading" id="pab-TU-Sem"/>
+                        <constraint firstAttribute="trailing" secondItem="SIF-Q5-orY" secondAttribute="trailing" id="tDx-CD-cvG"/>
+                        <constraint firstItem="SIF-Q5-orY" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="top" id="zej-O1-tAT"/>
                     </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="jty-kD-gP0" appends="YES" id="UaD-zf-f4d"/>
                     </connections>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A5f-qg-cLY" userLabel="playButton">
+                    <rect key="frame" x="277" y="562" width="46" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="46" id="Imu-He-iQs"/>
+                    </constraints>
+                    <state key="normal" title=">">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWT-hW-iXC">
+                    <rect key="frame" x="92" y="562" width="46" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="46" id="xUT-9h-scG"/>
+                    </constraints>
+                    <state key="normal" title="&lt;&lt;">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1U-51-7v7">
+                    <rect key="frame" x="469" y="562" width="46" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="46" id="jge-hu-rNu"/>
+                    </constraints>
+                    <state key="normal" title=">>">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="RAO-PA-off" secondAttribute="trailing" id="9Bh-lV-9rU"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="138" id="CHz-27-O12"/>
-                <constraint firstAttribute="bottom" secondItem="RAO-PA-off" secondAttribute="bottom" constant="126" id="hVJ-fF-McD"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="isl-vB-H1y"/>
+                <constraint firstItem="vWT-hW-iXC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="92" id="0Ax-rO-CM8"/>
+                <constraint firstItem="vWT-hW-iXC" firstAttribute="baseline" secondItem="A5f-qg-cLY" secondAttribute="baseline" id="52L-2m-fPN"/>
+                <constraint firstItem="A5f-qg-cLY" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottomMargin" id="9yu-vs-r3E"/>
+                <constraint firstItem="RAO-PA-off" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Az1-V0-YSx"/>
+                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="RGL-aI-2HE"/>
+                <constraint firstAttribute="trailing" secondItem="e1U-51-7v7" secondAttribute="trailing" constant="85" id="V53-fN-NAI"/>
+                <constraint firstAttribute="trailing" secondItem="RAO-PA-off" secondAttribute="trailing" id="b2e-mh-vNK"/>
+                <constraint firstItem="A5f-qg-cLY" firstAttribute="centerX" secondItem="RAO-PA-off" secondAttribute="centerX" id="cw6-hf-3XF"/>
+                <constraint firstItem="vWT-hW-iXC" firstAttribute="baseline" secondItem="e1U-51-7v7" secondAttribute="baseline" id="uYM-d0-hTN"/>
+                <constraint firstAttribute="bottom" secondItem="RAO-PA-off" secondAttribute="bottom" constant="52" id="vEb-YU-VA5"/>
             </constraints>
         </view>
         <tapGestureRecognizer id="jty-kD-gP0">
