@@ -59,7 +59,7 @@ NSString * const VideoLoaderModelChangedNotification = @"videoloader model chang
 
 - (void)loadVideosFromPhotosLibrary:(void (^)(NSArray *videos))completion {
     
-    if (!self.assetsLibrary) {
+    if (![self assetsLibrary]) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleNotification:)
                                                  name:ALAssetsLibraryChangedNotification
@@ -102,7 +102,8 @@ NSString * const VideoLoaderModelChangedNotification = @"videoloader model chang
 }
 
 -(void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if ([self assetsLibrary])
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
