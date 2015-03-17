@@ -10,6 +10,7 @@
 
 @interface TapViewController : UIViewController
 
+@property (nonatomic) UIImage *placeholderImage;
 @property (nonatomic) NSURL *assetURL;
 
 @end

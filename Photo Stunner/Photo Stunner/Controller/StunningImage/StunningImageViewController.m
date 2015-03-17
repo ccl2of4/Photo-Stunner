@@ -67,7 +67,7 @@ static NSString * const CellIdentifier = @"cell";
             NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
             [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
             
-            // removed an image
+        // removed an image
         } else if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesRemovedIndexKey]) ) {
             NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
             [self.collectionView insertItemsAtIndexPaths:@[removedIndexPath]];

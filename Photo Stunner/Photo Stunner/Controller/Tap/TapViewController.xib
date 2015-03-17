@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TapViewController">
             <connections>
+                <outlet property="imageView" destination="SIF-Q5-orY" id="A2v-Kn-iin"/>
                 <outlet property="playbackView" destination="RAO-PA-off" id="sFT-Zg-pTE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -17,8 +18,19 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAO-PA-off" userLabel="playbackView">
                     <rect key="frame" x="0.0" y="138" width="600" height="336"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SIF-Q5-orY">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="336"/>
+                        </imageView>
+                    </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="SIF-Q5-orY" secondAttribute="bottom" id="7g2-Tk-Arc"/>
+                        <constraint firstItem="SIF-Q5-orY" firstAttribute="leading" secondItem="RAO-PA-off" secondAttribute="leading" id="GrA-gL-fAB"/>
+                        <constraint firstAttribute="trailing" secondItem="SIF-Q5-orY" secondAttribute="trailing" id="Lpt-Gl-rbn"/>
+                        <constraint firstItem="SIF-Q5-orY" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="top" id="daD-tE-Sbu"/>
+                    </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="jty-kD-gP0" appends="YES" id="UaD-zf-f4d"/>
                     </connections>
@@ -26,10 +38,10 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="138" id="Lsd-Ek-daK"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="TxL-E0-867"/>
-                <constraint firstAttribute="trailing" secondItem="RAO-PA-off" secondAttribute="trailing" id="fCL-Pr-RTu"/>
-                <constraint firstAttribute="bottom" secondItem="RAO-PA-off" secondAttribute="bottom" constant="126" id="o4r-k7-9mx"/>
+                <constraint firstAttribute="trailing" secondItem="RAO-PA-off" secondAttribute="trailing" id="9Bh-lV-9rU"/>
+                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="138" id="CHz-27-O12"/>
+                <constraint firstAttribute="bottom" secondItem="RAO-PA-off" secondAttribute="bottom" constant="126" id="hVJ-fF-McD"/>
+                <constraint firstItem="RAO-PA-off" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="isl-vB-H1y"/>
             </constraints>
         </view>
         <tapGestureRecognizer id="jty-kD-gP0">

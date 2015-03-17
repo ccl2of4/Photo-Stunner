@@ -14,6 +14,7 @@
 @interface TapViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *playbackView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic) AVPlayer *player;
@@ -93,6 +94,15 @@
     }
     
     return _player;
+}
+
+-(UIImage *)placeholderImage {
+    return [self.imageView image];
+}
+
+- (void) setPlaceholderImage:(UIImage *)placeholderImage {
+    [self view];
+    [self.imageView setImage:placeholderImage];
 }
 
 
