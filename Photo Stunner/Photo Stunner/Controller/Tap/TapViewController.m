@@ -34,6 +34,7 @@
     [rightBarButtonItem setEnabled:NO];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     
+    [self.imageView setImage:[self.videoAsset thumbnail]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
 }
