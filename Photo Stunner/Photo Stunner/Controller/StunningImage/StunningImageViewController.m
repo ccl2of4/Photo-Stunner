@@ -34,8 +34,15 @@ static NSString * const CellIdentifier = @"cell";
 -  (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    CMTime time = [[[[ImageManager sharedManager] sortedTimes] objectAtIndex:0] CMTimeValue];
-    cell.imageView.image = [[ImageManager sharedManager] imageForTime:time];
+    
+    ImageManager *imageManager = [ImageManager sharedManager];
+    
+    CMTime time = [[imageManager sortedTimes][indexPath.item] CMTimeValue];
+    UIImage *image = [imageManager imageForTime:time];
+    
+    assert (image);
+    
+    [cell.imageView setImage:image];
 
     return cell;
 }
