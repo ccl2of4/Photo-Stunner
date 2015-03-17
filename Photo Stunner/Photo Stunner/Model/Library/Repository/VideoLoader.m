@@ -7,6 +7,10 @@
 //
 
 #import "VideoLoader.h"
+#import <AVFoundation/AVFoundation.h>
+
+#import "NSURLVideoAssetAdapter.h"
+#import "ALAssetVideoAssetAdapter.h"
 
 @implementation VideoLoader
 
@@ -21,7 +25,26 @@ NSString const * VideoLoaderModelChangedNotification = @"videoloader model chang
 }
 
 - (void)loadVideos:(void (^)(NSArray *videos))completion {
-    completion (nil);
+    static NSArray *videoNames = nil;
+    if (!videoNames) {
+        videoNames = @[
+            @"1.mp4",@"2.mp4",@"3.mp4",@"4.mp4",@"5.mp4",@"6.mp4",
+        ];
+    }
+    
+    NSMutableArray *result = [NSMutableArray new];
+    
+    for (NSString *videoName in videoNames) {
+        NSString *videoPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:videoName];
+        NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
+        id<VideoAsset> videoAsset = [[NSURLVideoAssetAdapter alloc] initWithURL:videoURL];
+        [result addObject:videoAsset];
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        completion (result);
+    });
+    
 }
 
 @end

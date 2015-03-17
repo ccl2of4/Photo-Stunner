@@ -23,7 +23,7 @@
 NSString * const ImageManagerSortedTimesChangedNotification = @"image manager sortedtimes changed notification";
 NSString * const ImageManagerSortedTimesRemovedIndexKey = @"image manager sortedtimes removed index key";
 NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedtimes added index key";
-#define ImageMangerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
+#define ImageManagerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
 
 #pragma mark class methods
 
@@ -65,16 +65,16 @@ ImageManager *singleton = nil;
     NSFileManager *manager = [NSFileManager defaultManager];
     
     NSError *error;
-    if ([manager fileExistsAtPath:ImageMangerDirectory]) {
-        [manager removeItemAtPath:ImageMangerDirectory error:&error];
+    if ([manager fileExistsAtPath:ImageManagerDirectory]) {
+        [manager removeItemAtPath:ImageManagerDirectory error:&error];
         assert (!error);
     }
-    [manager createDirectoryAtPath:@"" withIntermediateDirectories:NO attributes:nil error:&error];
+    [manager createDirectoryAtPath:ImageManagerDirectory withIntermediateDirectories:NO attributes:nil error:&error];
     assert (!error);
     
     int currentTime = CFAbsoluteTimeGetCurrent() * 10000;
     NSString *fileName = [NSString stringWithFormat:@"%d.jpg", currentTime];
-    NSString *filePath = [ImageMangerDirectory stringByAppendingPathComponent:fileName];
+    NSString *filePath = [ImageManagerDirectory stringByAppendingPathComponent:fileName];
     
     [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:NO];
     

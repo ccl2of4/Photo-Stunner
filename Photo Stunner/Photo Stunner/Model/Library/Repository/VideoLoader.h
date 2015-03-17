@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VideoAsset.h"
 
 @interface VideoLoader : NSObject
 

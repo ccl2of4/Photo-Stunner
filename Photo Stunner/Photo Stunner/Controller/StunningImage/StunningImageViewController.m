@@ -24,7 +24,7 @@ static NSString * const CellIdentifier = @"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self.collectionView registerClass:[UICollectionViewImageCell class] forCellWithReuseIdentifier:CellIdentifier];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
 

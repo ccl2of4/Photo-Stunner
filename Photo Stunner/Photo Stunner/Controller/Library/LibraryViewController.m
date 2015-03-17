@@ -9,13 +9,13 @@
 #import "LibraryViewController.h"
 #import "UICollectionViewImageCell.h"
 #import "TapViewController.h"
-#import <AssetsLibrary/AssetsLibrary.h>
+#import "VideoLoader.h"
 
 @interface LibraryViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-@property (nonatomic) NSArray *assets;
+@property (nonatomic) NSArray *videos;
 
 @end
 
@@ -28,10 +28,16 @@ static NSString * const CellReuseIdentifier = @"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.collectionView registerClass:[UICollectionViewImageCell class] forCellWithReuseIdentifier:CellReuseIdentifier];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ALAssetsLibraryChangedNotification object:nil];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
+    
+    
+    [[VideoLoader sharedInstance] loadVideos:^(NSArray *videos) {
+        self.videos = videos;
+        [self.collectionView reloadData];
+    }];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ALAssetsLibraryChangedNotification object:nil];
 }
-
+/*
 - (void) reloadData {
     NSMutableArray *allAssets = [NSMutableArray new];
     [self enumerateGroupsWithCompletion:^(NSArray *groups) {
@@ -73,14 +79,15 @@ static NSString * const CellReuseIdentifier = @"cell";
         assert (NO);
     }];
 }
+*/
 
 #pragma mark UICollectionViewDelegete/UICollectionViewDataSource methods
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
     
-    ALAsset *asset = self.assets[indexPath.item];
-    UIImage *image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+    id<VideoAsset> asset = self.videos[indexPath.item];
+    UIImage *image = [asset thumbnail];
     
     assert (asset);
     assert (image);
@@ -91,16 +98,16 @@ static NSString * const CellReuseIdentifier = @"cell";
 }
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return !![self assets];
+    return !![self videos];
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.assets count];
+    return [self.videos count];
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    ALAsset *asset = self.assets[indexPath.item];
-    NSURL *url = [asset valueForProperty:ALAssetPropertyAssetURL];
+    id<VideoAsset> asset = self.videos[indexPath.item];
+    NSURL *url = [asset contentURL];
     
     assert (asset);
     assert (url);
@@ -113,12 +120,12 @@ static NSString * const CellReuseIdentifier = @"cell";
 
     return;
 }
-
+/*
 - (void) handleNotification:(NSNotification *)notification {
     id userInfo = [notification userInfo];
     if (!userInfo || [userInfo count]) {
         [self reloadData];
     }
 }
-
+*/
 @end

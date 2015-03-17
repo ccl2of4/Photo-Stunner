@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TapViewController">
@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RAO-PA-off" userLabel="playbackView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAO-PA-off" userLabel="playbackView">
                     <rect key="frame" x="0.0" y="138" width="600" height="336"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
@@ -25,6 +25,12 @@
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="138" id="Lsd-Ek-daK"/>
+                <constraint firstItem="RAO-PA-off" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="TxL-E0-867"/>
+                <constraint firstAttribute="trailing" secondItem="RAO-PA-off" secondAttribute="trailing" id="fCL-Pr-RTu"/>
+                <constraint firstAttribute="bottom" secondItem="RAO-PA-off" secondAttribute="bottom" constant="126" id="o4r-k7-9mx"/>
+            </constraints>
         </view>
         <tapGestureRecognizer id="jty-kD-gP0">
             <connections>

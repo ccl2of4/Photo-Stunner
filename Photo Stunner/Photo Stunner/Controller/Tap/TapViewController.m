@@ -25,8 +25,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationItem setRightBarButtonItem: [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleFoo:)]];
-    [self setUpAssetPlayer];
+    [self.navigationItem setRightBarButtonItem: [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)]];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.player play];
 }
 
 #pragma mark UI events
@@ -42,21 +50,28 @@
     }
 }
 
-- (void) handleFoo:(id)sender{
+- (void) handleUIControlEventTouchUpInside:(id)sender{
     assert(self.navigationController);
     [self.navigationController pushViewController:nil animated:YES];
 }
 
 #pragma mark logic
 
-- (void)setUpAssetPlayer {
-    AVPlayer *player = [AVPlayer playerWithURL:[self assetURL]];
-    AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
+- (AVPlayer *)player {
+    if (!_player) {
+        AVPlayer *player = [AVPlayer playerWithURL:[self assetURL]];
+        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
+        
+        [player setActionAtItemEnd:AVPlayerActionAtItemEndPause];
+        [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+        
+        [self.playbackView.layer addSublayer:playerLayer];
+        [playerLayer setFrame:[self.playbackView.layer bounds]];
+        
+        _player = player;
+    }
     
-    [player setActionAtItemEnd:AVPlayerActionAtItemEndPause];
-    [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
-    
-    [self.playbackView.layer addSublayer:playerLayer];
+    return _player;
 }
 
 - (void) extractImageAtTime:(CMTime)time completion:(void(^)(CMTime time, CGImageRef result))completion {

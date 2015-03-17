@@ -24,6 +24,14 @@
 		B34788EB1AB79651009FF25C /* VideoLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E91AB79651009FF25C /* VideoLoader.m */; };
 		B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */; };
 		B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */; };
+		B34788F51AB798DD009FF25C /* NSURLVideoAssetAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788F41AB798DD009FF25C /* NSURLVideoAssetAdapter.m */; };
+		B34788F81AB798EA009FF25C /* ALAssetVideoAssetAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788F71AB798EA009FF25C /* ALAssetVideoAssetAdapter.m */; };
+		B34789041AB79E2B009FF25C /* 1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FB1AB79E2B009FF25C /* 1.mp4 */; };
+		B34789051AB79E2B009FF25C /* 2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FC1AB79E2B009FF25C /* 2.mp4 */; };
+		B34789061AB79E2B009FF25C /* 3.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FD1AB79E2B009FF25C /* 3.mp4 */; };
+		B34789071AB79E2B009FF25C /* 4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FE1AB79E2B009FF25C /* 4.mp4 */; };
+		B34789081AB79E2B009FF25C /* 5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FF1AB79E2B009FF25C /* 5.mp4 */; };
+		B34789091AB79E2B009FF25C /* 6.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34789001AB79E2B009FF25C /* 6.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +74,17 @@
 		B34788ED1AB79655009FF25C /* UICollectionViewImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewImageCell.h; sourceTree = "<group>"; };
 		B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewImageCell.m; sourceTree = "<group>"; };
 		B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICollectionViewImageCell.xib; sourceTree = "<group>"; };
+		B34788F21AB79882009FF25C /* VideoAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoAsset.h; sourceTree = "<group>"; };
+		B34788F31AB798DD009FF25C /* NSURLVideoAssetAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLVideoAssetAdapter.h; sourceTree = "<group>"; };
+		B34788F41AB798DD009FF25C /* NSURLVideoAssetAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLVideoAssetAdapter.m; sourceTree = "<group>"; };
+		B34788F61AB798EA009FF25C /* ALAssetVideoAssetAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALAssetVideoAssetAdapter.h; sourceTree = "<group>"; };
+		B34788F71AB798EA009FF25C /* ALAssetVideoAssetAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALAssetVideoAssetAdapter.m; sourceTree = "<group>"; };
+		B34788FB1AB79E2B009FF25C /* 1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.mp4; sourceTree = "<group>"; };
+		B34788FC1AB79E2B009FF25C /* 2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2.mp4; sourceTree = "<group>"; };
+		B34788FD1AB79E2B009FF25C /* 3.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 3.mp4; sourceTree = "<group>"; };
+		B34788FE1AB79E2B009FF25C /* 4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4.mp4; sourceTree = "<group>"; };
+		B34788FF1AB79E2B009FF25C /* 5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 5.mp4; sourceTree = "<group>"; };
+		B34789001AB79E2B009FF25C /* 6.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 6.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,13 +126,14 @@
 		B347887D1AB75584009FF25C /* Photo Stunner */ = {
 			isa = PBXGroup;
 			children = (
-				B34788CA1AB7964C009FF25C /* Controller */,
 				B34788E31AB79651009FF25C /* Model */,
 				B34788EC1AB79655009FF25C /* View */,
+				B34788CA1AB7964C009FF25C /* Controller */,
 				B34788821AB75584009FF25C /* AppDelegate.h */,
 				B34788831AB75584009FF25C /* AppDelegate.m */,
 				B347888B1AB75584009FF25C /* Images.xcassets */,
 				B34788A41AB755A9009FF25C /* LaunchScreen.xib */,
+				B34788FA1AB79E2B009FF25C /* Sample MP4 Files */,
 				B347887E1AB75584009FF25C /* Supporting Files */,
 			);
 			path = "Photo Stunner";
@@ -210,6 +230,11 @@
 			isa = PBXGroup;
 			children = (
 				B34788E71AB79651009FF25C /* Repository */,
+				B34788F21AB79882009FF25C /* VideoAsset.h */,
+				B34788F31AB798DD009FF25C /* NSURLVideoAssetAdapter.h */,
+				B34788F41AB798DD009FF25C /* NSURLVideoAssetAdapter.m */,
+				B34788F61AB798EA009FF25C /* ALAssetVideoAssetAdapter.h */,
+				B34788F71AB798EA009FF25C /* ALAssetVideoAssetAdapter.m */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -231,6 +256,19 @@
 				B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		B34788FA1AB79E2B009FF25C /* Sample MP4 Files */ = {
+			isa = PBXGroup;
+			children = (
+				B34788FB1AB79E2B009FF25C /* 1.mp4 */,
+				B34788FC1AB79E2B009FF25C /* 2.mp4 */,
+				B34788FD1AB79E2B009FF25C /* 3.mp4 */,
+				B34788FE1AB79E2B009FF25C /* 4.mp4 */,
+				B34788FF1AB79E2B009FF25C /* 5.mp4 */,
+				B34789001AB79E2B009FF25C /* 6.mp4 */,
+			);
+			path = "Sample MP4 Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,11 +351,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B34789071AB79E2B009FF25C /* 4.mp4 in Resources */,
 				B34788DE1AB7964C009FF25C /* StunningImageViewController.xib in Resources */,
 				B34788E21AB7964C009FF25C /* ThumbnailsViewController.xib in Resources */,
+				B34789091AB79E2B009FF25C /* 6.mp4 in Resources */,
 				B34788E01AB7964C009FF25C /* TapViewController.xib in Resources */,
+				B34789061AB79E2B009FF25C /* 3.mp4 in Resources */,
+				B34789051AB79E2B009FF25C /* 2.mp4 in Resources */,
 				B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */,
 				B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */,
+				B34789041AB79E2B009FF25C /* 1.mp4 in Resources */,
+				B34789081AB79E2B009FF25C /* 5.mp4 in Resources */,
 				B347888C1AB75584009FF25C /* Images.xcassets in Resources */,
 				B34788DC1AB7964C009FF25C /* LibraryViewController.xib in Resources */,
 			);
@@ -337,6 +381,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B34788F81AB798EA009FF25C /* ALAssetVideoAssetAdapter.m in Sources */,
+				B34788F51AB798DD009FF25C /* NSURLVideoAssetAdapter.m in Sources */,
 				B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */,
 				B34788DD1AB7964C009FF25C /* StunningImageViewController.m in Sources */,
 				B34788EA1AB79651009FF25C /* ImageManager.m in Sources */,
