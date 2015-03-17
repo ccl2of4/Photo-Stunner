@@ -24,7 +24,9 @@ static NSString * const CellIdentifier = @"cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
@@ -64,13 +66,15 @@ static NSString * const CellIdentifier = @"cell";
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return !!self.collectionView;
 }
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout   sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     CGSize size = self.collectionView.frame.size;
     assert(!CGSizeEqualToSize(size, CGSizeZero));
     return size;
 }
 
+
+#pragma mark notification handling
 
 - (void) handleNotification:(NSNotification *)notification {
     

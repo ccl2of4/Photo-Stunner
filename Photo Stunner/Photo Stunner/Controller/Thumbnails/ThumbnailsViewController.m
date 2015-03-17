@@ -68,8 +68,18 @@ static NSString * const CellReuseIdentifier = @"cell";
     return [[[ImageManager sharedManager] sortedTimes] count];
 }
 
-- (void) handleNotification:(NSNotification *)notification {
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    StunningImageViewController *stunningImageViewController = [StunningImageViewController new];
+    [stunningImageViewController setImageIndex:[indexPath item]];
+    
+    assert ([self navigationController]);
+    [self.navigationController pushViewController:stunningImageViewController animated:YES];
+}
 
+#pragma mark notification handling
+
+- (void) handleNotification:(NSNotification *)notification {
+    
     if ([notification name] == ImageManagerSortedTimesChangedNotification) {
         NSDictionary *userInfo = [notification userInfo];
         NSNumber *changedIndex;
@@ -79,7 +89,7 @@ static NSString * const CellReuseIdentifier = @"cell";
             NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
             [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
             
-        // removed an image
+            // removed an image
         } else if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesRemovedIndexKey]) ) {
             NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
             [self.collectionView insertItemsAtIndexPaths:@[removedIndexPath]];
@@ -91,14 +101,6 @@ static NSString * const CellReuseIdentifier = @"cell";
     } else {
         assert (NO);
     }
-}
-
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    StunningImageViewController *stunningImageViewController = [StunningImageViewController new];
-    [stunningImageViewController setImageIndex:[indexPath item]];
-    
-    assert ([self navigationController]);
-    [self.navigationController pushViewController:stunningImageViewController animated:YES];
 }
 
 @end

@@ -34,6 +34,10 @@ static NSString * const CellReuseIdentifier = @"cell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:VideoLoaderModelChangedNotification object:nil];
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 #pragma mark logic
 
@@ -85,6 +89,8 @@ static NSString * const CellReuseIdentifier = @"cell";
 
     return;
 }
+
+#pragma mark notification handling
 
 - (void) handleNotification:(NSNotification *)notification {
     assert ([notification name] == VideoLoaderModelChangedNotification);

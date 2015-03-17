@@ -123,6 +123,8 @@
     [self.imageView setImage:placeholderImage];
 }
 
+#pragma mark notification handling
+
 - (void) handleNotification:(NSNotification *)notification {
     
     if ([notification name] == ImageManagerSortedTimesChangedNotification) {
