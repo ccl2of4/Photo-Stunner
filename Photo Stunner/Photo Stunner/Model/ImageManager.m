@@ -183,8 +183,6 @@ ImageManager *singleton = nil;
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
     NSString *filePath = [self.times objectForKey:wrappedTime];
     
-    NSDate *methodStart = [NSDate date];
-    
     dispatch_async([self fileIOQueue], ^{
         UIImage *result = nil;
         NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -201,11 +199,6 @@ ImageManager *singleton = nil;
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            
-            NSDate *methodFinish = [NSDate date];
-            NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
-            NSLog(@"executionTime = %f", executionTime);
-            
             if (completion) {
                 completion (time, result);
             }
