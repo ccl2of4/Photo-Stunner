@@ -47,4 +47,60 @@ NSString const * VideoLoaderModelChangedNotification = @"videoloader model chang
     
 }
 
+
+//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ALAssetsLibraryChangedNotification object:nil];
+
+/*
+ - (void) reloadData {
+ NSMutableArray *allAssets = [NSMutableArray new];
+ [self enumerateGroupsWithCompletion:^(NSArray *groups) {
+ for (ALAssetsGroup *group in groups) {
+ [self enumerateAssets:group completion:^(NSArray *assets) {
+ [allAssets addObjectsFromArray:assets];
+ self.assets = allAssets;
+ [self.collectionView reloadData];
+ }];
+ }
+ }];
+ }
+ 
+ - (void) enumerateAssets:(ALAssetsGroup *)group completion:(void(^)(NSArray *assets))completion {
+ NSMutableArray *result = [NSMutableArray new];
+ [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop) {
+ if (result) {
+ [result addObject:asset];
+ } else {
+ completion (result);
+ }
+ }];
+ }
+ 
+ - (void) enumerateGroupsWithCompletion:(void(^)(NSArray *groups))completion {
+ NSMutableArray *result = [NSMutableArray new];
+ ALAssetsLibrary *lib = [ALAssetsLibrary new];
+ 
+ [lib enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+ if (group) {
+ [group setAssetsFilter:[ALAssetsFilter allVideos]];
+ [result addObject:group];
+ } else {
+ dispatch_async(dispatch_get_main_queue(), ^{
+ completion (result);
+ });
+ }
+ } failureBlock:^(NSError *error) {
+ assert (NO);
+ }];
+ }
+ */
+
+/*
+ - (void) handleNotification:(NSNotification *)notification {
+ id userInfo = [notification userInfo];
+ if (!userInfo || [userInfo count]) {
+ [self reloadData];
+ }
+ }
+ */
+
 @end
