@@ -11,7 +11,7 @@
 
 @interface VideoLoader : NSObject
 
-extern NSString const * VideoLoaderModelChangedNotification;
+extern NSString * const VideoLoaderModelChangedNotification;
 
 + (VideoLoader *) sharedInstance;
 - (void) loadVideos:(void(^)(NSArray *videos))completion;

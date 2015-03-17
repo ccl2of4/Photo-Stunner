@@ -12,9 +12,15 @@
 #import "NSURLVideoAssetAdapter.h"
 #import "ALAssetVideoAssetAdapter.h"
 
+@interface VideoLoader ()
+
+@property ALAssetsLibrary *assetsLibrary;
+
+@end
+
 @implementation VideoLoader
 
-NSString const * VideoLoaderModelChangedNotification = @"videoloader model changed notification";
+NSString * const VideoLoaderModelChangedNotification = @"videoloader model changed notification";
 
 + (VideoLoader *)sharedInstance {
     static VideoLoader *singleton = nil;
@@ -52,62 +58,51 @@ NSString const * VideoLoaderModelChangedNotification = @"videoloader model chang
 }
 
 - (void)loadVideosFromPhotosLibrary:(void (^)(NSArray *videos))completion {
-    assert (NO);
+    
+    if (!self.assetsLibrary) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleNotification:)
+                                                 name:ALAssetsLibraryChangedNotification
+                                               object:nil];
+    
+        self.assetsLibrary = [ALAssetsLibrary new];
+    }
+    NSMutableArray *result = [NSMutableArray new];
+    NSMutableArray *groups = [NSMutableArray new];
+    
+    [self.assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        if (group) {
+            [group setAssetsFilter:[ALAssetsFilter allVideos]];
+            [groups addObject:group];
+        } else {
+            for (ALAssetsGroup *group in groups) {
+                [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop) {
+                    if (asset) {
+                        id<VideoAsset> videoAsset = [[ALAssetVideoAssetAdapter alloc] initWithAsset:asset];
+                        [result addObject:videoAsset];
+                    } else {
+                        
+                        //this needs to be called on the main thread
+                        assert ([NSThread currentThread] == [NSThread mainThread]);
+                        completion (result);
+                    }
+                }];
+            }
+        }
+    } failureBlock:^(NSError *error) {
+        assert (NO);
+    }];
 }
 
-//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ALAssetsLibraryChangedNotification object:nil];
+- (void) handleNotification:(NSNotification *)notification {
+    id userInfo = [notification userInfo];
+    if (!userInfo || [userInfo count]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VideoLoaderModelChangedNotification object:nil];
+    }
+}
 
-/*
- - (void) reloadData {
- NSMutableArray *allAssets = [NSMutableArray new];
- [self enumerateGroupsWithCompletion:^(NSArray *groups) {
- for (ALAssetsGroup *group in groups) {
- [self enumerateAssets:group completion:^(NSArray *assets) {
- [allAssets addObjectsFromArray:assets];
- self.assets = allAssets;
- [self.collectionView reloadData];
- }];
- }
- }];
- }
- 
- - (void) enumerateAssets:(ALAssetsGroup *)group completion:(void(^)(NSArray *assets))completion {
- NSMutableArray *result = [NSMutableArray new];
- [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop) {
- if (result) {
- [result addObject:asset];
- } else {
- completion (result);
- }
- }];
- }
- 
- - (void) enumerateGroupsWithCompletion:(void(^)(NSArray *groups))completion {
- NSMutableArray *result = [NSMutableArray new];
- ALAssetsLibrary *lib = [ALAssetsLibrary new];
- 
- [lib enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
- if (group) {
- [group setAssetsFilter:[ALAssetsFilter allVideos]];
- [result addObject:group];
- } else {
- dispatch_async(dispatch_get_main_queue(), ^{
- completion (result);
- });
- }
- } failureBlock:^(NSError *error) {
- assert (NO);
- }];
- }
- */
-
-/*
- - (void) handleNotification:(NSNotification *)notification {
- id userInfo = [notification userInfo];
- if (!userInfo || [userInfo count]) {
- [self reloadData];
- }
- }
- */
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end
