@@ -10,6 +10,7 @@
 #import "UICollectionViewImageCell.h"
 #import "TapViewController.h"
 #import "VideoLoader.h"
+#import "ImageManager.h"
 
 @interface LibraryViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -34,10 +35,14 @@ static NSString * const CellReuseIdentifier = @"cell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:VideoLoaderModelChangedNotification object:nil];
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[ImageManager sharedManager] removeAllImages];
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark logic
 
