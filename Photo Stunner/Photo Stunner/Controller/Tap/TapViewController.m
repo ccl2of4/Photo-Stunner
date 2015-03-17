@@ -8,6 +8,7 @@
 
 #import "TapViewController.h"
 #import "ImageManager.h"
+#import "ThumbnailsViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
 @interface TapViewController ()
@@ -26,10 +27,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationItem setRightBarButtonItem: [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)]];
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -52,10 +49,34 @@
 
 - (void) handleUIControlEventTouchUpInside:(id)sender{
     assert(self.navigationController);
-    [self.navigationController pushViewController:nil animated:YES];
+
+    ThumbnailsViewController *thumbnailsViewController = [ThumbnailsViewController new];
+    [self.navigationController pushViewController:thumbnailsViewController animated:YES];
 }
 
 #pragma mark logic
+
+- (void) extractImageAtTime:(CMTime)time completion:(void(^)(CMTime time, CGImageRef result))completion {
+    NSArray *times = @[[NSValue valueWithCMTime:time]];
+    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
+        if ( result == AVAssetImageGeneratorSucceeded ) {
+            assert (image != nil);
+            completion (requestedTime, image);
+        } else {
+            completion (requestedTime, nil);
+        }
+    }];
+}
+
+- (AVAssetImageGenerator *)imageGenerator {
+    if (!_imageGenerator) {
+        AVAsset *asset = [AVAsset assetWithURL:[self assetURL]];
+        _imageGenerator= [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        [_imageGenerator setRequestedTimeToleranceBefore:kCMTimeZero];
+        [_imageGenerator setRequestedTimeToleranceAfter:kCMTimeZero];
+    }
+    return _imageGenerator;
+}
 
 - (AVPlayer *)player {
     if (!_player) {
@@ -74,24 +95,5 @@
     return _player;
 }
 
-- (void) extractImageAtTime:(CMTime)time completion:(void(^)(CMTime time, CGImageRef result))completion {
-    if (![self imageGenerator]) {
-        AVAsset *asset = [AVAsset assetWithURL:[self assetURL]];
-        self.imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        [self.imageGenerator setRequestedTimeToleranceBefore:kCMTimeZero];
-        [self.imageGenerator setRequestedTimeToleranceAfter:kCMTimeZero];
-    }
-    
-    NSArray *times = @[[NSValue valueWithCMTime:time]];
-    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
-        if ( result == AVAssetImageGeneratorSucceeded ) {
-            assert (image != nil);
-            completion (requestedTime, image);
-            
-        } else {
-            completion (requestedTime, nil);
-        }
-    }];
-}
 
 @end

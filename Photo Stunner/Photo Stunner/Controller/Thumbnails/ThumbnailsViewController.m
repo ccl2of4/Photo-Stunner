@@ -27,7 +27,7 @@ static NSString * const CellReuseIdentifier = @"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.collectionView registerClass:[UICollectionViewImageCell class] forCellWithReuseIdentifier:CellReuseIdentifier];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     [self.collectionView reloadData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
@@ -47,16 +47,23 @@ static NSString * const CellReuseIdentifier = @"cell";
     CMTime time = [[imageManager sortedTimes][indexPath.item] CMTimeValue];
     UIImage *image = [[ImageManager sharedManager] imageForTime:time];
     
+    assert (image);
+    
     [cell.imageView setImage:image];
     
     return cell;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    assert ([[ImageManager sharedManager] sortedTimes]);
+    
     return !![[ImageManager sharedManager] sortedTimes];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    assert ([[ImageManager sharedManager] sortedTimes]);
+    assert ([[[ImageManager sharedManager] sortedTimes] count]);
+    
     return [[[ImageManager sharedManager] sortedTimes] count];
 }
 

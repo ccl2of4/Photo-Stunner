@@ -22,6 +22,7 @@ extern NSString * const ImageManagerSortedTimesAddedIndexKey;
 - (UIImage *) imageForTime:(CMTime)time;
 - (void) setImage:(UIImage *)image forTime:(CMTime)time;
 - (void) removeImageForTime:(CMTime)time;
+- (void) removeAllImages;
 
 @end
 

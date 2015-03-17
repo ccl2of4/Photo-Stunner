@@ -55,13 +55,25 @@ ImageManager *singleton = nil;
 - (instancetype) init {        
     self = [super init];
     if (self) {
+        [self clearDirectory];
         self.times = [NSMutableDictionary new];
+        self.sortedTimes = [NSMutableArray new];
     }
     return self;
 }
 
-- (void)setImage:(UIImage *)image forTime:(CMTime)time {
+- (void)removeAllImages {
+    for (NSValue *time in [self.sortedTimes copy]) {
+        [self removeImageForTime:[time CMTimeValue]];
+    }
+    assert ([self.times count] == 0);
+    assert ([self.sortedTimes count] == 0);
+}
 
+- (void)clearDirectory {
+    assert ([self.times count] == 0);
+    assert ([self.sortedTimes count] == 0);
+    
     NSFileManager *manager = [NSFileManager defaultManager];
     
     NSError *error;
@@ -71,12 +83,24 @@ ImageManager *singleton = nil;
     }
     [manager createDirectoryAtPath:ImageManagerDirectory withIntermediateDirectories:NO attributes:nil error:&error];
     assert (!error);
+}
+
+- (void)setImage:(UIImage *)image forTime:(CMTime)time {
     
-    int currentTime = CFAbsoluteTimeGetCurrent() * 10000;
-    NSString *fileName = [NSString stringWithFormat:@"%d.jpg", currentTime];
-    NSString *filePath = [ImageManagerDirectory stringByAppendingPathComponent:fileName];
+    uint32_t currentTime = arc4random();
+    
+    NSString *fileName;
+    NSString *filePath;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    do {
+        fileName = [NSString stringWithFormat:@"%u.jpg", currentTime];
+        filePath = [ImageManagerDirectory stringByAppendingPathComponent:fileName];
+    } while ([fileManager fileExistsAtPath:filePath]);
     
     [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:NO];
+    
+    assert ([fileManager fileExistsAtPath:filePath]);
     
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
     [self.times setObject:filePath forKey:wrappedTime];
@@ -93,9 +117,10 @@ ImageManager *singleton = nil;
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
     NSString *filePath = [self.times objectForKey:wrappedTime];
     NSError *error;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     
     assert (filePath);
-    [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+    [fileManager removeItemAtPath:filePath error:&error];
     assert (!error);
     
     NSUInteger removedIndex = [self.sortedTimes indexOfObject:wrappedTime];
@@ -111,9 +136,12 @@ ImageManager *singleton = nil;
 - (UIImage *)imageForTime:(CMTime)time {
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
     NSString *filePath = [self.times objectForKey:wrappedTime];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     UIImage *result = nil;
     
     if (filePath) {
+        assert ([fileManager fileExistsAtPath:filePath]);
+        
         result = [UIImage imageWithContentsOfFile:filePath];
         assert (result);
         
