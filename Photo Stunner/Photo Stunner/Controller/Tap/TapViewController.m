@@ -27,12 +27,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationItem setRightBarButtonItem: [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)]];
+    
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)];
+    [rightBarButtonItem setEnabled:NO];
+    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self.player play];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark UI events
@@ -104,6 +114,18 @@
     [self view];
     [self.imageView setImage:placeholderImage];
 }
+
+- (void) handleNotification:(NSNotification *)notification {
+    
+    if ([notification name] == ImageManagerSortedTimesChangedNotification) {
+        BOOL rightBarButtonItemEnabled = [[[ImageManager sharedManager] sortedTimes] count] > 0;
+        [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];
+    } else {
+        assert (NO);
+    }
+}
+
+
 
 
 @end
