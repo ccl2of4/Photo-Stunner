@@ -8,6 +8,7 @@
 
 #import "ThumbnailsViewController.h"
 #import "ImageManager.h"
+#import "StunningImageViewController.h"
 #import "UICollectionViewImageCell.h"
 
 #import <AVFoundation/AVFoundation.h>
@@ -90,6 +91,13 @@ static NSString * const CellReuseIdentifier = @"cell";
     } else {
         assert (NO);
     }
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    StunningImageViewController *stunningImageViewController = [StunningImageViewController new];
+    
+    assert ([self navigationController]);
+    [self.navigationController pushViewController:stunningImageViewController animated:YES];
 }
 
 @end
