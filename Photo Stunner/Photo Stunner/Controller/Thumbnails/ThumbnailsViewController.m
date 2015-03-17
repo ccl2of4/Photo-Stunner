@@ -95,6 +95,7 @@ static NSString * const CellReuseIdentifier = @"cell";
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     StunningImageViewController *stunningImageViewController = [StunningImageViewController new];
+    [stunningImageViewController setImageIndex:[indexPath item]];
     
     assert ([self navigationController]);
     [self.navigationController pushViewController:stunningImageViewController animated:YES];

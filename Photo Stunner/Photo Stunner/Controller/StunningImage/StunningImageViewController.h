@@ -10,4 +10,6 @@
 
 @interface StunningImageViewController : UIViewController
 
+@property (nonatomic) NSUInteger imageIndex;
+
 @end

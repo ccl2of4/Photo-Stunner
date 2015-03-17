@@ -21,15 +21,24 @@
 static NSString * const CellIdentifier = @"cell";
 
 @implementation StunningImageViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
-
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    [self.view layoutIfNeeded];
+    
+    assert ([self.collectionView numberOfSections] == 1);
+    assert ([self.collectionView numberOfItemsInSection:0] > [self imageIndex]);
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self imageIndex] inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+}
 
 -  (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
