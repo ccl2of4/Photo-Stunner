@@ -30,12 +30,19 @@ static NSString * const CellReuseIdentifier = @"cell";
     
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     
+    [self reloadData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:VideoLoaderModelChangedNotification object:nil];
+}
+
+
+#pragma mark logic
+
+- (void) reloadData {
     [[VideoLoader sharedInstance] loadVideos:^(NSArray *videos) {
         self.videos = videos;
         [self.collectionView reloadData];
     }];
 }
-
 
 #pragma mark UICollectionViewDelegete/UICollectionViewDataSource methods
 
@@ -77,6 +84,11 @@ static NSString * const CellReuseIdentifier = @"cell";
     [self.navigationController pushViewController:tapViewController animated:YES];
 
     return;
+}
+
+- (void) handleNotification:(NSNotification *)notification {
+    assert ([notification name] == VideoLoaderModelChangedNotification);
+    [self reloadData];
 }
 
 @end
