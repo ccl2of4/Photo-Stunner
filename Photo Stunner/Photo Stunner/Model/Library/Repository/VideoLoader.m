@@ -25,6 +25,10 @@ NSString const * VideoLoaderModelChangedNotification = @"videoloader model chang
 }
 
 - (void)loadVideos:(void (^)(NSArray *videos))completion {
+    [self loadVideosFromBundle:completion];
+}
+
+- (void)loadVideosFromBundle:(void (^)(NSArray *videos))completion {
     static NSArray *videoNames = nil;
     if (!videoNames) {
         videoNames = @[
@@ -40,13 +44,16 @@ NSString const * VideoLoaderModelChangedNotification = @"videoloader model chang
         id<VideoAsset> videoAsset = [[NSURLVideoAssetAdapter alloc] initWithURL:videoURL];
         [result addObject:videoAsset];
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         completion (result);
     });
     
 }
 
+- (void)loadVideosFromPhotosLibrary:(void (^)(NSArray *videos))completion {
+    assert (NO);
+}
 
 //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ALAssetsLibraryChangedNotification object:nil];
 
