@@ -49,10 +49,7 @@
 
 - (IBAction)handleUIGestureRecognizerRecognized:(id)sender {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.playbackView) {
-        [self extractImageAtTime:[self.player currentTime] completion:^(CMTime time, CGImageRef result) {
-            UIImage *image = [UIImage imageWithCGImage:result];
-            [[ImageManager sharedManager] setImage:image forTime:time];
-        }];
+        [self extractAndSaveImageAtCurrentTime];
     } else {
         assert (NO);
     }
@@ -66,6 +63,17 @@
 }
 
 #pragma mark logic
+
+- (void) extractAndSaveImageAtCurrentTime {
+    [self extractImageAtTime:[self.player currentTime] completion:^(CMTime time, CGImageRef result) {
+        
+        assert (result);
+        UIImage *image = [UIImage imageWithCGImage:result];
+        assert (image);
+        
+        [[ImageManager sharedManager] setImage:image forTime:time];
+    }];
+}
 
 - (void) extractImageAtTime:(CMTime)time completion:(void(^)(CMTime time, CGImageRef result))completion {
     NSArray *times = @[[NSValue valueWithCMTime:time]];
