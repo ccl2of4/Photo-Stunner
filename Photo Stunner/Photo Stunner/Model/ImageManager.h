@@ -19,10 +19,23 @@ extern NSString * const ImageManagerSortedTimesAddedIndexKey;
 
 + (ImageManager *) sharedManager;
 
-- (UIImage *) imageForTime:(CMTime)time;
+
+// retrieving images
+- (void) imageForTime:(CMTime)time completion:(void(^)(CMTime time, UIImage *image))completion;
+
+
+// adding images
 - (void) setImage:(UIImage *)image forTime:(CMTime)time;
+- (void) setImage:(UIImage *)image forTime:(CMTime)time completion:(void(^)(CMTime time, UIImage *image))completion;
+
+
+// removal
 - (void) removeImageForTime:(CMTime)time;
+- (void) removeImageForTime:(CMTime)time completion:(void(^)(CMTime time))completion;;
+
 - (void) removeAllImages;
+- (void) removeAllImagesWithCompletionBlock:(void(^)(void))completion;;
+
 
 @end
 

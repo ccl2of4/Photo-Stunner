@@ -14,6 +14,7 @@
 
 @property NSMutableDictionary *times;
 @property (readwrite, nonatomic) NSMutableArray *sortedTimes;
+@property dispatch_queue_t fileIOQueue;
 
 @end
 
@@ -55,6 +56,7 @@ ImageManager *singleton = nil;
 - (instancetype) init {        
     self = [super init];
     if (self) {
+        self.fileIOQueue = dispatch_queue_create("ImageManager.fileIOQueue", DISPATCH_QUEUE_SERIAL);
         [self clearDirectory];
         self.times = [NSMutableDictionary new];
         self.sortedTimes = [NSMutableArray new];
@@ -62,96 +64,153 @@ ImageManager *singleton = nil;
     return self;
 }
 
+- (void)removeAllImagesWithCompletionBlock:(void (^)(void))completion {
+    NSArray *sortedTimesCopy = [self.sortedTimes copy];
+    [sortedTimesCopy enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        CMTime time = [obj CMTimeValue];
+        if (idx == [sortedTimesCopy count] - 1 && completion) {
+            [self removeImageForTime:time completion:^(CMTime removedTime) {
+                completion ();
+            }];
+        } else {
+            [self removeImageForTime:time];
+        }
+    }];
+}
+
 - (void)removeAllImages {
-    for (NSValue *time in [self.sortedTimes copy]) {
-        [self removeImageForTime:[time CMTimeValue]];
-    }
-    assert ([self.times count] == 0);
-    assert ([self.sortedTimes count] == 0);
+    [self removeAllImagesWithCompletionBlock:nil];
 }
 
 - (void)clearDirectory {
     assert ([self.times count] == 0);
     assert ([self.sortedTimes count] == 0);
+    assert ([self fileIOQueue]);
     
-    NSFileManager *manager = [NSFileManager defaultManager];
-    
-    NSError *error;
-    if ([manager fileExistsAtPath:ImageManagerDirectory]) {
-        [manager removeItemAtPath:ImageManagerDirectory error:&error];
+    dispatch_async([self fileIOQueue], ^{
+        NSFileManager *manager = [NSFileManager defaultManager];
+        
+        NSError *error;
+        if ([manager fileExistsAtPath:ImageManagerDirectory]) {
+            [manager removeItemAtPath:ImageManagerDirectory error:&error];
+            assert (!error);
+        }
+        [manager createDirectoryAtPath:ImageManagerDirectory withIntermediateDirectories:NO attributes:nil error:&error];
         assert (!error);
-    }
-    [manager createDirectoryAtPath:ImageManagerDirectory withIntermediateDirectories:NO attributes:nil error:&error];
-    assert (!error);
+    });
+}
+
+- (void)setImage:(UIImage *)image forTime:(CMTime)time completion:(void (^)(CMTime, UIImage *))completion {
+    assert ([self fileIOQueue]);
+    
+    dispatch_async([self fileIOQueue], ^{
+        uint32_t currentTime = arc4random();
+        
+        NSString *fileName;
+        NSString *filePath;
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        do {
+            fileName = [NSString stringWithFormat:@"%u.jpg", currentTime];
+            filePath = [ImageManagerDirectory stringByAppendingPathComponent:fileName];
+        } while ([fileManager fileExistsAtPath:filePath]);
+        
+        [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:NO];
+        assert ([fileManager fileExistsAtPath:filePath]);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSValue *wrappedTime = [NSValue valueWithCMTime:time];
+            [self.times setObject:filePath forKey:wrappedTime];
+            [self.sortedTimes addObject:wrappedTime];
+            [self.sortedTimes sortUsingComparator:[ImageManager comparatorForSorting]];
+            NSUInteger addedIndex = [self.sortedTimes indexOfObject:wrappedTime];
+            
+            assert (addedIndex != NSNotFound);
+            
+            if (completion) {
+                completion (time, image);
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
+                                                                object:@{ImageManagerSortedTimesAddedIndexKey : @(addedIndex)}];
+        });
+    });
 }
 
 - (void)setImage:(UIImage *)image forTime:(CMTime)time {
-    
-    uint32_t currentTime = arc4random();
-    
-    NSString *fileName;
-    NSString *filePath;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    do {
-        fileName = [NSString stringWithFormat:@"%u.jpg", currentTime];
-        filePath = [ImageManagerDirectory stringByAppendingPathComponent:fileName];
-    } while ([fileManager fileExistsAtPath:filePath]);
-    
-    [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:NO];
-    
-    assert ([fileManager fileExistsAtPath:filePath]);
+    [self setImage:image forTime:time completion:nil];
+}
+
+- (void)removeImageForTime:(CMTime)time completion:(void (^)(CMTime))completion {
+    assert ([self fileIOQueue]);
     
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
-    [self.times setObject:filePath forKey:wrappedTime];
-    [self.sortedTimes addObject:wrappedTime];
-    [self.sortedTimes sortUsingComparator:[ImageManager comparatorForSorting]];
-    NSUInteger addedIndex = [self.sortedTimes indexOfObject:wrappedTime];
+    NSString *filePath = [self.times objectForKey:wrappedTime];
     
-    assert (addedIndex != NSNotFound);
-    [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
-                                                        object:@{ImageManagerSortedTimesAddedIndexKey : @(addedIndex)}];
+    dispatch_async([self fileIOQueue], ^{
+        NSError *error;
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        assert (filePath);
+        [fileManager removeItemAtPath:filePath error:&error];
+        assert (!error);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSUInteger removedIndex = [self.sortedTimes indexOfObject:wrappedTime];
+            
+            [self.times removeObjectForKey:wrappedTime];
+            [self.sortedTimes removeObject:wrappedTime];
+            
+            assert(removedIndex != NSNotFound);
+            
+            if (completion) {
+                completion (time);
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
+                                                                object:@{ImageManagerSortedTimesRemovedIndexKey : @(removedIndex)}];
+        });
+    });
 }
 
 - (void)removeImageForTime:(CMTime)time {
-    NSValue *wrappedTime = [NSValue valueWithCMTime:time];
-    NSString *filePath = [self.times objectForKey:wrappedTime];
-    NSError *error;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    assert (filePath);
-    [fileManager removeItemAtPath:filePath error:&error];
-    assert (!error);
-    
-    NSUInteger removedIndex = [self.sortedTimes indexOfObject:wrappedTime];
-    
-    [self.times removeObjectForKey:wrappedTime];
-    [self.sortedTimes removeObject:wrappedTime];
-    
-    assert(removedIndex != NSNotFound);
-    [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
-                                                        object:@{ImageManagerSortedTimesRemovedIndexKey : @(removedIndex)}];
+    [self removeImageForTime:time completion:nil];
 }
 
-- (UIImage *)imageForTime:(CMTime)time {
+- (void)imageForTime:(CMTime)time completion:(void (^)(CMTime, UIImage *))completion {
+    assert ([self fileIOQueue]);
+    
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
     NSString *filePath = [self.times objectForKey:wrappedTime];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    UIImage *result = nil;
     
-    if (filePath) {
-        assert ([fileManager fileExistsAtPath:filePath]);
+    NSDate *methodStart = [NSDate date];
+    
+    dispatch_async([self fileIOQueue], ^{
+        UIImage *result = nil;
+        NSFileManager *fileManager = [NSFileManager defaultManager];
         
-        result = [UIImage imageWithContentsOfFile:filePath];
-        assert (result);
-        
-        if (!result) {
-            result = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath]];
+        if (filePath) {
+            assert ([fileManager fileExistsAtPath:filePath]);
+            
+            result = [UIImage imageWithContentsOfFile:filePath];
             assert (result);
+            
+            if (!result) {
+                result = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath]];
+                assert (result);
+            }
         }
-    }
-    
-    return result;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            NSDate *methodFinish = [NSDate date];
+            NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
+            NSLog(@"executionTime = %f", executionTime);
+            
+            if (completion) {
+                completion (time, result);
+            }
+        });
+    });
 }
 
 @end

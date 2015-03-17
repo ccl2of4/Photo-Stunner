@@ -46,11 +46,11 @@ static NSString * const CellReuseIdentifier = @"cell";
     ImageManager *imageManager = [ImageManager sharedManager];
     
     CMTime time = [[imageManager sortedTimes][indexPath.item] CMTimeValue];
-    UIImage *image = [imageManager imageForTime:time];
-    
-    assert (image);
-    
-    [cell.imageView setImage:image];
+
+    [imageManager imageForTime:time completion:^(CMTime time, UIImage *image) {
+        assert (image);
+        [cell.imageView setImage:image];
+    }];
     
     return cell;
 }
