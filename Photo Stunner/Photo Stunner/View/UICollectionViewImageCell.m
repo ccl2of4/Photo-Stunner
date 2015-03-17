@@ -10,4 +10,9 @@
 
 @implementation UICollectionViewImageCell
 
+-(void)prepareForReuse {
+    [super prepareForReuse];
+    [self.imageView setImage:nil];
+}
+
 @end
