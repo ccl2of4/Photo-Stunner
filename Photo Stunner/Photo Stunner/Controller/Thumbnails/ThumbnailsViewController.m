@@ -49,7 +49,9 @@ static NSString * const CellReuseIdentifier = @"cell";
 
     [imageManager imageForTime:time completion:^(CMTime time, UIImage *image) {
         assert (image);
-        [cell.imageView setImage:image];
+        if ([[collectionView indexPathForCell:cell] isEqual:indexPath]) {
+            [cell.imageView setImage:image];
+        }
     }];
     
     return cell;
@@ -89,7 +91,7 @@ static NSString * const CellReuseIdentifier = @"cell";
             NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
             [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
             
-            // removed an image
+        // removed an image
         } else if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesRemovedIndexKey]) ) {
             NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
             [self.collectionView insertItemsAtIndexPaths:@[removedIndexPath]];
