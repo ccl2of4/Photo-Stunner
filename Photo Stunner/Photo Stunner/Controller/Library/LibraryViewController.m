@@ -74,20 +74,13 @@ static NSString * const CellReuseIdentifier = @"cell";
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     id<VideoAsset> asset = self.videos[indexPath.item];
-    NSURL *url = [asset contentURL];
-    UIImage *placeholderImage = [asset thumbnail];
-    
     assert (asset);
-    assert (url);
     
     TapViewController *tapViewController = [TapViewController new];
-    [tapViewController setAssetURL:url];
-    [tapViewController setPlaceholderImage:placeholderImage];
+    [tapViewController setVideoAsset:asset];
     
     assert ([self navigationController]);
     [self.navigationController pushViewController:tapViewController animated:YES];
-
-    return;
 }
 
 #pragma mark notification handling

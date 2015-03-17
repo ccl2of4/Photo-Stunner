@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VideoAsset.h"
 
 @interface TapViewController : UIViewController
 
-@property (nonatomic) UIImage *placeholderImage;
-@property (nonatomic) NSURL *assetURL;
+@property (nonatomic) id<VideoAsset> videoAsset;
 
 @end

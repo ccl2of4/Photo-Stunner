@@ -93,7 +93,8 @@
 
 - (AVAssetImageGenerator *)imageGenerator {
     if (!_imageGenerator) {
-        AVAsset *asset = [AVAsset assetWithURL:[self assetURL]];
+        NSURL *assetURL = [self.videoAsset contentURL];
+        AVAsset *asset = [AVAsset assetWithURL:assetURL];
         _imageGenerator= [[AVAssetImageGenerator alloc] initWithAsset:asset];
         [_imageGenerator setRequestedTimeToleranceBefore:kCMTimeZero];
         [_imageGenerator setRequestedTimeToleranceAfter:kCMTimeZero];
@@ -103,7 +104,8 @@
 
 - (AVPlayer *)player {
     if (!_player) {
-        AVPlayer *player = [AVPlayer playerWithURL:[self assetURL]];
+        NSURL *assetURL = [self.videoAsset contentURL];
+        AVPlayer *player = [AVPlayer playerWithURL:assetURL];
         AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
         
         [player setActionAtItemEnd:AVPlayerActionAtItemEndPause];
@@ -116,15 +118,6 @@
     }
     
     return _player;
-}
-
--(UIImage *)placeholderImage {
-    return [self.imageView image];
-}
-
-- (void) setPlaceholderImage:(UIImage *)placeholderImage {
-    [self view];
-    [self.imageView setImage:placeholderImage];
 }
 
 #pragma mark notification handling
