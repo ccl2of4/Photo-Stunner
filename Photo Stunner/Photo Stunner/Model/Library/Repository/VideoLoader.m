@@ -9,7 +9,7 @@
 #import "VideoLoader.h"
 #import <AVFoundation/AVFoundation.h>
 
-#import "NSURLVideoAssetAdapter.h"
+#import "AVAssetVideoAssetAdapter.h"
 #import "ALAssetVideoAssetAdapter.h"
 
 @interface VideoLoader ()
@@ -47,7 +47,8 @@ NSString * const VideoLoaderModelChangedNotification = @"videoloader model chang
     for (NSString *videoName in videoNames) {
         NSString *videoPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:videoName];
         NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
-        id<VideoAsset> videoAsset = [[NSURLVideoAssetAdapter alloc] initWithURL:videoURL];
+        AVAsset *asset = [AVAsset assetWithURL:videoURL];
+        id<VideoAsset> videoAsset = [[AVAssetVideoAssetAdapter alloc] initWithAsset:asset];
         [result addObject:videoAsset];
     }
     

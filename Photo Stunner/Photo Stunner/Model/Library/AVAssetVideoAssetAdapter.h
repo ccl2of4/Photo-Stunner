@@ -10,8 +10,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import "VideoAsset.h"
 
-@interface NSURLVideoAssetAdapter : NSObject <VideoAsset>
+@interface AVAssetVideoAssetAdapter : NSObject <VideoAsset>
 
-- (id) initWithURL:(NSURL *)url;
+- (id) initWithAsset:(AVAsset *)asset;
 
 @end

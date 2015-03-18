@@ -6,24 +6,22 @@
 //  Copyright (c) 2015 Connor Lirot. All rights reserved.
 //
 
-#import "NSURLVideoAssetAdapter.h"
+#import "AVAssetVideoAssetAdapter.h"
 
-@interface NSURLVideoAssetAdapter ()
+@interface AVAssetVideoAssetAdapter ()
 
-@property (nonatomic) AVURLAsset *asset;
-@property (nonatomic) NSURL *url;
+@property (nonatomic) AVAsset *backingAsset;
 
 @end
 
-@implementation NSURLVideoAssetAdapter {
+@implementation AVAssetVideoAssetAdapter {
     UIImage *_thumbnail;
 }
 
-- (id)initWithURL:(NSURL *)url {
+- (id)initWithAsset:(AVAsset *)asset {
     self = [super init];
     if (self) {
-        self.url = url;
-        self.asset = [AVURLAsset URLAssetWithURL:url options:nil];
+        self.backingAsset = asset;
         assert ([self asset]);
         assert ([[self asset] isPlayable]);
     }
@@ -52,11 +50,8 @@
     return CMTimeGetSeconds ([self.asset duration]);
 }
 
-- (NSURL *)contentURL {
-    NSURL *contentURL = [self.asset URL];
-    assert (contentURL);
-    
-    return contentURL;
+- (AVAsset *)asset {
+    return [self backingAsset];
 }
 
 @end

@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 @protocol VideoAsset <NSObject>
 
+- (AVAsset *) asset;
 - (UIImage *) thumbnail;
 - (CGFloat) duration;
-- (NSURL *) contentURL;
 
 @end

@@ -24,7 +24,7 @@
 		B34788EB1AB79651009FF25C /* VideoLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E91AB79651009FF25C /* VideoLoader.m */; };
 		B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */; };
 		B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */; };
-		B34788F51AB798DD009FF25C /* NSURLVideoAssetAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788F41AB798DD009FF25C /* NSURLVideoAssetAdapter.m */; };
+		B34788F51AB798DD009FF25C /* AVAssetVideoAssetAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788F41AB798DD009FF25C /* AVAssetVideoAssetAdapter.m */; };
 		B34788F81AB798EA009FF25C /* ALAssetVideoAssetAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788F71AB798EA009FF25C /* ALAssetVideoAssetAdapter.m */; };
 		B34789041AB79E2B009FF25C /* 1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FB1AB79E2B009FF25C /* 1.mp4 */; };
 		B34789051AB79E2B009FF25C /* 2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FC1AB79E2B009FF25C /* 2.mp4 */; };
@@ -75,8 +75,8 @@
 		B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewImageCell.m; sourceTree = "<group>"; };
 		B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICollectionViewImageCell.xib; sourceTree = "<group>"; };
 		B34788F21AB79882009FF25C /* VideoAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoAsset.h; sourceTree = "<group>"; };
-		B34788F31AB798DD009FF25C /* NSURLVideoAssetAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLVideoAssetAdapter.h; sourceTree = "<group>"; };
-		B34788F41AB798DD009FF25C /* NSURLVideoAssetAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLVideoAssetAdapter.m; sourceTree = "<group>"; };
+		B34788F31AB798DD009FF25C /* AVAssetVideoAssetAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVAssetVideoAssetAdapter.h; sourceTree = "<group>"; };
+		B34788F41AB798DD009FF25C /* AVAssetVideoAssetAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVAssetVideoAssetAdapter.m; sourceTree = "<group>"; };
 		B34788F61AB798EA009FF25C /* ALAssetVideoAssetAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALAssetVideoAssetAdapter.h; sourceTree = "<group>"; };
 		B34788F71AB798EA009FF25C /* ALAssetVideoAssetAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALAssetVideoAssetAdapter.m; sourceTree = "<group>"; };
 		B34788FB1AB79E2B009FF25C /* 1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.mp4; sourceTree = "<group>"; };
@@ -231,8 +231,8 @@
 			children = (
 				B34788E71AB79651009FF25C /* Repository */,
 				B34788F21AB79882009FF25C /* VideoAsset.h */,
-				B34788F31AB798DD009FF25C /* NSURLVideoAssetAdapter.h */,
-				B34788F41AB798DD009FF25C /* NSURLVideoAssetAdapter.m */,
+				B34788F31AB798DD009FF25C /* AVAssetVideoAssetAdapter.h */,
+				B34788F41AB798DD009FF25C /* AVAssetVideoAssetAdapter.m */,
 				B34788F61AB798EA009FF25C /* ALAssetVideoAssetAdapter.h */,
 				B34788F71AB798EA009FF25C /* ALAssetVideoAssetAdapter.m */,
 			);
@@ -382,7 +382,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B34788F81AB798EA009FF25C /* ALAssetVideoAssetAdapter.m in Sources */,
-				B34788F51AB798DD009FF25C /* NSURLVideoAssetAdapter.m in Sources */,
+				B34788F51AB798DD009FF25C /* AVAssetVideoAssetAdapter.m in Sources */,
 				B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */,
 				B34788DD1AB7964C009FF25C /* StunningImageViewController.m in Sources */,
 				B34788EA1AB79651009FF25C /* ImageManager.m in Sources */,

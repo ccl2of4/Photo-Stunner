@@ -10,7 +10,7 @@
 
 @interface ALAssetVideoAssetAdapter ()
 
-@property (nonatomic) ALAsset *asset;
+@property (nonatomic) ALAsset *backingAsset;
 
 @end
 
@@ -21,7 +21,7 @@
 - (id)initWithAsset:(ALAsset *)asset {
     self = [super init];
     if (self) {
-        self.asset = asset;
+        self.backingAsset = asset;
     }
     return self;
 }
@@ -29,7 +29,7 @@
 - (UIImage *)thumbnail {
     if (!_thumbnail) {
         
-        CGImageRef cgImg = [self.asset aspectRatioThumbnail];
+        CGImageRef cgImg = [self.backingAsset aspectRatioThumbnail];
         assert (cgImg);
         
         _thumbnail = [UIImage imageWithCGImage:cgImg];
@@ -40,17 +40,18 @@
 }
 
 - (CGFloat)duration {
-    NSNumber *duration = [self.asset valueForProperty:ALAssetPropertyDuration];
+    NSNumber *duration = [self.backingAsset valueForProperty:ALAssetPropertyDuration];
     assert (duration);
     
     return [duration doubleValue];
 }
 
-- (NSURL *)contentURL {
-    NSURL *contentURL = [self.asset valueForKey:ALAssetPropertyAssetURL];
-    assert (contentURL);
+- (AVAsset *)asset {
+    NSURL *assetURL = [self.backingAsset valueForProperty:ALAssetPropertyAssetURL];
+    assert (assetURL);
     
-    return contentURL;
+    return [AVAsset assetWithURL:assetURL];
 }
+
 
 @end
