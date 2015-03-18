@@ -92,7 +92,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [self.navigationController pushViewController:thumbnailsViewController animated:YES];
 }
 
-#pragma mark logic
+#pragma mark image generation
 
 - (void)extractAndSaveImageAtCurrentTime {
     [self extractImageAtTime:[self.player currentTime] completion:^(CMTime time, CGImageRef result) {
@@ -119,6 +119,18 @@ static const NSUInteger NumberOfPreviewImages = 10;
     }];
 }
 
+- (AVAssetImageGenerator *)imageGenerator {
+    if (!_imageGenerator) {
+        AVAsset *asset = [self.videoAsset asset];
+        _imageGenerator= [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        [_imageGenerator setRequestedTimeToleranceBefore:kCMTimeZero];
+        [_imageGenerator setRequestedTimeToleranceAfter:kCMTimeZero];
+    }
+    return _imageGenerator;
+}
+
+#pragma mark preview images
+
 - (void)generatePreviewImages {
     assert (![self previewImages]);
     
@@ -137,34 +149,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
             });
         }
     }];
-}
-
-- (AVPlayer *)player {
-    if (!_player) {
-        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:[self.videoAsset asset]];
-        AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
-        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-        
-        [player setActionAtItemEnd:AVPlayerActionAtItemEndPause];
-        [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
-        
-        [self.playbackView.layer addSublayer:playerLayer];
-        [playerLayer setFrame:[self.playbackView.layer bounds]];
-        
-        _player = player;
-    }
-    
-    return _player;
-}
-
-- (AVAssetImageGenerator *)imageGenerator {
-    if (!_imageGenerator) {
-        AVAsset *asset = [self.videoAsset asset];
-        _imageGenerator= [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        [_imageGenerator setRequestedTimeToleranceBefore:kCMTimeZero];
-        [_imageGenerator setRequestedTimeToleranceAfter:kCMTimeZero];
-    }
-    return _imageGenerator;
 }
 
 - (AVAssetImageGenerator *)previewImageGenerator {
@@ -198,6 +182,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return times;
 }
 
+#pragma mark playback
+
 - (void) setPeriodicTimeObserverEnabled:(BOOL)enabled {
     if (enabled == !![self periodicTimeObserver]) {
         return;
@@ -220,6 +206,24 @@ static const NSUInteger NumberOfPreviewImages = 10;
         assert ([self periodicTimeObserver]);
         [self.player removeTimeObserver:[self periodicTimeObserver]];
     }
+}
+
+- (AVPlayer *)player {
+    if (!_player) {
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:[self.videoAsset asset]];
+        AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
+        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
+        
+        [player setActionAtItemEnd:AVPlayerActionAtItemEndPause];
+        [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+        
+        [self.playbackView.layer addSublayer:playerLayer];
+        [playerLayer setFrame:[self.playbackView.layer bounds]];
+        
+        _player = player;
+    }
+    
+    return _player;
 }
 
 #pragma mark notification handling
