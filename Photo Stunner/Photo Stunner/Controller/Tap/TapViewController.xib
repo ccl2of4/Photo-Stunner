@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TapViewController">
             <connections>
                 <outlet property="imageView" destination="SIF-Q5-orY" id="A2v-Kn-iin"/>
+                <outlet property="playbackTrackerView" destination="6RI-be-twk" id="rMq-By-cg5"/>
                 <outlet property="playbackView" destination="RAO-PA-off" id="sFT-Zg-pTE"/>
                 <outlet property="previewBarCollectionView" destination="Trx-54-RVx" id="G7g-rT-tFM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -76,6 +77,10 @@
                         <outlet property="delegate" destination="-1" id="N9u-qH-jAv"/>
                     </connections>
                 </collectionView>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6RI-be-twk" userLabel="playbackTrackerView">
+                    <rect key="frame" x="0.0" y="0.0" width="2" height="48"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>

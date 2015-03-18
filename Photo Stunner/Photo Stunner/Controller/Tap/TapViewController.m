@@ -17,11 +17,14 @@
 @property (weak, nonatomic) IBOutlet UIView *playbackView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UICollectionView *previewBarCollectionView;
+@property (weak, nonatomic) IBOutlet UIView *playbackTrackerView;
 
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic) AVAssetImageGenerator *previewImageGenerator;
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic) NSMutableArray *previewImages;
+
+@property (nonatomic) id periodicTimeObserver;
 
 @end
 
@@ -54,17 +57,18 @@ static const NSUInteger NumberOfPreviewImages = 10;
     if (![self previewImages]) {
         [self generatePreviewImages];
     }
-    
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self setPeriodicTimeObserverEnabled:YES];
     [self.player play];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.player pause];
+    [self setPeriodicTimeObserverEnabled:NO];
 }
 
 - (void)dealloc {
@@ -192,6 +196,30 @@ static const NSUInteger NumberOfPreviewImages = 10;
         [times addObject:wrappedTime];
     }];
     return times;
+}
+
+- (void) setPeriodicTimeObserverEnabled:(BOOL)enabled {
+    if (enabled == !![self periodicTimeObserver]) {
+        return;
+    }
+    
+    __weak typeof (self) weakSelf = self;
+    
+    if (enabled) {
+        self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 100) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+            CMTime vidLength = [weakSelf.player.currentItem duration];
+            Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds(vidLength);
+            
+            CGRect frame = [weakSelf.playbackTrackerView frame];
+            frame.origin.x = percent * weakSelf.previewBarCollectionView.frame.size.width;
+            [weakSelf.playbackTrackerView setFrame:frame];
+        }];
+    }
+    
+    else {
+        assert ([self periodicTimeObserver]);
+        [self.player removeTimeObserver:[self periodicTimeObserver]];
+    }
 }
 
 #pragma mark notification handling
