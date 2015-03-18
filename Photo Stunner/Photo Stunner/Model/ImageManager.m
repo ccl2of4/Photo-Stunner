@@ -266,14 +266,13 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 }
 
 - (NSString *) freshFilePath {
-    uint32_t currentTime = arc4random();
     
-    NSString *fileName;
-    NSString *filePath;
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *filePath;
     
     do {
-        fileName = [NSString stringWithFormat:@"%u.jpg", currentTime];
+        uint32_t random = arc4random();
+        NSString *fileName = [NSString stringWithFormat:@"%u.jpg", random];
         filePath = [ImageManagerDirectory stringByAppendingPathComponent:fileName];
     } while ([fileManager fileExistsAtPath:filePath]);
     
