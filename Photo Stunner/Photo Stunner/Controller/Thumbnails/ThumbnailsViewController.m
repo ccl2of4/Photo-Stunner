@@ -47,7 +47,7 @@ static NSString * const CellReuseIdentifier = @"cell";
     
     CMTime time = [[imageManager sortedTimes][indexPath.item] CMTimeValue];
 
-    [imageManager imageForTime:time completion:^(CMTime time, UIImage *image) {
+    [imageManager retrieveThumbnailImageForTime:time completion:^(CMTime time, UIImage *image) {
         assert (image);
         if ([[collectionView indexPathForCell:cell] isEqual:indexPath]) {
             [cell.imageView setImage:image];

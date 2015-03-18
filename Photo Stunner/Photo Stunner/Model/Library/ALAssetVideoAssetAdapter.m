@@ -10,7 +10,7 @@
 
 @interface ALAssetVideoAssetAdapter ()
 
-@property ALAsset *asset;
+@property (nonatomic) ALAsset *asset;
 
 @end
 

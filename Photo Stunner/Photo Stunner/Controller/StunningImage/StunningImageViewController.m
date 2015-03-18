@@ -13,7 +13,6 @@
 
 @interface StunningImageViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
-
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
@@ -50,7 +49,7 @@ static NSString * const CellIdentifier = @"cell";
     
     CMTime time = [[imageManager sortedTimes][indexPath.item] CMTimeValue];
     
-    [imageManager imageForTime:time completion:^(CMTime time, UIImage *image) {
+    [imageManager retrieveImageForTime:time completion:^(CMTime time, UIImage *image) {
         assert (image);
         if ([[collectionView indexPathForCell:cell] isEqual:indexPath]) {
             [cell.imageView setImage:image];

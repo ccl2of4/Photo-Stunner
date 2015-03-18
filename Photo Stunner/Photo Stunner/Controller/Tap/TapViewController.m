@@ -80,7 +80,7 @@
         assert (image);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[ImageManager sharedManager] setImage:image forTime:time];
+            [[ImageManager sharedManager] addImage:image forTime:time];
         });
     }];
 }

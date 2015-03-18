@@ -10,8 +10,8 @@
 
 @interface NSURLVideoAssetAdapter ()
 
-@property AVURLAsset *asset;
-@property NSURL *url;
+@property (nonatomic) AVURLAsset *asset;
+@property (nonatomic) NSURL *url;
 
 @end
 

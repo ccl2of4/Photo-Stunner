@@ -14,7 +14,7 @@
 
 @interface VideoLoader ()
 
-@property ALAssetsLibrary *assetsLibrary;
+@property (nonatomic) ALAssetsLibrary *assetsLibrary;
 
 @end
 
