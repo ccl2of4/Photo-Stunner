@@ -192,6 +192,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     __weak typeof (self) weakSelf = self;
     
     if (enabled) {
+        assert (![self periodicTimeObserver]);
         self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 100) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
             CMTime vidLength = [weakSelf.player.currentItem duration];
             Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds(vidLength);
