@@ -205,6 +205,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     else {
         assert ([self periodicTimeObserver]);
         [self.player removeTimeObserver:[self periodicTimeObserver]];
+        self.periodicTimeObserver = nil;
     }
 }
 
