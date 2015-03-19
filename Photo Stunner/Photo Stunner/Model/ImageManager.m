@@ -87,7 +87,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
                 
                 [weakSelf.internalSortedTimes addObject:wrappedTime];
                 [weakSelf.internalSortedTimes sortUsingComparator:[ImageManager comparatorForSorting]];
-                NSUInteger addedIndex = [weakSelf.sortedTimes indexOfObject:wrappedTime];
+                NSUInteger addedIndex = [weakSelf.internalSortedTimes indexOfObject:wrappedTime];
                 
                 assert (addedIndex != NSNotFound);
                 
@@ -184,7 +184,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 }
 
 - (void)removeAllImagesWithCompletionBlock:(void (^)(void))completion {
-    NSArray *sortedTimesCopy = [self.sortedTimes copy];
+    NSArray *sortedTimesCopy = [self.internalSortedTimes copy];
     [sortedTimesCopy enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         CMTime time = [obj CMTimeValue];
         if (idx == [sortedTimesCopy count] - 1 && completion) {
@@ -210,7 +210,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
     
     [self removeImageAtPath:filePath completion:^(NSString *filePath) {
         [weakSelf removeImageAtPath:thumbnailFilePath completion:^(NSString *filePath) {
-            NSUInteger removedIndex = [self.sortedTimes indexOfObject:wrappedTime];
+            NSUInteger removedIndex = [weakSelf.internalSortedTimes indexOfObject:wrappedTime];
             
             [weakSelf.filePaths removeObjectForKey:wrappedTime];
             [weakSelf.internalSortedTimes removeObject:wrappedTime];
@@ -315,7 +315,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 
 - (void)clearDirectory {
     assert ([self.filePaths count] == 0);
-    assert ([self.sortedTimes count] == 0);
+    assert ([self.internalSortedTimes count] == 0);
     assert ([self fileIOQueue]);
     
     dispatch_async([self fileIOQueue], ^{

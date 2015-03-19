@@ -13,7 +13,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-@interface ThumbnailsViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ThumbnailsViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -71,11 +71,46 @@ static NSString * const CellReuseIdentifier = @"cell";
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    StunningImageViewController *stunningImageViewController = [StunningImageViewController new];
-    [stunningImageViewController setImageIndex:[indexPath item]];
+
+    NSString *title = [NSString stringWithFormat:@"Image %d", (indexPath.item + 1)];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Remove" otherButtonTitles:@"View", @"Save", nil];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet setTag:indexPath.item];
+    [actionSheet showInView:self.view];
+
+}
+
+#pragma mark UIActionSheetDelegate methods
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
-    assert ([self navigationController]);
-    [self.navigationController pushViewController:stunningImageViewController animated:YES];
+    NSUInteger itemNum = [actionSheet tag];
+    ImageManager *imageManager = [ImageManager sharedManager];
+    NSValue *wrappedTime = [imageManager sortedTimes][itemNum];
+    CMTime time = [wrappedTime CMTimeValue];
+    
+    // delete
+    if (buttonIndex == [actionSheet destructiveButtonIndex]) {
+
+        [imageManager removeImageForTime:time];
+
+    // view
+    } else if (buttonIndex == [actionSheet firstOtherButtonIndex]) {
+
+        StunningImageViewController *stunningImageViewController = [StunningImageViewController new];
+        [stunningImageViewController setImageIndex:itemNum];
+        
+        assert ([self navigationController]);
+        [self.navigationController pushViewController:stunningImageViewController animated:YES];
+        
+    // save
+    } else if (buttonIndex == ([actionSheet firstOtherButtonIndex] + 1)) {
+        
+        [imageManager retrieveImageForTime:time completion:^(CMTime time, UIImage *image) {
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, NULL);
+        }];
+        
+    }
 }
 
 #pragma mark notification handling
@@ -94,7 +129,7 @@ static NSString * const CellReuseIdentifier = @"cell";
         // removed an image
         } else if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesRemovedIndexKey]) ) {
             NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
-            [self.collectionView insertItemsAtIndexPaths:@[removedIndexPath]];
+            [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
             
         } else {
             assert (NO);
