@@ -64,6 +64,8 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 - (void)addImage:(UIImage *)image forTime:(CMTime)time completion:(void (^)(CMTime, UIImage *))completion {
     __weak typeof (self) weakSelf = self;
     
+    assert (!self.filePaths[[NSValue valueWithCMTime:time]]);
+    
     [self createThumbnailImageForImage:image completion:^(UIImage *image, UIImage *thumbnailImage) {
         assert (image);
         assert (thumbnailImage);

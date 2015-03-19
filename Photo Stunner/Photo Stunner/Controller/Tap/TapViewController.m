@@ -17,13 +17,13 @@
 @property (weak, nonatomic) IBOutlet UIView *playbackView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UICollectionView *previewBarCollectionView;
-@property (weak, nonatomic) IBOutlet UIView *playbackTrackerView;
+@property (nonatomic) UIView *playbackTrackerView;
 
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic) AVAssetImageGenerator *previewImageGenerator;
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic) NSMutableArray *previewImages;
-
+@property (nonatomic) NSMutableArray *tapIndicatorViews;
 @property (nonatomic) id periodicTimeObserver;
 
 @end
@@ -46,17 +46,19 @@ static const NSUInteger NumberOfPreviewImages = 10;
     
     [self.imageView setImage:[self.videoAsset thumbnail]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
-    
     [self.previewBarCollectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     if (![self previewImages]) {
         [self generatePreviewImages];
     }
+    
+    [self playbackTrackerView];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -79,7 +81,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (IBAction)handleUIGestureRecognizerRecognized:(id)sender {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.playbackView) {
-        [self extractAndSaveImageAtCurrentTime];
+        [self tap];
     } else {
         assert (NO);
     }
@@ -94,27 +96,23 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 #pragma mark image generation
 
-- (void)extractAndSaveImageAtCurrentTime {
-    [self extractImageAtTime:[self.player currentTime] completion:^(CMTime time, CGImageRef result) {
-        
-        assert (result);
-        UIImage *image = [UIImage imageWithCGImage:result];
-        assert (image);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[ImageManager sharedManager] addImage:image forTime:time];
-        });
-    }];
-}
-
-- (void)extractImageAtTime:(CMTime)time completion:(void(^)(CMTime time, CGImageRef result))completion {
-    NSArray *times = @[[NSValue valueWithCMTime:time]];
-    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
+- (void) tap {
+    CMTime time = [self.player currentTime];
+    NSValue *wrappedTime = [NSValue valueWithCMTime:time];
+    NSArray *times = @[wrappedTime];
+    
+    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
         if ( result == AVAssetImageGeneratorSucceeded ) {
+            assert (cgimg);
+            UIImage *image = [UIImage imageWithCGImage:cgimg];
             assert (image);
-            completion (requestedTime, image);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                assert (CMTIME_COMPARE_INLINE(time, ==, requestedTime));
+                [[ImageManager sharedManager] addImage:image forTime:time];
+            });
+            
         } else {
-            completion (requestedTime, nil);
         }
     }];
 }
@@ -127,6 +125,54 @@ static const NSUInteger NumberOfPreviewImages = 10;
         [_imageGenerator setRequestedTimeToleranceAfter:kCMTimeZero];
     }
     return _imageGenerator;
+}
+
+- (void) addTapIndicatorView:(NSUInteger)idx {
+    ImageManager *imageManager = [ImageManager sharedManager];
+    
+    NSValue *wrappedTime = [imageManager sortedTimes][idx];
+    assert (wrappedTime);
+    
+    CMTime time = [wrappedTime CMTimeValue];
+    
+    UIView *tapIndicatorView = [self createTapIndicatorForTime:time];
+    [self.view addSubview:tapIndicatorView];
+    
+    assert ([self tapIndicatorViews]);
+    [self.tapIndicatorViews insertObject:tapIndicatorView atIndex:idx];
+}
+
+- (void) removeTapIndicatorView:(NSUInteger)idx {
+    UIView *tapIndicatorView = self.tapIndicatorViews[idx];
+    [tapIndicatorView removeFromSuperview];
+    
+    assert([self tapIndicatorViews]);
+    [self.tapIndicatorViews removeObjectAtIndex:idx];
+}
+
+- (UIView *)createTapIndicatorForTime:(CMTime)time {
+    CMTime vidLength = [self.player.currentItem duration];
+    Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds(vidLength);
+    
+    CGRect previewBarCollectionViewFrame = [self.previewBarCollectionView frame];
+    CGFloat width = 3.0f;
+    CGFloat height = 3.0f;
+    CGFloat x = (previewBarCollectionViewFrame.origin.x + percent * previewBarCollectionViewFrame.size.width) - (0.5 * width);
+    CGFloat y = CGRectGetMidY(previewBarCollectionViewFrame) - (0.5 * height);
+    
+    CGRect frame = CGRectMake(x, y, width, height);
+    
+    UIView *photoIndicatorView = [[UIView alloc] initWithFrame:frame];
+    [photoIndicatorView setBackgroundColor:[UIColor whiteColor]];
+    
+    return photoIndicatorView;
+}
+
+-(NSMutableArray *)tapIndicatorViews {
+    if (!_tapIndicatorViews) {
+        _tapIndicatorViews = [NSMutableArray new];
+    }
+    return _tapIndicatorViews;
 }
 
 #pragma mark preview images
@@ -198,7 +244,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
             Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds(vidLength);
             
             CGRect frame = [weakSelf.playbackTrackerView frame];
-            frame.origin.x = percent * weakSelf.previewBarCollectionView.frame.size.width;
+            CGRect previewBarCollectionViewFrame = [weakSelf.previewBarCollectionView frame];
+            frame.origin.x = (previewBarCollectionViewFrame.origin.x + percent * previewBarCollectionViewFrame.size.width) - (0.5 * frame.size.width);
             [weakSelf.playbackTrackerView setFrame:frame];
         }];
     }
@@ -228,15 +275,21 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return _player;
 }
 
-#pragma mark notification handling
-
-- (void)handleNotification:(NSNotification *)notification {
-    if ([notification name] == ImageManagerSortedTimesChangedNotification) {
-        BOOL rightBarButtonItemEnabled = [[[ImageManager sharedManager] sortedTimes] count] > 0;
-        [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];
-    } else {
-        assert (NO);
+- (UIView *)playbackTrackerView {
+    if (!_playbackTrackerView) {
+        CGRect previewBarCollectionViewFrame = [self.previewBarCollectionView frame];
+        CGFloat width = 2.0f;
+        CGFloat height = previewBarCollectionViewFrame.size.height;
+        CGFloat x = previewBarCollectionViewFrame.origin.x - (0.5 * width);
+        CGFloat y = previewBarCollectionViewFrame.origin.y;
+        
+        CGRect frame = CGRectMake(x, y, width, height);
+        
+        _playbackTrackerView = [[UIView alloc] initWithFrame:frame];
+        [_playbackTrackerView setBackgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:_playbackTrackerView];
     }
+    return _playbackTrackerView;
 }
 
 #pragma mark UICollectionViewDelegate/UICollectionViewDataSouce methods
@@ -266,5 +319,33 @@ static const NSUInteger NumberOfPreviewImages = 10;
     CGSize size = [self maximumSizeForPreviewImages];
     return size;
 }
+
+#pragma mark notification handling
+
+- (void)handleNotification:(NSNotification *)notification {
+    if ([notification name] == ImageManagerSortedTimesChangedNotification) {
+        NSDictionary *userInfo = [notification userInfo];
+        NSNumber *changedIndex;
+        
+        if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesAddedIndexKey]) ) {
+            NSUInteger idx = [changedIndex unsignedIntegerValue];
+            [self addTapIndicatorView:idx];
+
+        } else if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesRemovedIndexKey]) ) {
+            NSUInteger idx = [changedIndex unsignedIntegerValue];
+            [self removeTapIndicatorView:idx];
+            
+        } else {
+            assert (NO);
+        }
+        
+        BOOL rightBarButtonItemEnabled = [[[ImageManager sharedManager] sortedTimes] count] > 0;
+        [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];
+        
+    } else {
+        assert (NO);
+    }
+}
+
 
 @end
