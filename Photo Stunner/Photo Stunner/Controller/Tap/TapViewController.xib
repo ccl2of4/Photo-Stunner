@@ -6,7 +6,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TapViewController">
             <connections>
+                <outlet property="backStepButton" destination="vWT-hW-iXC" id="ban-KK-One"/>
+                <outlet property="forwardStepButton" destination="e1U-51-7v7" id="XNN-4P-Zai"/>
                 <outlet property="imageView" destination="SIF-Q5-orY" id="A2v-Kn-iin"/>
+                <outlet property="playButton" destination="A5f-qg-cLY" id="0iN-6k-5ba"/>
                 <outlet property="playbackView" destination="RAO-PA-off" id="sFT-Zg-pTE"/>
                 <outlet property="previewBarCollectionView" destination="Trx-54-RVx" id="G7g-rT-tFM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -17,6 +20,23 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Trx-54-RVx" userLabel="previewBarCollectionView">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="J8V-J9-Jzo"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="RjS-9i-lbi">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="XlB-tA-3tq"/>
+                        <outlet property="delegate" destination="-1" id="N9u-qH-jAv"/>
+                        <outletCollection property="gestureRecognizers" destination="7hi-wX-gXr" appends="YES" id="l0N-NB-xwK"/>
+                    </connections>
+                </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAO-PA-off" userLabel="playbackView">
                     <rect key="frame" x="0.0" y="48" width="600" height="500"/>
                     <subviews>
@@ -27,10 +47,10 @@
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="SIF-Q5-orY" secondAttribute="bottom" id="7jW-kV-15d"/>
-                        <constraint firstItem="SIF-Q5-orY" firstAttribute="leading" secondItem="RAO-PA-off" secondAttribute="leading" id="9BI-Eu-5Up"/>
-                        <constraint firstAttribute="trailing" secondItem="SIF-Q5-orY" secondAttribute="trailing" id="KMh-BS-gCC"/>
-                        <constraint firstItem="SIF-Q5-orY" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="top" id="iU8-kd-jtE"/>
+                        <constraint firstAttribute="trailing" secondItem="SIF-Q5-orY" secondAttribute="trailing" id="4Dv-4H-UUI"/>
+                        <constraint firstItem="SIF-Q5-orY" firstAttribute="leading" secondItem="RAO-PA-off" secondAttribute="leading" id="68H-zN-K4e"/>
+                        <constraint firstItem="SIF-Q5-orY" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="top" id="Fkg-6N-8cT"/>
+                        <constraint firstAttribute="bottom" secondItem="SIF-Q5-orY" secondAttribute="bottom" id="yI2-Qh-baX"/>
                     </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="jty-kD-gP0" appends="YES" id="UaD-zf-f4d"/>
@@ -39,65 +59,68 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A5f-qg-cLY" userLabel="playButton">
                     <rect key="frame" x="277" y="562" width="46" height="30"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="46" id="v0p-M5-YBg"/>
+                        <constraint firstAttribute="width" constant="46" id="sZ9-eL-7fg"/>
                     </constraints>
                     <state key="normal" title=">">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <state key="selected" title="||"/>
+                    <connections>
+                        <action selector="handleUIControlEventTouchUpInside:" destination="-1" eventType="touchUpInside" id="r8i-4W-QmK"/>
+                    </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWT-hW-iXC">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWT-hW-iXC" userLabel="backStepButton">
                     <rect key="frame" x="92" y="562" width="46" height="30"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="46" id="uTp-8U-Nju"/>
+                        <constraint firstAttribute="width" constant="46" id="SLQ-ox-7Kq"/>
                     </constraints>
                     <state key="normal" title="&lt;&lt;">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="handleUIControlEventTouchUpInside:" destination="-1" eventType="touchUpInside" id="7ca-lJ-Lqe"/>
+                    </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1U-51-7v7">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1U-51-7v7" userLabel="forwardStepButton">
                     <rect key="frame" x="469" y="562" width="46" height="30"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="46" id="tzL-Ty-J6R"/>
+                        <constraint firstAttribute="width" constant="46" id="Dw4-3s-Kf6"/>
                     </constraints>
                     <state key="normal" title=">>">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                </button>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Trx-54-RVx" userLabel="previewBarCollectionView">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="RjS-9i-lbi">
-                        <size key="itemSize" width="50" height="50"/>
-                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    </collectionViewFlowLayout>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="XlB-tA-3tq"/>
-                        <outlet property="delegate" destination="-1" id="N9u-qH-jAv"/>
+                        <action selector="handleUIControlEventTouchUpInside:" destination="-1" eventType="touchUpInside" id="2pZ-F5-EvJ"/>
                     </connections>
-                </collectionView>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="48" id="0bs-zx-wou"/>
-                <constraint firstItem="A5f-qg-cLY" firstAttribute="baseline" secondItem="vWT-hW-iXC" secondAttribute="baseline" id="0uS-Ha-MQ1"/>
-                <constraint firstItem="vWT-hW-iXC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="92" id="71S-yN-sEL"/>
-                <constraint firstAttribute="trailing" secondItem="RAO-PA-off" secondAttribute="trailing" id="H0V-4b-t5l"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="centerX" secondItem="A5f-qg-cLY" secondAttribute="centerX" id="JCe-Dn-o5O"/>
-                <constraint firstItem="Trx-54-RVx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="SBN-NT-E67"/>
-                <constraint firstAttribute="bottom" secondItem="RAO-PA-off" secondAttribute="bottom" constant="52" id="YTB-Lf-kVt"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="leading" secondItem="Trx-54-RVx" secondAttribute="leading" id="aEO-0P-1e7"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="Trx-54-RVx" secondAttribute="bottom" id="bqd-FR-1Xw"/>
-                <constraint firstAttribute="trailing" secondItem="e1U-51-7v7" secondAttribute="trailing" constant="85" id="eYm-uQ-SH0"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="trailing" secondItem="Trx-54-RVx" secondAttribute="trailing" id="nD1-BA-UCz"/>
-                <constraint firstItem="e1U-51-7v7" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="bottom" constant="14" id="tyn-uA-zc3"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yhE-D3-cuK"/>
-                <constraint firstItem="A5f-qg-cLY" firstAttribute="baseline" secondItem="e1U-51-7v7" secondAttribute="baseline" id="zJb-mb-Ajt"/>
+                <constraint firstItem="A5f-qg-cLY" firstAttribute="baseline" secondItem="vWT-hW-iXC" secondAttribute="baseline" id="1vX-10-lTu"/>
+                <constraint firstAttribute="trailing" secondItem="Trx-54-RVx" secondAttribute="trailing" id="59e-qk-X1O"/>
+                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="Trx-54-RVx" secondAttribute="bottom" id="6JN-6w-9aa"/>
+                <constraint firstItem="e1U-51-7v7" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="bottom" constant="14" id="7zN-gp-Jpi"/>
+                <constraint firstItem="Trx-54-RVx" firstAttribute="leading" secondItem="RAO-PA-off" secondAttribute="leading" id="C66-Sa-7db"/>
+                <constraint firstItem="vWT-hW-iXC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="92" id="EZq-KX-dyw"/>
+                <constraint firstItem="Trx-54-RVx" firstAttribute="trailing" secondItem="RAO-PA-off" secondAttribute="trailing" id="EfK-3Z-7jO"/>
+                <constraint firstItem="Trx-54-RVx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="NzK-Wc-g2P"/>
+                <constraint firstAttribute="trailing" secondItem="e1U-51-7v7" secondAttribute="trailing" constant="85" id="OAd-01-AbM"/>
+                <constraint firstItem="Trx-54-RVx" firstAttribute="centerX" secondItem="A5f-qg-cLY" secondAttribute="centerX" id="Xaw-aY-ehn"/>
+                <constraint firstItem="Trx-54-RVx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mFL-Ln-FcA"/>
+                <constraint firstItem="A5f-qg-cLY" firstAttribute="baseline" secondItem="e1U-51-7v7" secondAttribute="baseline" id="maw-Qc-nxO"/>
+                <constraint firstAttribute="bottom" secondItem="RAO-PA-off" secondAttribute="bottom" constant="52" id="rHY-kw-cKE"/>
             </constraints>
         </view>
         <tapGestureRecognizer id="jty-kD-gP0">
             <connections>
                 <action selector="handleUIGestureRecognizerRecognized:" destination="-1" id="tZV-JA-M8I"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="7hi-wX-gXr">
+            <connections>
+                <action selector="handleUIGestureRecognizerRecognized:" destination="-1" id="zLv-ZN-7Le"/>
+                <outlet property="delegate" destination="-1" id="5Pa-SV-oHc"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

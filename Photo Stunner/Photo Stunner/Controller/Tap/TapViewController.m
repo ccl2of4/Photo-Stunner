@@ -12,11 +12,14 @@
 #import "UICollectionViewImageCell.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface TapViewController () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource>
+@interface TapViewController () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *playbackView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UICollectionView *previewBarCollectionView;
+@property (weak, nonatomic) IBOutlet UIButton *backStepButton;
+@property (weak, nonatomic) IBOutlet UIButton *forwardStepButton;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (nonatomic) UIView *playbackTrackerView;
 
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
@@ -30,6 +33,7 @@
 
 @implementation TapViewController
 
+static void * PlayerRateObservingContext = &PlayerRateObservingContext;
 static NSString * const CellReuseIdentifier = @"cell";
 static const NSUInteger NumberOfPreviewImages = 10;
 
@@ -49,6 +53,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [self.previewBarCollectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -63,13 +68,15 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self setPeriodicTimeObserverEnabled:YES];
     [self.player play];
+    [self setPeriodicTimeObserverEnabled:YES];
+    [self addObserver:self forKeyPath:@"player.rate" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:PlayerRateObservingContext];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.player pause];
+    [self removeObserver:self forKeyPath:@"player.rate"];
     [self setPeriodicTimeObserverEnabled:NO];
 }
 
@@ -81,17 +88,56 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (IBAction)handleUIGestureRecognizerRecognized:(id)sender {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.playbackView) {
+        
         [self tap];
+
+    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.previewBarCollectionView){
+        
+        CGPoint location = [sender locationInView:self.previewBarCollectionView];
+        CGFloat percent = location.x / self.previewBarCollectionView.bounds.size.width;
+        CMTime soughtTime = CMTimeMultiplyByFloat64([self.player.currentItem duration], percent);
+        
+        [self.player pause];
+        [self.player seekToTime:soughtTime];
+        
     } else {
         assert (NO);
     }
 }
 
-- (void)handleUIControlEventTouchUpInside:(id)sender{
-    assert(self.navigationController);
-
-    ThumbnailsViewController *thumbnailsViewController = [ThumbnailsViewController new];
-    [self.navigationController pushViewController:thumbnailsViewController animated:YES];
+- (IBAction)handleUIControlEventTouchUpInside:(id)sender{
+    
+    if (sender == self.navigationItem.rightBarButtonItem) {
+        
+        assert(self.navigationController);
+        ThumbnailsViewController *thumbnailsViewController = [ThumbnailsViewController new];
+        [self.navigationController pushViewController:thumbnailsViewController animated:YES];
+        
+    } else if (sender == self.backStepButton) {
+        
+        [self.player pause];
+        CMTime currentTime = [self.player currentTime];
+        CMTime soughtTime = CMTimeSubtract(currentTime, [self timePerFrame]);
+        [self.player seekToTime:soughtTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+        
+    } else if (sender == self.forwardStepButton) {
+        
+        [self.player pause];
+        CMTime currentTime = [self.player currentTime];
+        CMTime soughtTime = CMTimeAdd(currentTime, [self timePerFrame]);
+        [self.player seekToTime:soughtTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+        
+    } else if (sender == self.playButton) {
+        
+        if ([self.player rate]) {
+            [self.player pause];
+        } else {
+            [self.player play];
+        }
+        
+    } else {
+        assert (NO);
+    }
 }
 
 #pragma mark image generation
@@ -103,6 +149,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     
     [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
         if ( result == AVAssetImageGeneratorSucceeded ) {
+            assert (!error);
             assert (cgimg);
             UIImage *image = [UIImage imageWithCGImage:cgimg];
             assert (image);
@@ -113,6 +160,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
             });
             
         } else {
+            
         }
     }];
 }
@@ -292,6 +340,13 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return _playbackTrackerView;
 }
 
+- (CMTime) timePerFrame {
+    AVAsset *asset = [self.videoAsset asset];
+    AVAssetTrack *track = [[asset tracksWithMediaType:AVMediaTypeVideo] firstObject];
+    CMTime timePerFrame = CMTimeMake(1,[track nominalFrameRate]);
+    return timePerFrame;
+}
+
 #pragma mark UICollectionViewDelegate/UICollectionViewDataSouce methods
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -320,7 +375,9 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return size;
 }
 
-#pragma mark notification handling
+
+
+#pragma mark observer methods
 
 - (void)handleNotification:(NSNotification *)notification {
     if ([notification name] == ImageManagerSortedTimesChangedNotification) {
@@ -344,6 +401,16 @@ static const NSUInteger NumberOfPreviewImages = 10;
         
     } else {
         assert (NO);
+    }
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (PlayerRateObservingContext == context) {
+        assert ([NSThread isMainThread]);
+        BOOL isPaused = ![[change objectForKey:NSKeyValueChangeNewKey] boolValue];
+        [self.playButton setSelected:isPaused];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
