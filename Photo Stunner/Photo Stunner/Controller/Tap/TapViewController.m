@@ -37,6 +37,7 @@
 
 @implementation TapViewController
 
+static void * PlayerStatusObservingContext = &PlayerStatusObservingContext;
 static void * PlayerRateObservingContext = &PlayerRateObservingContext;
 static NSString * const CellReuseIdentifier = @"cell";
 static const NSUInteger NumberOfPreviewImages = 10;
@@ -57,7 +58,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [self.previewBarCollectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
-    
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -80,8 +80,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.player pause];
-    [self removeObserver:self forKeyPath:@"player.rate"];
     [self setPeriodicTimeObserverEnabled:NO];
+    [self removeObserver:self forKeyPath:@"player.rate"];
 }
 
 - (void)dealloc {
@@ -448,8 +448,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (PlayerRateObservingContext == context) {
         assert ([NSThread isMainThread]);
-        BOOL isPaused = ![[change objectForKey:NSKeyValueChangeNewKey] boolValue];
-        [self.playButton setSelected:isPaused];
+        BOOL isPlaying = ![[change objectForKey:NSKeyValueChangeNewKey] boolValue];
+        [self.playButton setSelected:!isPlaying];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
