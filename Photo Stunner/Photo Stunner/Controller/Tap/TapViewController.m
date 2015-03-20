@@ -9,18 +9,22 @@
 #import "TapViewController.h"
 #import "ImageManager.h"
 #import "ThumbnailsViewController.h"
+#import "FlashView.h"
 #import "UICollectionViewImageCell.h"
 #import <AVFoundation/AVFoundation.h>
 
 @interface TapViewController () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *playbackView;
+@property (weak, nonatomic) IBOutlet UIView *playerLayerView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UICollectionView *previewBarCollectionView;
 @property (weak, nonatomic) IBOutlet UIButton *backStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *forwardStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (nonatomic) FlashView *flashView;
 @property (nonatomic) UIView *playbackTrackerView;
+@property (nonatomic) AVPlayerLayer *playerLayer;
 
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic) AVAssetImageGenerator *previewImageGenerator;
@@ -170,6 +174,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
             // generation failed. ignore silently
         }
     }];
+    
+    [self.flashView flash];
 }
 
 - (AVAssetImageGenerator *)imageGenerator {
@@ -316,18 +322,39 @@ static const NSUInteger NumberOfPreviewImages = 10;
     if (!_player) {
         AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:[self.videoAsset asset]];
         AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
-        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-        
         [player setActionAtItemEnd:AVPlayerActionAtItemEndPause];
-        [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
-        
-        [self.playbackView.layer addSublayer:playerLayer];
-        [playerLayer setFrame:[self.playbackView.layer bounds]];
-        
         _player = player;
+        
+        [self.playerLayer setPlayer:player];
     }
     
     return _player;
+}
+
+- (AVPlayerLayer *)playerLayer {
+    if (!_playerLayer) {
+        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:nil];
+        [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+        
+        [self.playerLayerView.layer addSublayer:playerLayer];
+        [playerLayer setFrame:[self.playerLayerView.layer bounds]];
+        
+        _playerLayer = playerLayer;
+    }
+    return _playerLayer;
+}
+
+- (FlashView *)flashView {
+    if (!_flashView) {
+        FlashView *flashView = [FlashView new];
+        [flashView setBackgroundColor:[UIColor grayColor]];
+        CGRect frame = [self.playerLayer videoRect];
+        [flashView setFrame:frame];
+        [self.playbackView addSubview:flashView];
+        
+        _flashView = flashView;
+    }
+    return _flashView;
 }
 
 - (UIView *)playbackTrackerView {

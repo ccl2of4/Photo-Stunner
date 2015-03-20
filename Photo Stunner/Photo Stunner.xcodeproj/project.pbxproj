@@ -32,6 +32,7 @@
 		B34789071AB79E2B009FF25C /* 4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FE1AB79E2B009FF25C /* 4.mp4 */; };
 		B34789081AB79E2B009FF25C /* 5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FF1AB79E2B009FF25C /* 5.mp4 */; };
 		B34789091AB79E2B009FF25C /* 6.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34789001AB79E2B009FF25C /* 6.mp4 */; };
+		B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F4604C1ABCB17500B09F7D /* FlashView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,8 @@
 		B34788FE1AB79E2B009FF25C /* 4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4.mp4; sourceTree = "<group>"; };
 		B34788FF1AB79E2B009FF25C /* 5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 5.mp4; sourceTree = "<group>"; };
 		B34789001AB79E2B009FF25C /* 6.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 6.mp4; sourceTree = "<group>"; };
+		B3F4604B1ABCB17500B09F7D /* FlashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashView.h; sourceTree = "<group>"; };
+		B3F4604C1ABCB17500B09F7D /* FlashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +257,8 @@
 				B34788ED1AB79655009FF25C /* UICollectionViewImageCell.h */,
 				B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */,
 				B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */,
+				B3F4604B1ABCB17500B09F7D /* FlashView.h */,
+				B3F4604C1ABCB17500B09F7D /* FlashView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -392,6 +397,7 @@
 				B34788841AB75584009FF25C /* AppDelegate.m in Sources */,
 				B34788EB1AB79651009FF25C /* VideoLoader.m in Sources */,
 				B34788811AB75584009FF25C /* main.m in Sources */,
+				B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

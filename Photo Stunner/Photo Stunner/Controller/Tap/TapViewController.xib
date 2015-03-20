@@ -11,6 +11,7 @@
                 <outlet property="imageView" destination="SIF-Q5-orY" id="A2v-Kn-iin"/>
                 <outlet property="playButton" destination="A5f-qg-cLY" id="0iN-6k-5ba"/>
                 <outlet property="playbackView" destination="RAO-PA-off" id="sFT-Zg-pTE"/>
+                <outlet property="playerLayerView" destination="FeT-Xa-8xT" id="r3R-VK-saz"/>
                 <outlet property="previewBarCollectionView" destination="Trx-54-RVx" id="G7g-rT-tFM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -43,6 +44,10 @@
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SIF-Q5-orY" userLabel="imageView">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
                         </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FeT-Xa-8xT" userLabel="playerLayerView">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
@@ -50,6 +55,10 @@
                         <constraint firstAttribute="trailing" secondItem="SIF-Q5-orY" secondAttribute="trailing" id="4Dv-4H-UUI"/>
                         <constraint firstItem="SIF-Q5-orY" firstAttribute="leading" secondItem="RAO-PA-off" secondAttribute="leading" id="68H-zN-K4e"/>
                         <constraint firstItem="SIF-Q5-orY" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="top" id="Fkg-6N-8cT"/>
+                        <constraint firstItem="FeT-Xa-8xT" firstAttribute="bottom" secondItem="SIF-Q5-orY" secondAttribute="bottom" id="LMH-Ag-Io4"/>
+                        <constraint firstItem="FeT-Xa-8xT" firstAttribute="top" secondItem="SIF-Q5-orY" secondAttribute="top" id="MGv-xG-88b"/>
+                        <constraint firstItem="FeT-Xa-8xT" firstAttribute="leading" secondItem="SIF-Q5-orY" secondAttribute="leading" id="Wue-e9-hGi"/>
+                        <constraint firstItem="FeT-Xa-8xT" firstAttribute="trailing" secondItem="SIF-Q5-orY" secondAttribute="trailing" id="luh-bc-Q1m"/>
                         <constraint firstAttribute="bottom" secondItem="SIF-Q5-orY" secondAttribute="bottom" id="yI2-Qh-baX"/>
                     </constraints>
                     <connections>
