@@ -87,10 +87,13 @@ static const NSUInteger NumberOfPreviewImages = 10;
 #pragma mark UI events
 
 - (IBAction)handleUIGestureRecognizerRecognized:(id)sender {
+    
+    // tapped video
     if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.playbackView) {
         
         [self tap];
 
+    // tapped preview bar
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.previewBarCollectionView){
         
         CGPoint location = [sender locationInView:self.previewBarCollectionView];
@@ -107,26 +110,30 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (IBAction)handleUIControlEventTouchUpInside:(id)sender{
     
+    // "Next" button
     if (sender == self.navigationItem.rightBarButtonItem) {
         
         assert(self.navigationController);
         ThumbnailsViewController *thumbnailsViewController = [ThumbnailsViewController new];
         [self.navigationController pushViewController:thumbnailsViewController animated:YES];
-        
+    
+    // << button
     } else if (sender == self.backStepButton) {
         
         [self.player pause];
         CMTime currentTime = [self.player currentTime];
         CMTime soughtTime = CMTimeSubtract(currentTime, [self timePerFrame]);
         [self.player seekToTime:soughtTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-        
+       
+    // >> button
     } else if (sender == self.forwardStepButton) {
         
         [self.player pause];
         CMTime currentTime = [self.player currentTime];
         CMTime soughtTime = CMTimeAdd(currentTime, [self timePerFrame]);
         [self.player seekToTime:soughtTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-        
+    
+    // play button
     } else if (sender == self.playButton) {
         
         if ([self.player rate]) {
@@ -160,7 +167,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
             });
             
         } else {
-            
+            // generation failed. ignore silently
         }
     }];
 }
@@ -233,15 +240,15 @@ static const NSUInteger NumberOfPreviewImages = 10;
     NSArray *times = [self timesForPreviewImages];
     
     [self.previewImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
-        if (result == AVAssetImageGeneratorSucceeded) {
-            assert (cgimg);
-            UIImage *image = [UIImage imageWithCGImage:cgimg];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.previewImages addObject:image];
-                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self.previewImages indexOfObject:image] inSection:0];
-                [self.previewBarCollectionView insertItemsAtIndexPaths:@[indexPath]];
-            });
-        }
+        
+        // even if the generation was unsuccessful, add a UIImage as a placeholder
+        UIImage *image = [UIImage imageWithCGImage:cgimg];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.previewImages addObject:image];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self.previewImages indexOfObject:image] inSection:0];
+            [self.previewBarCollectionView insertItemsAtIndexPaths:@[indexPath]];
+        });
     }];
 }
 

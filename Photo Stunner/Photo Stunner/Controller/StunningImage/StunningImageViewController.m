@@ -51,9 +51,7 @@ static NSString * const CellIdentifier = @"cell";
     
     [imageManager retrieveImageForTime:time completion:^(CMTime time, UIImage *image) {
         assert (image);
-        if ([[collectionView indexPathForCell:cell] isEqual:indexPath]) {
-            [cell.imageView setImage:image];
-        }
+        [cell.imageView setImage:image];
     }];
 
     return cell;

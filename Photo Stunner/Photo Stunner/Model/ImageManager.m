@@ -157,9 +157,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
     UIImage *cachedImage = [self.cache objectForKey:filePath];
     if (cachedImage) {
         if (completion) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion (filePath, cachedImage);
-            });
+            completion (filePath, cachedImage);
         }
         return;
     }
