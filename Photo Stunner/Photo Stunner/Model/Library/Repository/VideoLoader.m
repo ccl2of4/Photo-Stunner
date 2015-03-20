@@ -35,21 +35,15 @@ NSString * const VideoLoaderModelChangedNotification = @"videoloader model chang
 }
 
 - (void)loadVideosFromBundle:(void (^)(NSArray *videos))completion {
-    static NSArray *videoNames = nil;
-    if (!videoNames) {
-        videoNames = @[
-            @"1.mp4",@"2.mp4",@"3.mp4",@"4.mp4",@"5.mp4",@"6.mp4",
-        ];
-    }
-    
     NSMutableArray *result = [NSMutableArray new];
     
-    for (NSString *videoName in videoNames) {
-        NSString *videoPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:videoName];
+    for (NSString *videoPath in [self videoPathsFromBundle]) {
         NSURL *videoURL = [NSURL fileURLWithPath:videoPath];
         AVAsset *asset = [AVAsset assetWithURL:videoURL];
-        id<VideoAsset> videoAsset = [[AVAssetVideoAssetAdapter alloc] initWithAsset:asset];
-        [result addObject:videoAsset];
+        if ([asset isReadable] && [asset isPlayable]) {
+            id<VideoAsset> videoAsset = [[AVAssetVideoAssetAdapter alloc] initWithAsset:asset];
+            [result addObject:videoAsset];
+        }
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -57,6 +51,23 @@ NSString * const VideoLoaderModelChangedNotification = @"videoloader model chang
     });
     
 }
+
+- (NSArray *)videoPathsFromBundle {
+    NSMutableArray *result = [NSMutableArray new];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSDirectoryEnumerator *dirEnum = [fileManager enumeratorAtPath:bundlePath];
+    
+    NSString *fileName;
+    while ((fileName = [dirEnum nextObject])) {
+        if ([[fileName pathExtension] isEqualToString: @"mp4"]) {
+            NSString *fullPath = [bundlePath stringByAppendingPathComponent:fileName];
+            [result addObject:fullPath];
+        }
+    }
+    return result;
+}
+
 
 - (void)loadVideosFromPhotosLibrary:(void (^)(NSArray *videos))completion {
     
