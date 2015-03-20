@@ -95,7 +95,10 @@ static const NSUInteger NumberOfPreviewImages = 10;
     // tapped video
     if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.playbackView) {
         
-        [self tap];
+        CMTime time = [self.player currentTime];
+        if ([self extractImageAtTime:time]) {
+            [self.flashView flash];
+        }
 
     // tapped preview bar
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.previewBarCollectionView){
@@ -153,11 +156,15 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 #pragma mark image generation
 
-- (void) tap {
-    CMTime time = [self.player currentTime];
+- (BOOL) extractImageAtTime:(CMTime)time {
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
-    NSArray *times = @[wrappedTime];
+    ImageManager *imageManager = [ImageManager sharedManager];
     
+    if ([[imageManager sortedTimes] containsObject:wrappedTime]) {
+        return NO;
+    }
+    
+    NSArray *times = @[wrappedTime];
     [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
         if ( result == AVAssetImageGeneratorSucceeded ) {
             assert (!error);
@@ -167,7 +174,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 assert (CMTIME_COMPARE_INLINE(time, ==, requestedTime));
-                [[ImageManager sharedManager] addImage:image forTime:time];
+                [imageManager addImage:image forTime:time];
             });
             
         } else {
@@ -175,7 +182,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
         }
     }];
     
-    [self.flashView flash];
+    return YES;
 }
 
 - (AVAssetImageGenerator *)imageGenerator {
