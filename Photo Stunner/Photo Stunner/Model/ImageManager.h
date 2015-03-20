@@ -34,6 +34,6 @@ extern NSString * const ImageManagerSortedTimesAddedIndexKey;
 - (void) removeImageForTime:(CMTime)time completion:(void(^)(CMTime time))completion;;
 
 - (void) removeAllImages;
-- (void) removeAllImagesWithCompletionBlock:(void(^)(void))completion;;
+- (void) removeAllImagesWithCompletionBlock:(void(^)(void))completion;
 
 @end

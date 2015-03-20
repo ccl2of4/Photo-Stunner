@@ -22,9 +22,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *backStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *forwardStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
-@property (nonatomic) FlashView *flashView;
-@property (nonatomic) UIView *playbackTrackerView;
-@property (nonatomic) AVPlayerLayer *playerLayer;
+@property (weak, nonatomic) FlashView *flashView;
+@property (weak, nonatomic) UIView *playbackTrackerView;
+@property (weak, nonatomic) AVPlayerLayer *playerLayer;
 
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic) AVAssetImageGenerator *previewImageGenerator;
@@ -86,6 +86,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.imageGenerator cancelAllCGImageGeneration];
+    [self.previewImageGenerator cancelAllCGImageGeneration];
 }
 
 #pragma mark UI events
@@ -164,6 +166,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
         return NO;
     }
     
+    __weak typeof (self) weakSelf = self;
+    
     NSArray *times = @[wrappedTime];
     [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
         if ( result == AVAssetImageGeneratorSucceeded ) {
@@ -172,10 +176,13 @@ static const NSUInteger NumberOfPreviewImages = 10;
             UIImage *image = [UIImage imageWithCGImage:cgimg];
             assert (image);
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                assert (CMTIME_COMPARE_INLINE(time, ==, requestedTime));
-                [imageManager addImage:image forTime:time];
-            });
+            // view controller may have been popped off navigation stack
+            if (weakSelf) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    assert (CMTIME_COMPARE_INLINE(time, ==, requestedTime));
+                    [imageManager addImage:image forTime:time];
+                });
+            }
             
         } else {
             // generation failed. ignore silently
@@ -374,9 +381,11 @@ static const NSUInteger NumberOfPreviewImages = 10;
         
         CGRect frame = CGRectMake(x, y, width, height);
         
-        _playbackTrackerView = [[UIView alloc] initWithFrame:frame];
-        [_playbackTrackerView setBackgroundColor:[UIColor whiteColor]];
-        [self.view addSubview:_playbackTrackerView];
+        UIView *playbackTrackerView = [[UIView alloc] initWithFrame:frame];
+        [playbackTrackerView setBackgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:playbackTrackerView];
+        
+        _playbackTrackerView = playbackTrackerView;
     }
     return _playbackTrackerView;
 }

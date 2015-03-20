@@ -53,8 +53,6 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
     return self;
 }
 
-
-
 #pragma mark adding
 
 - (void)addImage:(UIImage *)image forTime:(CMTime)time {
@@ -183,16 +181,19 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 
 - (void)removeAllImagesWithCompletionBlock:(void (^)(void))completion {
     NSArray *sortedTimesCopy = [self.internalSortedTimes copy];
-    [sortedTimesCopy enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    NSUInteger totalImages = [sortedTimesCopy count];
+    __block NSUInteger imagesRemoved = 0;
+
+    for (NSValue *obj in sortedTimesCopy) {
         CMTime time = [obj CMTimeValue];
-        if (idx == [sortedTimesCopy count] - 1 && completion) {
-            [self removeImageForTime:time completion:^(CMTime removedTime) {
-                completion ();
-            }];
-        } else {
-            [self removeImageForTime:time];
-        }
-    }];
+        [self removeImageForTime:time completion:^(CMTime removedTime) {
+            if (++imagesRemoved == totalImages) {
+                if (completion) {
+                    completion ();
+                }
+            }
+        }];
+    };
 }
 
 - (void)removeImageForTime:(CMTime)time {
@@ -204,6 +205,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
     NSString *filePath = self.filePaths[wrappedTime][FilePathsOriginalImagePathKey];
     NSString *thumbnailFilePath = self.filePaths[wrappedTime][FilePathsThumbnailImagePathKey];
+    
     __weak typeof(self) weakSelf = self;
     
     [self removeImageAtPath:filePath completion:^(NSString *filePath) {
