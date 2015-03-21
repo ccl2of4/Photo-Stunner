@@ -14,8 +14,8 @@
 
 @property (nonatomic) NSMutableDictionary *filePaths;
 @property (nonatomic) NSMutableArray *internalSortedTimes;
-@property (nonatomic) dispatch_queue_t fileIOQueue;
 @property (nonatomic) NSCache *cache;
++ (dispatch_queue_t) fileIOQueue;
 
 @end
 
@@ -30,21 +30,18 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 #define ImageManagerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
 #define DefaultThumbnailSize CGSizeMake (25.0f, 25.0f)
 
-#pragma mark creation
+#pragma mark life cycle
 
-+ (ImageManager *)sharedManager {
-    static ImageManager *singleton = nil;
-    if (!singleton) {
-        singleton = [ImageManager new];
-    }
-    return singleton;
++ (void) initialize {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [ImageManager clearDirectory];
+    });
 }
 
 - (instancetype) init {
     self = [super init];
     if (self) {
-        self.fileIOQueue = dispatch_queue_create("ImageManager.fileIOQueue", DISPATCH_QUEUE_SERIAL);
-        [self clearDirectory];
         self.filePaths = [NSMutableDictionary new];
         self.internalSortedTimes = [NSMutableArray new];
         self.cache = [NSCache new];
@@ -103,9 +100,8 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 }
 
 - (void)addImage:(UIImage *)image completion:(void(^)(UIImage *image, NSString *filePath))completion {
-    assert ([self fileIOQueue]);
     
-    dispatch_async([self fileIOQueue], ^{
+    dispatch_async([ImageManager fileIOQueue], ^{
         NSFileManager *fileManager = [NSFileManager defaultManager];
 
         NSString *filePath = [self freshFilePath];
@@ -149,7 +145,6 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 }
 
 - (void)retrieveImageAtPath:(NSString *)filePath completion:(void(^)(NSString *filePath, UIImage *image))completion {
-    assert ([self fileIOQueue]);
     assert (filePath);
     
     UIImage *cachedImage = [self.cache objectForKey:filePath];
@@ -159,9 +154,8 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
         }
         return;
     }
-    
         
-    dispatch_async([self fileIOQueue], ^{
+    dispatch_async([ImageManager fileIOQueue], ^{
         UIImage *diskImage = [UIImage imageWithContentsOfFile:filePath];
         assert (diskImage);
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -229,9 +223,8 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 }
 
 - (void) removeImageAtPath:(NSString *)filePath completion:(void(^)(NSString *filePath))completion {
-    assert ([self fileIOQueue]);
 
-    dispatch_async([self fileIOQueue], ^{
+    dispatch_async([ImageManager fileIOQueue], ^{
         NSError *error;
         NSFileManager *fileManager = [NSFileManager defaultManager];
         
@@ -313,12 +306,12 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
     });
 }
 
-- (void)clearDirectory {
-    assert ([self.filePaths count] == 0);
-    assert ([self.internalSortedTimes count] == 0);
-    assert ([self fileIOQueue]);
-    
-    dispatch_async([self fileIOQueue], ^{
+-(NSArray *)sortedTimes {
+    return [self internalSortedTimes];
+}
+
++ (void)clearDirectory {
+    dispatch_async([ImageManager fileIOQueue], ^{
         NSFileManager *manager = [NSFileManager defaultManager];
         
         NSError *error;
@@ -331,8 +324,12 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
     });
 }
 
--(NSArray *)sortedTimes {
-    return [self internalSortedTimes];
++ (dispatch_queue_t)fileIOQueue {
+    static dispatch_queue_t fileIOQueue;
+    if (!fileIOQueue) {
+        fileIOQueue = dispatch_queue_create("ImageManager.fileIOQueue", DISPATCH_QUEUE_SERIAL);
+    }
+    return fileIOQueue;
 }
 
 @end

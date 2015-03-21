@@ -77,6 +77,7 @@ static NSString * const CellIdentifier = @"cell";
 - (void) handleNotification:(NSNotification *)notification {
     
     if ([notification name] == ImageManagerSortedTimesChangedNotification) {
+        assert ([notification object] == [self imageManager]);
         NSDictionary *userInfo = [notification userInfo];
         NSNumber *changedIndex;
         
