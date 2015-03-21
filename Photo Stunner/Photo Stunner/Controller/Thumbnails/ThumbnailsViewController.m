@@ -36,6 +36,8 @@ static NSString * const CellReuseIdentifier = @"cell";
 
 -(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.collectionView setDelegate:nil];
+    [self.collectionView setDataSource:nil];
 }
 
 #pragma mark UICollectionViewDelegate/UICollectionViewDataSource methods
@@ -61,7 +63,6 @@ static NSString * const CellReuseIdentifier = @"cell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     assert ([self.imageManager sortedTimes]);
-    assert ([[self.imageManager sortedTimes] count]);
     
     return [[self.imageManager sortedTimes] count];
 }

@@ -41,6 +41,11 @@ static NSString * const CellIdentifier = @"cell";
     [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
 }
 
+- (void)dealloc {
+    [self.collectionView setDelegate:nil];
+    [self.collectionView setDataSource:nil];
+}
+
 -  (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];

@@ -37,7 +37,9 @@
 
 @end
 
-@implementation TapViewController
+@implementation TapViewController {
+    dispatch_once_t _firstVisitToken;
+}
 
 static void * PlayerStatusObservingContext = &PlayerStatusObservingContext;
 static void * PlayerRateObservingContext = &PlayerRateObservingContext;
@@ -75,13 +77,18 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.player play];
+    
+    dispatch_once(&_firstVisitToken, ^{
+        [self.player play];
+    });
+    
     [self setPeriodicTimeObserverEnabled:YES];
     [self addObserver:self forKeyPath:@"player.rate" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:PlayerRateObservingContext];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
     [self.player pause];
     [self setPeriodicTimeObserverEnabled:NO];
     [self removeObserver:self forKeyPath:@"player.rate"];
@@ -91,6 +98,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.imageGenerator cancelAllCGImageGeneration];
     [self.previewImageGenerator cancelAllCGImageGeneration];
+    [self.previewBarCollectionView setDelegate:nil];
+    [self.previewBarCollectionView setDataSource:nil];
 }
 
 #pragma mark UI events
@@ -171,7 +180,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     
     __weak typeof (self) weakSelf = self;
     
-    NSArray *times = @[wrappedTime];
+    NSArray *times =  @[wrappedTime];
     [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
         if ( result == AVAssetImageGeneratorSucceeded ) {
             assert (!error);
@@ -431,8 +440,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return size;
 }
 
-
-
 #pragma mark observer methods
 
 - (void)handleNotification:(NSNotification *)notification {
@@ -440,6 +447,11 @@ static const NSUInteger NumberOfPreviewImages = 10;
         assert ([notification object] == [self imageManager]);
         NSDictionary *userInfo = [notification userInfo];
         NSNumber *changedIndex;
+        
+        // if the user deletes all the images, come back to the tap screen to get more
+        if (![[self.imageManager sortedTimes] count]) {
+            [self.navigationController popToViewController:self animated:YES];
+        }
         
         if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesAddedIndexKey]) ) {
             NSUInteger idx = [changedIndex unsignedIntegerValue];
