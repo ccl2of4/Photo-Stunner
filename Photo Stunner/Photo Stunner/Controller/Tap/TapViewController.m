@@ -62,7 +62,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [self.previewBarCollectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:self.imageManager];
-    
 }
 
 - (void) viewWillAppear:(BOOL)animated {

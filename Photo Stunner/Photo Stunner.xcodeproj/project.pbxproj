@@ -32,6 +32,7 @@
 		B34789071AB79E2B009FF25C /* 4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FE1AB79E2B009FF25C /* 4.mp4 */; };
 		B34789081AB79E2B009FF25C /* 5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FF1AB79E2B009FF25C /* 5.mp4 */; };
 		B34789091AB79E2B009FF25C /* 6.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34789001AB79E2B009FF25C /* 6.mp4 */; };
+		B37F22401ABE2AAD009FB9CC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B37F223E1ABE2AAD009FB9CC /* Localizable.strings */; };
 		B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F4604C1ABCB17500B09F7D /* FlashView.m */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +87,7 @@
 		B34788FE1AB79E2B009FF25C /* 4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4.mp4; sourceTree = "<group>"; };
 		B34788FF1AB79E2B009FF25C /* 5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 5.mp4; sourceTree = "<group>"; };
 		B34789001AB79E2B009FF25C /* 6.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 6.mp4; sourceTree = "<group>"; };
+		B37F223F1ABE2AAD009FB9CC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		B3F4604B1ABCB17500B09F7D /* FlashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashView.h; sourceTree = "<group>"; };
 		B3F4604C1ABCB17500B09F7D /* FlashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -138,6 +140,7 @@
 				B34788A41AB755A9009FF25C /* LaunchScreen.xib */,
 				B34788FA1AB79E2B009FF25C /* Sample MP4 Files */,
 				B347887E1AB75584009FF25C /* Supporting Files */,
+				B37F223D1ABE2AAD009FB9CC /* en.lproj */,
 			);
 			path = "Photo Stunner";
 			sourceTree = "<group>";
@@ -276,6 +279,14 @@
 			path = "Sample MP4 Files";
 			sourceTree = "<group>";
 		};
+		B37F223D1ABE2AAD009FB9CC /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				B37F223E1ABE2AAD009FB9CC /* Localizable.strings */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -359,6 +370,7 @@
 				B34789071AB79E2B009FF25C /* 4.mp4 in Resources */,
 				B34788DE1AB7964C009FF25C /* StunningImageViewController.xib in Resources */,
 				B34788E21AB7964C009FF25C /* ThumbnailsViewController.xib in Resources */,
+				B37F22401ABE2AAD009FB9CC /* Localizable.strings in Resources */,
 				B34789091AB79E2B009FF25C /* 6.mp4 in Resources */,
 				B34788E01AB7964C009FF25C /* TapViewController.xib in Resources */,
 				B34789061AB79E2B009FF25C /* 3.mp4 in Resources */,
@@ -418,6 +430,17 @@
 			targetProxy = B34788951AB75584009FF25C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B37F223E1ABE2AAD009FB9CC /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B37F223F1ABE2AAD009FB9CC /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B347889C1AB75584009FF25C /* Debug */ = {

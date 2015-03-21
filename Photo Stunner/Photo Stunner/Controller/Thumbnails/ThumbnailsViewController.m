@@ -69,8 +69,13 @@ static NSString * const CellReuseIdentifier = @"cell";
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
-    NSString *title = [NSString stringWithFormat:@"Image %d", (indexPath.item + 1)];
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Remove" otherButtonTitles:@"View", @"Save", nil];
+    NSString *title = NSLocalizedString(@"ThumbnailsViewController Title", nil);
+    NSString *remove = NSLocalizedString(@"ThumbnailsViewController Remove", @"Remove/Delete selected image");
+    NSString *view = NSLocalizedString(@"ThumbnailsViewController View", @"View selected image");
+    NSString *save = NSLocalizedString(@"ThumbnailsViewController Save", @"Save selected image");
+    
+    NSString *fullTitle = [NSString stringWithFormat:@"%@ %d", title, (indexPath.item + 1)];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:fullTitle delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:remove otherButtonTitles:view,save, nil];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet setTag:indexPath.item];
     [actionSheet showInView:self.view];
