@@ -33,6 +33,8 @@
 @property (nonatomic) NSMutableArray *tapIndicatorViews;
 @property (nonatomic) id periodicTimeObserver;
 
+@property (nonatomic) ImageManager *imageManager;
+
 @end
 
 @implementation TapViewController
@@ -57,7 +59,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
     
     [self.previewBarCollectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:self.imageManager];
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -124,6 +127,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
         
         assert(self.navigationController);
         ThumbnailsViewController *thumbnailsViewController = [ThumbnailsViewController new];
+        [thumbnailsViewController setImageManager:[self imageManager]];
         [self.navigationController pushViewController:thumbnailsViewController animated:YES];
     
     // << button
@@ -160,9 +164,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (BOOL) extractImageAtTime:(CMTime)time {
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
-    ImageManager *imageManager = [ImageManager sharedManager];
     
-    if ([[imageManager sortedTimes] containsObject:wrappedTime]) {
+    if ([[self.imageManager sortedTimes] containsObject:wrappedTime]) {
         return NO;
     }
     
@@ -176,13 +179,10 @@ static const NSUInteger NumberOfPreviewImages = 10;
             UIImage *image = [UIImage imageWithCGImage:cgimg];
             assert (image);
             
-            // view controller may have been popped off navigation stack
-            if (weakSelf) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    assert (CMTIME_COMPARE_INLINE(time, ==, requestedTime));
-                    [imageManager addImage:image forTime:time];
-                });
-            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                assert (CMTIME_COMPARE_INLINE(time, ==, requestedTime));
+                [weakSelf.imageManager addImage:image forTime:time];
+            });
             
         } else {
             // generation failed. ignore silently
@@ -203,9 +203,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
 }
 
 - (void) addTapIndicatorView:(NSUInteger)idx {
-    ImageManager *imageManager = [ImageManager sharedManager];
     
-    NSValue *wrappedTime = [imageManager sortedTimes][idx];
+    NSValue *wrappedTime = [self.imageManager sortedTimes][idx];
     assert (wrappedTime);
     
     CMTime time = [wrappedTime CMTimeValue];
@@ -248,6 +247,13 @@ static const NSUInteger NumberOfPreviewImages = 10;
         _tapIndicatorViews = [NSMutableArray new];
     }
     return _tapIndicatorViews;
+}
+
+- (ImageManager *)imageManager {
+    if (!_imageManager) {
+        _imageManager = [ImageManager new];
+    }
+    return _imageManager;
 }
 
 #pragma mark preview images
@@ -446,7 +452,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
             assert (NO);
         }
         
-        BOOL rightBarButtonItemEnabled = [[[ImageManager sharedManager] sortedTimes] count] > 0;
+        BOOL rightBarButtonItemEnabled = [[self.imageManager sortedTimes] count] > 0;
         [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];
         
     } else {

@@ -31,7 +31,7 @@ static NSString * const CellReuseIdentifier = @"cell";
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     [self.collectionView reloadData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:self.imageManager];
 }
 
 -(void)dealloc {
@@ -43,11 +43,9 @@ static NSString * const CellReuseIdentifier = @"cell";
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
     
-    ImageManager *imageManager = [ImageManager sharedManager];
-    
-    CMTime time = [[imageManager sortedTimes][indexPath.item] CMTimeValue];
+    CMTime time = [[self.imageManager sortedTimes][indexPath.item] CMTimeValue];
 
-    [imageManager retrieveThumbnailImageForTime:time completion:^(CMTime time, UIImage *image) {
+    [self.imageManager retrieveThumbnailImageForTime:time completion:^(CMTime time, UIImage *image) {
         assert (image);
         [cell.imageView setImage:image];
     }];
@@ -56,16 +54,16 @@ static NSString * const CellReuseIdentifier = @"cell";
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    assert ([[ImageManager sharedManager] sortedTimes]);
+    assert ([self.imageManager sortedTimes]);
     
-    return !![[ImageManager sharedManager] sortedTimes];
+    return !![self.imageManager sortedTimes];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    assert ([[ImageManager sharedManager] sortedTimes]);
-    assert ([[[ImageManager sharedManager] sortedTimes] count]);
+    assert ([self.imageManager sortedTimes]);
+    assert ([[self.imageManager sortedTimes] count]);
     
-    return [[[ImageManager sharedManager] sortedTimes] count];
+    return [[self.imageManager sortedTimes] count];
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -83,19 +81,19 @@ static NSString * const CellReuseIdentifier = @"cell";
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     NSUInteger itemNum = [actionSheet tag];
-    ImageManager *imageManager = [ImageManager sharedManager];
-    NSValue *wrappedTime = [imageManager sortedTimes][itemNum];
+    NSValue *wrappedTime = [self.imageManager sortedTimes][itemNum];
     CMTime time = [wrappedTime CMTimeValue];
     
     // delete
     if (buttonIndex == [actionSheet destructiveButtonIndex]) {
 
-        [imageManager removeImageForTime:time];
+        [self.imageManager removeImageForTime:time];
 
     // view
     } else if (buttonIndex == [actionSheet firstOtherButtonIndex]) {
 
         StunningImageViewController *stunningImageViewController = [StunningImageViewController new];
+        [stunningImageViewController setImageManager:[self imageManager]];
         [stunningImageViewController setImageIndex:itemNum];
         
         assert ([self navigationController]);
@@ -104,7 +102,7 @@ static NSString * const CellReuseIdentifier = @"cell";
     // save
     } else if (buttonIndex == ([actionSheet firstOtherButtonIndex] + 1)) {
         
-        [imageManager retrieveImageForTime:time completion:^(CMTime time, UIImage *image) {
+        [self.imageManager retrieveImageForTime:time completion:^(CMTime time, UIImage *image) {
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, NULL);
         }];
         

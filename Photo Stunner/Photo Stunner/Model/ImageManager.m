@@ -94,7 +94,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
                 }
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
-                                                                        object:nil
+                                                                        object:self
                                                                   userInfo:@{ImageManagerSortedTimesAddedIndexKey : @(addedIndex)}];
                 
             }];
@@ -222,7 +222,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
-                                                                object:nil
+                                                                object:self
                                                               userInfo:@{ImageManagerSortedTimesRemovedIndexKey : @(removedIndex)}];
         }];
     }];

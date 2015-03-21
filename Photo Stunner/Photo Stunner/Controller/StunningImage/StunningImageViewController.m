@@ -28,7 +28,7 @@ static NSString * const CellIdentifier = @"cell";
     
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellIdentifier];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:self.imageManager];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -45,11 +45,10 @@ static NSString * const CellIdentifier = @"cell";
 {
     UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    ImageManager *imageManager = [ImageManager sharedManager];
     
-    CMTime time = [[imageManager sortedTimes][indexPath.item] CMTimeValue];
+    CMTime time = [[self.imageManager sortedTimes][indexPath.item] CMTimeValue];
     
-    [imageManager retrieveImageForTime:time completion:^(CMTime time, UIImage *image) {
+    [self.imageManager retrieveImageForTime:time completion:^(CMTime time, UIImage *image) {
         assert (image);
         [cell.imageView setImage:image];
     }];
@@ -59,7 +58,7 @@ static NSString * const CellIdentifier = @"cell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [[[ImageManager sharedManager] sortedTimes] count];
+    return [[self.imageManager sortedTimes] count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{

@@ -10,7 +10,6 @@
 #import "UICollectionViewImageCell.h"
 #import "TapViewController.h"
 #import "VideoLoader.h"
-#import "ImageManager.h"
 
 @interface LibraryViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -37,7 +36,6 @@ static NSString * const CellReuseIdentifier = @"cell";
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[ImageManager sharedManager] removeAllImages];
 }
 
 - (void)dealloc {

@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ImageManager;
 
 @interface ThumbnailsViewController : UIViewController
+
+@property (nonatomic) ImageManager *imageManager;
 
 @end

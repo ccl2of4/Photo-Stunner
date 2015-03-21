@@ -16,8 +16,6 @@ extern NSString * const ImageManagerSortedTimesChangedNotification;
 extern NSString * const ImageManagerSortedTimesRemovedIndexKey;
 extern NSString * const ImageManagerSortedTimesAddedIndexKey;
 
-+ (ImageManager *) sharedManager;
-
 @property (readonly, nonatomic) NSArray *sortedTimes;
 @property (nonatomic) CGSize thumbnailImageMaxSize;
 
