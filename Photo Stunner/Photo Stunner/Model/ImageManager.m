@@ -9,6 +9,11 @@
 #import "ImageManager.h"
 #import <AVFoundation/AVFoundation.h>
 
+#define dispatch_async_main_safe(block)\
+    do {\
+        if ([NSThread isMainThread]) block();\
+        else dispatch_async(dispatch_get_main_queue(), block);\
+    } while (0)
 
 @interface ImageManager ()
 
@@ -59,7 +64,13 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 - (void)addImage:(UIImage *)image forTime:(CMTime)time completion:(void (^)(CMTime, UIImage *))completion {
     __weak typeof (self) weakSelf = self;
     
-    assert (!self.filePaths[[NSValue valueWithCMTime:time]]);
+    NSValue *wrappedTime = [NSValue valueWithCMTime:time];
+
+    if (self.filePaths[wrappedTime]) {
+        NSString *timeStr = CFBridgingRelease(CMTimeCopyDescription(NULL, time));
+        NSString *reason = [NSString stringWithFormat:@"Cannot add image for time %@ because an image for that time already exists.", timeStr];
+        [[NSException exceptionWithName:NSGenericException reason:reason userInfo:nil] raise];
+    }
     
     [self createThumbnailImageForImage:image completion:^(UIImage *image, UIImage *thumbnailImage) {
         assert (image);
@@ -73,8 +84,6 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
                 assert (thumbnailImage);
                 assert (thumbnailImageFilePath);
                 
-                NSValue *wrappedTime = [NSValue valueWithCMTime:time];
-                
                 weakSelf.filePaths[wrappedTime] = @{
                     FilePathsOriginalImagePathKey : filePath,
                     FilePathsThumbnailImagePathKey : thumbnailImageFilePath
@@ -87,7 +96,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
                 assert (addedIndex != NSNotFound);
                 
                 if (completion) {
-                    completion (time, image);
+                    dispatch_async_main_safe(^{completion(time,image);});
                 }
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
@@ -112,7 +121,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.cache setObject:image forKey:filePath];
             if (completion) {
-                completion (image, filePath);
+                dispatch_async_main_safe(^{completion (image, filePath);});
             }
         });
     });
@@ -122,24 +131,38 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 
 - (void)retrieveThumbnailImageForTime:(CMTime)time completion:(void (^)(CMTime, UIImage *))completion {
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
+
+    if (!self.filePaths[wrappedTime]) {
+        NSString *timeStr = CFBridgingRelease(CMTimeCopyDescription(NULL, time));
+        NSString *reason = [NSString stringWithFormat:@"Cannot retrieve thumbnail image for time %@ because it has not been added.", timeStr];
+        [[NSException exceptionWithName:NSGenericException reason:reason userInfo:nil] raise];
+    }
+    
     NSString *thumbnailFilePath = self.filePaths[wrappedTime][FilePathsThumbnailImagePathKey];
     assert (thumbnailFilePath);
     
     [self retrieveImageAtPath:thumbnailFilePath completion:^(NSString *thumbnailFilePath, UIImage *thumbnailImage) {
         if (completion) {
-            completion (time, thumbnailImage);
+            dispatch_async_main_safe(^{completion (time, thumbnailImage);});
         }
     }];
 }
 
 - (void)retrieveImageForTime:(CMTime)time completion:(void (^)(CMTime, UIImage *))completion {
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
+
+    if (!self.filePaths[wrappedTime]) {
+        NSString *timeStr = CFBridgingRelease(CMTimeCopyDescription(NULL, time));
+        NSString *reason = [NSString stringWithFormat:@"Cannot retrieve image for time %@ because it has not been added.", timeStr];
+        [[NSException exceptionWithName:NSGenericException reason:reason userInfo:nil] raise];
+    }
+    
     NSString *filePath = self.filePaths[wrappedTime][FilePathsOriginalImagePathKey];
     assert (filePath);
     
     [self retrieveImageAtPath:filePath completion:^(NSString *filePath, UIImage *result) {
         if (completion) {
-            completion (time, result);
+            dispatch_async_main_safe(^{completion (time, result);});
         }
     }];
 }
@@ -150,7 +173,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
     UIImage *cachedImage = [self.cache objectForKey:filePath];
     if (cachedImage) {
         if (completion) {
-            completion (filePath, cachedImage);
+            dispatch_async_main_safe(^{completion (filePath, cachedImage);});
         }
         return;
     }
@@ -160,7 +183,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
         assert (diskImage);
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
-                completion (filePath, diskImage);
+                dispatch_async_main_safe(^{completion (filePath, diskImage);});
             }
         });
     });
@@ -178,12 +201,18 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
     NSUInteger totalImages = [sortedTimesCopy count];
     __block NSUInteger imagesRemoved = 0;
 
+    if (![sortedTimesCopy count]) {
+        if (completion) {
+            dispatch_async_main_safe (completion);
+        }
+    }
+    
     for (NSValue *obj in sortedTimesCopy) {
         CMTime time = [obj CMTimeValue];
         [self removeImageForTime:time completion:^(CMTime removedTime) {
             if (++imagesRemoved == totalImages) {
                 if (completion) {
-                    completion ();
+                    dispatch_async_main_safe (completion);
                 }
             }
         }];
@@ -197,8 +226,17 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 - (void)removeImageForTime:(CMTime)time completion:(void (^)(CMTime))completion {
     
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
+    
+    if (!self.filePaths[wrappedTime]) {
+        NSString *timeStr = CFBridgingRelease(CMTimeCopyDescription(NULL, time));
+        NSString *reason = [NSString stringWithFormat:@"Cannot remove image for time %@ because it has not been added.", timeStr];
+        [[NSException exceptionWithName:NSGenericException reason:reason userInfo:nil] raise];
+    }
+    
     NSString *filePath = self.filePaths[wrappedTime][FilePathsOriginalImagePathKey];
     NSString *thumbnailFilePath = self.filePaths[wrappedTime][FilePathsThumbnailImagePathKey];
+    assert (filePath);
+    assert (thumbnailFilePath);
     
     __weak typeof(self) weakSelf = self;
     
@@ -212,7 +250,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
             assert(removedIndex != NSNotFound);
             
             if (completion) {
-                completion (time);
+                dispatch_async_main_safe(^{completion(time);});
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:ImageManagerSortedTimesChangedNotification
@@ -237,7 +275,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
-                completion (filePath);
+                dispatch_async_main_safe(^{completion (filePath);});
             }
         });
     });
@@ -301,7 +339,7 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
         assert (thumbnailImage);
         
         if (completion) {
-            completion (image, thumbnailImage);
+            dispatch_async_main_safe(^{completion (image, thumbnailImage);});
         }
     });
 }

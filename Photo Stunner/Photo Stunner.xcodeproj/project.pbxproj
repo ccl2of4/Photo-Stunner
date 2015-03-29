@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B30FA99B1AC78B210035C6B3 /* ImageManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FA99A1AC78B210035C6B3 /* ImageManagerTests.m */; };
 		B34788811AB75584009FF25C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788801AB75584009FF25C /* main.m */; };
 		B34788841AB75584009FF25C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788831AB75584009FF25C /* AppDelegate.m */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
-		B347889B1AB75584009FF25C /* Photo_StunnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B347889A1AB75584009FF25C /* Photo_StunnerTests.m */; };
 		B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788A41AB755A9009FF25C /* LaunchScreen.xib */; };
 		B34788DB1AB7964C009FF25C /* LibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788CD1AB7964C009FF25C /* LibraryViewController.m */; };
 		B34788DC1AB7964C009FF25C /* LibraryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788CE1AB7964C009FF25C /* LibraryViewController.xib */; };
@@ -47,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B30FA99A1AC78B210035C6B3 /* ImageManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManagerTests.m; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B34788801AB75584009FF25C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -55,7 +56,6 @@
 		B347888B1AB75584009FF25C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B34788941AB75584009FF25C /* Photo StunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Photo StunnerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B34788991AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B347889A1AB75584009FF25C /* Photo_StunnerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo_StunnerTests.m; sourceTree = "<group>"; };
 		B34788A41AB755A9009FF25C /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		B34788CC1AB7964C009FF25C /* LibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryViewController.h; sourceTree = "<group>"; };
 		B34788CD1AB7964C009FF25C /* LibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryViewController.m; sourceTree = "<group>"; };
@@ -157,7 +157,7 @@
 		B34788971AB75584009FF25C /* Photo StunnerTests */ = {
 			isa = PBXGroup;
 			children = (
-				B347889A1AB75584009FF25C /* Photo_StunnerTests.m */,
+				B30FA99A1AC78B210035C6B3 /* ImageManagerTests.m */,
 				B34788981AB75584009FF25C /* Supporting Files */,
 			);
 			path = "Photo StunnerTests";
@@ -417,7 +417,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B347889B1AB75584009FF25C /* Photo_StunnerTests.m in Sources */,
+				B30FA99B1AC78B210035C6B3 /* ImageManagerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
