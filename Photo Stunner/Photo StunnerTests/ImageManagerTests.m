@@ -33,9 +33,7 @@
     return [UIImage imageNamed:@"test_image"];
 }
 
-#pragma mark -retrieveImageForTime:completion:
-
-- (void)testRetrieveImage1 {
+- (void)testRetrieveImageNotAdded {
     
     @try {
         [self.imageManager retrieveImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
@@ -47,24 +45,7 @@
     @catch (NSException *e) {}
 }
 
-- (void)testRetrieveImage2 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@""];
-
-    __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
-        [weakSelf.imageManager retrieveImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
-            [expectation fulfill];
-        }];
-    }];
-    
-    [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
-        if (error) {
-            XCTFail ();
-        }
-    }];
-}
-
-- (void)testRetrieveImage3 {
+- (void)testRetrieveImageNotAdded2 {
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
@@ -84,47 +65,12 @@
     }];
 }
 
-- (void)testRetrieveImage4 {
+- (void)testRetrieveImageAdded {
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    
-    __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
-        @try {
-            [weakSelf.imageManager retrieveImageForTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
-                [expectation fulfill];
-            }];
-        }
-        @catch (NSException *e) {
-        }
-    }];
-    
-    [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
-        if (error) {
-            XCTFail ();
-        }
-    }];
-}
 
-#pragma mark -retrieveThumbnailImageForTime:completion
-
-- (void)testRetrieveThumbnailImage1 {
-    
-    @try {
-        [self.imageManager retrieveThumbnailImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
-            XCTFail ();
-        }];
-        XCTFail ();
-    }
-    
-    @catch (NSException *e) {}
-}
-
-- (void)testRetrieveThumbnailImage2 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    
     __weak typeof (self) weakSelf = self;
     [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
-        [weakSelf.imageManager retrieveThumbnailImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+        [weakSelf.imageManager retrieveImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
             [expectation fulfill];
         }];
     }];
@@ -136,7 +82,37 @@
     }];
 }
 
-- (void)testRetrieveThumbnailImage3 {
+- (void)testRetrieveImageAdded2 {
+    XCTestExpectation *expectation = [self expectationWithDescription:@""];
+    
+    __weak typeof (self) weakSelf = self;
+    [self.imageManager addImage:[self testImage] forTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
+        [weakSelf.imageManager retrieveImageForTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
+            [expectation fulfill];
+        }];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
+        if (error) {
+            XCTFail ();
+        }
+    }];
+}
+
+
+- (void)testRetrieveThumbnailImageNotAdded {
+    
+    @try {
+        [self.imageManager retrieveThumbnailImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+            XCTFail ();
+        }];
+        XCTFail ();
+    }
+    
+    @catch (NSException *e) {}
+}
+
+- (void)testRetrieveThumbnailImageNotAdded2 {
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
@@ -155,16 +131,14 @@
     }];
 }
 
-- (void)testRetrieveThumbnailImage4 {
+- (void)testRetrieveThumbnailImageAdded {
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
-        @try {
-            [weakSelf.imageManager retrieveThumbnailImageForTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
-                [expectation fulfill];
-            }];
-        } @catch (NSException *e) {}
+    [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+        [weakSelf.imageManager retrieveThumbnailImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+            [expectation fulfill];
+        }];
     }];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
@@ -174,12 +148,25 @@
     }];
 }
 
-#pragma mark -removeImageForTime:completion
-
-- (void)testRemoveImage1 {
+- (void)testRetrieveThumbnailImageAdded2 {
+    XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
+    __weak typeof (self) weakSelf = self;
+    [self.imageManager addImage:[self testImage] forTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
+        [weakSelf.imageManager retrieveThumbnailImageForTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
+            [expectation fulfill];
+        }];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
+        if (error) {
+            XCTFail ();
+        }
+    }];
+}
+
+- (void)testRemoveImageNotAdded {
     @try {
-        
         [self.imageManager removeImageForTime:kCMTimeZero completion:^(CMTime time) {
             XCTFail ();
         }];
@@ -188,7 +175,27 @@
     } @catch (NSException *e) {}
 }
 
-- (void)testRemoveImage2 {
+- (void)testRemoveImageNotAdded2 {
+    XCTestExpectation *expectation = [self expectationWithDescription:@""];
+    
+    __weak typeof (self) weakSelf = self;
+    [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+        @try {
+            [weakSelf.imageManager removeImageForTime:CMTimeMake(1,30) completion:^(CMTime time) {
+            }];
+        } @catch (NSException *e) {
+            [expectation fulfill];
+        }
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
+        if (error) {
+            XCTFail ();
+        }
+    }];
+}
+
+- (void)testRetrieveRemovedImage {
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
@@ -209,7 +216,7 @@
     }];
 }
 
-- (void)testRemoveImage3 {
+- (void)testRetrieveRemovedThumbnailImage {
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
@@ -230,29 +237,7 @@
     }];
 }
 
-- (void)testRemoveImage4 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@""];
-    
-    __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
-        @try {
-            [weakSelf.imageManager removeImageForTime:CMTimeMake(1,30) completion:^(CMTime time) {
-            }];
-        } @catch (NSException *e) {
-            [expectation fulfill];
-        }
-    }];
-    
-    [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
-        if (error) {
-            XCTFail ();
-        }
-    }];
-}
-
-#pragma mark -removeAllImagesWithCompletionBlock:
-
-- (void)testRemoveAllImages1 {
+- (void)testRemoveAllImagesNoneAdded {
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     [self.imageManager removeAllImagesWithCompletionBlock:^{
@@ -266,7 +251,7 @@
     }];
 }
 
-- (void)testRemoveAllImages2 {
+- (void)testRetrieveRemovedImages {
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
