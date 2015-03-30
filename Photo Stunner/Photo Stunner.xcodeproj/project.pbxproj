@@ -33,6 +33,9 @@
 		B34789081AB79E2B009FF25C /* 5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FF1AB79E2B009FF25C /* 5.mp4 */; };
 		B34789091AB79E2B009FF25C /* 6.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34789001AB79E2B009FF25C /* 6.mp4 */; };
 		B37F22401ABE2AAD009FB9CC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B37F223E1ABE2AAD009FB9CC /* Localizable.strings */; };
+		B38CAF4F1ACA0DE2000D72D6 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B38CAF4B1ACA0DE2000D72D6 /* 1.jpg */; };
+		B38CAF521ACA0DE2000D72D6 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B38CAF4E1ACA0DE2000D72D6 /* 2.jpg */; };
+		B3F2DA301AC928F900E96A74 /* StunningImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2DA2F1AC928F900E96A74 /* StunningImageManager.swift */; };
 		B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F4604C1ABCB17500B09F7D /* FlashView.m */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +91,10 @@
 		B34788FF1AB79E2B009FF25C /* 5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 5.mp4; sourceTree = "<group>"; };
 		B34789001AB79E2B009FF25C /* 6.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 6.mp4; sourceTree = "<group>"; };
 		B37F223F1ABE2AAD009FB9CC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
+		B38CAF4B1ACA0DE2000D72D6 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		B38CAF4E1ACA0DE2000D72D6 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
+		B3F2DA2F1AC928F900E96A74 /* StunningImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StunningImageManager.swift; sourceTree = "<group>"; };
+		B3F2DA311AC92C9000E96A74 /* Photo Stunner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Photo Stunner-Bridging-Header.h"; sourceTree = "<group>"; };
 		B3F4604B1ABCB17500B09F7D /* FlashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashView.h; sourceTree = "<group>"; };
 		B3F4604C1ABCB17500B09F7D /* FlashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,6 +146,7 @@
 				B347888B1AB75584009FF25C /* Images.xcassets */,
 				B34788A41AB755A9009FF25C /* LaunchScreen.xib */,
 				B34788FA1AB79E2B009FF25C /* Sample MP4 Files */,
+				B38CAF4A1ACA0DE2000D72D6 /* Stunning Photos */,
 				B347887E1AB75584009FF25C /* Supporting Files */,
 				B37F223D1ABE2AAD009FB9CC /* en.lproj */,
 			);
@@ -150,6 +158,7 @@
 			children = (
 				B347887F1AB75584009FF25C /* Info.plist */,
 				B34788801AB75584009FF25C /* main.m */,
+				B3F2DA311AC92C9000E96A74 /* Photo Stunner-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -228,6 +237,7 @@
 				B34788E61AB79651009FF25C /* Library */,
 				B34788E41AB79651009FF25C /* ImageManager.h */,
 				B34788E51AB79651009FF25C /* ImageManager.m */,
+				B3F2DA2F1AC928F900E96A74 /* StunningImageManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -285,6 +295,15 @@
 				B37F223E1ABE2AAD009FB9CC /* Localizable.strings */,
 			);
 			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		B38CAF4A1ACA0DE2000D72D6 /* Stunning Photos */ = {
+			isa = PBXGroup;
+			children = (
+				B38CAF4B1ACA0DE2000D72D6 /* 1.jpg */,
+				B38CAF4E1ACA0DE2000D72D6 /* 2.jpg */,
+			);
+			path = "Stunning Photos";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -372,10 +391,12 @@
 				B34788E21AB7964C009FF25C /* ThumbnailsViewController.xib in Resources */,
 				B37F22401ABE2AAD009FB9CC /* Localizable.strings in Resources */,
 				B34789091AB79E2B009FF25C /* 6.mp4 in Resources */,
+				B38CAF521ACA0DE2000D72D6 /* 2.jpg in Resources */,
 				B34788E01AB7964C009FF25C /* TapViewController.xib in Resources */,
 				B34789061AB79E2B009FF25C /* 3.mp4 in Resources */,
 				B34789051AB79E2B009FF25C /* 2.mp4 in Resources */,
 				B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */,
+				B38CAF4F1ACA0DE2000D72D6 /* 1.jpg in Resources */,
 				B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */,
 				B34789041AB79E2B009FF25C /* 1.mp4 in Resources */,
 				B34789081AB79E2B009FF25C /* 5.mp4 in Resources */,
@@ -399,6 +420,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B34788F81AB798EA009FF25C /* ALAssetVideoAssetAdapter.m in Sources */,
+				B3F2DA301AC928F900E96A74 /* StunningImageManager.swift in Sources */,
 				B34788F51AB798DD009FF25C /* AVAssetVideoAssetAdapter.m in Sources */,
 				B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */,
 				B34788DD1AB7964C009FF25C /* StunningImageViewController.m in Sources */,
@@ -525,9 +547,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = "Photo Stunner/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Photo Stunner/Photo Stunner-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -535,9 +561,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = "Photo Stunner/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Photo Stunner/Photo Stunner-Bridging-Header.h";
 			};
 			name = Release;
 		};

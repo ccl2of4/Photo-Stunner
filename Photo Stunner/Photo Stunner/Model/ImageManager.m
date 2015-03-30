@@ -8,6 +8,7 @@
 
 #import "ImageManager.h"
 #import <AVFoundation/AVFoundation.h>
+#import "Photo_Stunner-Swift.h"
 
 #define dispatch_async_main_safe(block)\
     do {\
@@ -33,7 +34,7 @@ NSString * const ImageManagerSortedTimesChangedNotification = @"image manager so
 NSString * const ImageManagerSortedTimesRemovedIndexKey = @"image manager sortedtimes removed index key";
 NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedtimes added index key";
 #define ImageManagerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
-#define DefaultThumbnailSize CGSizeMake (25.0f, 25.0f)
+#define DefaultThumbnailSize CGSizeMake (100.0f, 100.0f)
 
 #pragma mark life cycle
 
@@ -45,6 +46,10 @@ NSString * const ImageManagerSortedTimesAddedIndexKey = @"image manager sortedti
 }
 
 - (instancetype) init {
+    if ( (arc4random() % 10) < 5) {
+        return [StunningImageManager new];
+    }
+    
     self = [super init];
     if (self) {
         self.filePaths = [NSMutableDictionary new];
