@@ -1,5 +1,5 @@
 //
-//  ImageManagerTest.m
+//  MediaManagerImageTests.m
 //  Photo Stunner
 //
 //  Created by Connor Lirot on 3/28/15.
@@ -9,19 +9,19 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "ImageManager.h"
+#import "MediaManager.h"
 
-@interface ImageManagerTests : XCTestCase
+@interface MediaManagerImageTests : XCTestCase
 
-@property (nonatomic) ImageManager *imageManager;
+@property (nonatomic) MediaManager *imageManager;
 @property (nonatomic) UIImage *testImage;
 
 @end
 
-@implementation ImageManagerTests
+@implementation MediaManagerImageTests
 
 - (void)setUp {
-    self.imageManager = [ImageManager new];
+    self.imageManager = [MediaManager new];
     [super setUp];
 }
 
@@ -36,7 +36,7 @@
 - (void)testRetrieveImageNotAdded {
     
     @try {
-        [self.imageManager retrieveImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+        [self.imageManager retrieveImageForKey:@0 completion:^(id key, UIImage *image) {
             XCTFail ();
         }];
         XCTFail ();
@@ -49,9 +49,9 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:CMTimeMake(1,30) completion:^(CMTime time, UIImage *image) {
+    [self.imageManager addImage:[self testImage] forKey:@0 completion:^(id key, UIImage *image) {
         @try {
-            [weakSelf.imageManager retrieveImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {}];
+            [weakSelf.imageManager retrieveImageForKey:@1 completion:^(id key, UIImage *image) {}];
         }
         @catch (NSException *e) {
             [expectation fulfill];
@@ -69,8 +69,8 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
 
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
-        [weakSelf.imageManager retrieveImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+    [self.imageManager addImage:[self testImage] forKey:@1 completion:^(id key, UIImage *image) {
+        [weakSelf.imageManager retrieveImageForKey:@1 completion:^(id key, UIImage *image) {
             [expectation fulfill];
         }];
     }];
@@ -86,8 +86,8 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
-        [weakSelf.imageManager retrieveImageForTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
+    [self.imageManager addImage:[self testImage] forKey:@10 completion:^(id key, UIImage *image) {
+        [weakSelf.imageManager retrieveImageForKey:@10 completion:^(id key, UIImage *image) {
             [expectation fulfill];
         }];
     }];
@@ -103,7 +103,7 @@
 - (void)testRetrieveThumbnailImageNotAdded {
     
     @try {
-        [self.imageManager retrieveThumbnailImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+        [self.imageManager retrieveThumbnailImageForKey:@0 completion:^(id key, UIImage *image) {
             XCTFail ();
         }];
         XCTFail ();
@@ -116,9 +116,9 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:CMTimeMake(1,30) completion:^(CMTime time, UIImage *image) {
+    [self.imageManager addImage:[self testImage] forKey:@1 completion:^(id key, UIImage *image) {
         @try {
-            [weakSelf.imageManager retrieveThumbnailImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {}];
+            [weakSelf.imageManager retrieveThumbnailImageForKey:@0 completion:^(id key, UIImage *image) {}];
         } @catch (NSException *e) {
             [expectation fulfill];
         }
@@ -135,8 +135,8 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
-        [weakSelf.imageManager retrieveThumbnailImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+    [self.imageManager addImage:[self testImage] forKey:@0 completion:^(id key, UIImage *image) {
+        [weakSelf.imageManager retrieveThumbnailImageForKey:@0 completion:^(id key, UIImage *image) {
             [expectation fulfill];
         }];
     }];
@@ -152,8 +152,8 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
-        [weakSelf.imageManager retrieveThumbnailImageForTime:CMTimeMake(5,30) completion:^(CMTime time, UIImage *image) {
+    [self.imageManager addImage:[self testImage] forKey:@1 completion:^(id key, UIImage *image) {
+        [weakSelf.imageManager retrieveThumbnailImageForKey:@1 completion:^(id key, UIImage *image) {
             [expectation fulfill];
         }];
     }];
@@ -167,7 +167,7 @@
 
 - (void)testRemoveImageNotAdded {
     @try {
-        [self.imageManager removeImageForTime:kCMTimeZero completion:^(CMTime time) {
+        [self.imageManager removeImageForKey:@1 completion:^(id key) {
             XCTFail ();
         }];
         XCTFail ();
@@ -179,9 +179,9 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
+    [self.imageManager addImage:[self testImage] forKey:@1 completion:^(id key, UIImage *image) {
         @try {
-            [weakSelf.imageManager removeImageForTime:CMTimeMake(1,30) completion:^(CMTime time) {
+            [weakSelf.imageManager removeImageForKey:@0 completion:^(id key) {
             }];
         } @catch (NSException *e) {
             [expectation fulfill];
@@ -199,10 +199,10 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
-        [weakSelf.imageManager removeImageForTime:kCMTimeZero completion:^(CMTime time) {
+    [self.imageManager addImage:[self testImage] forKey:@0 completion:^(id key, UIImage *image) {
+        [weakSelf.imageManager removeImageForKey:@0 completion:^(id key) {
             @try {
-                [weakSelf.imageManager retrieveImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {}];
+                [weakSelf.imageManager retrieveImageForKey:@0 completion:^(id key, UIImage *image) {}];
             } @catch (NSException *e) {
                 [expectation fulfill];
             }
@@ -220,10 +220,10 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@""];
     
     __weak typeof (self) weakSelf = self;
-    [self.imageManager addImage:[self testImage] forTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {
-        [weakSelf.imageManager removeImageForTime:kCMTimeZero completion:^(CMTime time) {
+    [self.imageManager addImage:[self testImage] forKey:@0 completion:^(id key, UIImage *image) {
+        [weakSelf.imageManager removeImageForKey:@0 completion:^(id key) {
             @try {
-                [weakSelf.imageManager retrieveThumbnailImageForTime:kCMTimeZero completion:^(CMTime time, UIImage *image) {}];
+                [weakSelf.imageManager retrieveThumbnailImageForKey:@0 completion:^(id key, UIImage *image) {}];
             } @catch (NSException *e) {
                 [expectation fulfill];
             }
@@ -261,7 +261,7 @@
     NSIndexSet *indices = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 50)];
     [indices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         
-        [self.imageManager addImage:[self testImage] forTime:CMTimeMake(idx, 100) completion:^(CMTime time, UIImage *image) {
+        [self.imageManager addImage:[self testImage] forKey:@(idx) completion:^(id key, UIImage *image) {
             
             if (++addedImages == 50) {
                 [weakSelf.imageManager removeAllImagesWithCompletionBlock:^{
@@ -270,7 +270,7 @@
                     [indices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
                         
                         @try {
-                            [weakSelf.imageManager retrieveThumbnailImageForTime:CMTimeMake(idx, 100) completion:^(CMTime time, UIImage *image) {}];
+                            [weakSelf.imageManager retrieveThumbnailImageForKey:@(idx) completion:^(id key, UIImage *image) {}];
                         } @catch (NSException *e) {
                             if (++failedRetrievals == addedImages) {
                                 [expectation fulfill];

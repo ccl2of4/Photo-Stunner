@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-@class ImageManager;
+@class MediaManager;
 
 @interface StunningImageViewController : UIViewController
 
-@property (nonatomic) ImageManager *imageManager;
-@property (nonatomic) NSUInteger imageIndex;
+@property (nonatomic) MediaManager *mediaManager;
+@property (nonatomic) NSIndexPath *activeIndexPath;
 
 @end

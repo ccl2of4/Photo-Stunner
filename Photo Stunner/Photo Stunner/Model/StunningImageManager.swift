@@ -14,15 +14,23 @@ let photos = [
     UIImage (named:"2.jpg")
 ]
 
-@objc class StunningImageManager : ImageManager {
+@objc class StunningImageManager : MediaManager {
     
     override init () {
         var index = Int (arc4random_uniform (UInt32 (photos.count)))
         self.image = photos[index];
     }
     
-    override func addImage (image: UIImage!, forTime time: CMTime, completion: ((CMTime, UIImage!) -> Void)!) {
-        super.addImage (self.image, forTime: time, completion: completion);
+    override func retrieveThumbnailImageForKey(key: AnyObject!, completion: ((AnyObject!, UIImage!) -> Void)!) {
+        super.retrieveThumbnailImageForKey(key, completion: { (key, image) -> Void in
+            completion (key, self.image)
+        })
+    }
+    
+    override func retrieveVideoThumbnailImageForKey(key: AnyObject!, completion: ((AnyObject!, UIImage!) -> Void)!) {
+        super.retrieveVideoThumbnailImageForKey(key, completion: { (key, image) -> Void in
+            completion (key, self.image)
+        })
     }
     
     private var image : UIImage?

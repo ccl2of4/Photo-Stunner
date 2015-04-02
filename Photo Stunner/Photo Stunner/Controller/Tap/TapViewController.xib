@@ -62,7 +62,7 @@
                         <constraint firstAttribute="bottom" secondItem="SIF-Q5-orY" secondAttribute="bottom" id="yI2-Qh-baX"/>
                     </constraints>
                     <connections>
-                        <outletCollection property="gestureRecognizers" destination="jty-kD-gP0" appends="YES" id="UaD-zf-f4d"/>
+                        <outletCollection property="gestureRecognizers" destination="coF-cZ-Piy" appends="YES" id="HfT-nD-yEo"/>
                     </connections>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A5f-qg-cLY" userLabel="playButton">
@@ -121,11 +121,11 @@
                 <constraint firstAttribute="bottom" secondItem="RAO-PA-off" secondAttribute="bottom" constant="52" id="rHY-kw-cKE"/>
             </constraints>
         </view>
-        <tapGestureRecognizer id="jty-kD-gP0">
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="coF-cZ-Piy">
             <connections>
-                <action selector="handleUIGestureRecognizerRecognized:" destination="-1" id="tZV-JA-M8I"/>
+                <action selector="handleUIGestureRecognizerRecognized:" destination="-1" id="ARx-6a-DKL"/>
             </connections>
-        </tapGestureRecognizer>
+        </pongPressGestureRecognizer>
         <tapGestureRecognizer id="7hi-wX-gXr">
             <connections>
                 <action selector="handleUIGestureRecognizerRecognized:" destination="-1" id="zLv-ZN-7Le"/>

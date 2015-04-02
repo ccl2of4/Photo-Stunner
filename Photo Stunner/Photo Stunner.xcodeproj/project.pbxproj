@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B30FA99B1AC78B210035C6B3 /* ImageManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FA99A1AC78B210035C6B3 /* ImageManagerTests.m */; };
+		B30FA99B1AC78B210035C6B3 /* MediaManagerImageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FA99A1AC78B210035C6B3 /* MediaManagerImageTests.m */; };
 		B34788811AB75584009FF25C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788801AB75584009FF25C /* main.m */; };
 		B34788841AB75584009FF25C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788831AB75584009FF25C /* AppDelegate.m */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
@@ -20,7 +20,7 @@
 		B34788E01AB7964C009FF25C /* TapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788D61AB7964C009FF25C /* TapViewController.xib */; };
 		B34788E11AB7964C009FF25C /* ThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788D91AB7964C009FF25C /* ThumbnailsViewController.m */; };
 		B34788E21AB7964C009FF25C /* ThumbnailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788DA1AB7964C009FF25C /* ThumbnailsViewController.xib */; };
-		B34788EA1AB79651009FF25C /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E51AB79651009FF25C /* ImageManager.m */; };
+		B34788EA1AB79651009FF25C /* MediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E51AB79651009FF25C /* MediaManager.m */; };
 		B34788EB1AB79651009FF25C /* VideoLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E91AB79651009FF25C /* VideoLoader.m */; };
 		B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */; };
 		B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */; };
@@ -32,9 +32,15 @@
 		B34789071AB79E2B009FF25C /* 4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FE1AB79E2B009FF25C /* 4.mp4 */; };
 		B34789081AB79E2B009FF25C /* 5.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FF1AB79E2B009FF25C /* 5.mp4 */; };
 		B34789091AB79E2B009FF25C /* 6.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34789001AB79E2B009FF25C /* 6.mp4 */; };
+		B37133EA1ACC9BD500174A4C /* UICollectionViewVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B37133E81ACC9BD500174A4C /* UICollectionViewVideoCell.m */; };
+		B37333441ACB574A001B9780 /* MediaManager+CMTimeImageKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = B37333431ACB574A001B9780 /* MediaManager+CMTimeImageKeys.m */; };
+		B37333471ACB5755001B9780 /* MediaManager+CMTimeRangeVideoKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = B37333461ACB5755001B9780 /* MediaManager+CMTimeRangeVideoKeys.m */; };
+		B37333491ACB5E80001B9780 /* MediaManagerVideoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B37333481ACB5E80001B9780 /* MediaManagerVideoTests.m */; };
 		B37F22401ABE2AAD009FB9CC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B37F223E1ABE2AAD009FB9CC /* Localizable.strings */; };
 		B38CAF4F1ACA0DE2000D72D6 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B38CAF4B1ACA0DE2000D72D6 /* 1.jpg */; };
 		B38CAF521ACA0DE2000D72D6 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B38CAF4E1ACA0DE2000D72D6 /* 2.jpg */; };
+		B3CBC9811ACDEA1500F840EC /* UICollectionViewHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B3CBC97F1ACDEA1500F840EC /* UICollectionViewHeaderCell.m */; };
+		B3CBC9821ACDEA1500F840EC /* UICollectionViewHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3CBC9801ACDEA1500F840EC /* UICollectionViewHeaderCell.xib */; };
 		B3F2DA301AC928F900E96A74 /* StunningImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2DA2F1AC928F900E96A74 /* StunningImageManager.swift */; };
 		B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F4604C1ABCB17500B09F7D /* FlashView.m */; };
 /* End PBXBuildFile section */
@@ -50,7 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B30FA99A1AC78B210035C6B3 /* ImageManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManagerTests.m; sourceTree = "<group>"; };
+		B30FA99A1AC78B210035C6B3 /* MediaManagerImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManagerImageTests.m; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B34788801AB75584009FF25C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -72,8 +78,8 @@
 		B34788D81AB7964C009FF25C /* ThumbnailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailsViewController.h; sourceTree = "<group>"; };
 		B34788D91AB7964C009FF25C /* ThumbnailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailsViewController.m; sourceTree = "<group>"; };
 		B34788DA1AB7964C009FF25C /* ThumbnailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailsViewController.xib; sourceTree = "<group>"; };
-		B34788E41AB79651009FF25C /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
-		B34788E51AB79651009FF25C /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
+		B34788E41AB79651009FF25C /* MediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaManager.h; sourceTree = "<group>"; };
+		B34788E51AB79651009FF25C /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
 		B34788E81AB79651009FF25C /* VideoLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoLoader.h; sourceTree = "<group>"; };
 		B34788E91AB79651009FF25C /* VideoLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoLoader.m; sourceTree = "<group>"; };
 		B34788ED1AB79655009FF25C /* UICollectionViewImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewImageCell.h; sourceTree = "<group>"; };
@@ -90,9 +96,19 @@
 		B34788FE1AB79E2B009FF25C /* 4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4.mp4; sourceTree = "<group>"; };
 		B34788FF1AB79E2B009FF25C /* 5.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 5.mp4; sourceTree = "<group>"; };
 		B34789001AB79E2B009FF25C /* 6.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 6.mp4; sourceTree = "<group>"; };
+		B37133E71ACC9BD500174A4C /* UICollectionViewVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewVideoCell.h; sourceTree = "<group>"; };
+		B37133E81ACC9BD500174A4C /* UICollectionViewVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewVideoCell.m; sourceTree = "<group>"; };
+		B37333421ACB574A001B9780 /* MediaManager+CMTimeImageKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MediaManager+CMTimeImageKeys.h"; sourceTree = "<group>"; };
+		B37333431ACB574A001B9780 /* MediaManager+CMTimeImageKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MediaManager+CMTimeImageKeys.m"; sourceTree = "<group>"; };
+		B37333451ACB5755001B9780 /* MediaManager+CMTimeRangeVideoKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MediaManager+CMTimeRangeVideoKeys.h"; sourceTree = "<group>"; };
+		B37333461ACB5755001B9780 /* MediaManager+CMTimeRangeVideoKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MediaManager+CMTimeRangeVideoKeys.m"; sourceTree = "<group>"; };
+		B37333481ACB5E80001B9780 /* MediaManagerVideoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManagerVideoTests.m; sourceTree = "<group>"; };
 		B37F223F1ABE2AAD009FB9CC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		B38CAF4B1ACA0DE2000D72D6 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		B38CAF4E1ACA0DE2000D72D6 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
+		B3CBC97E1ACDEA1500F840EC /* UICollectionViewHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewHeaderCell.h; sourceTree = "<group>"; };
+		B3CBC97F1ACDEA1500F840EC /* UICollectionViewHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewHeaderCell.m; sourceTree = "<group>"; };
+		B3CBC9801ACDEA1500F840EC /* UICollectionViewHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICollectionViewHeaderCell.xib; sourceTree = "<group>"; };
 		B3F2DA2F1AC928F900E96A74 /* StunningImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StunningImageManager.swift; sourceTree = "<group>"; };
 		B3F2DA311AC92C9000E96A74 /* Photo Stunner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Photo Stunner-Bridging-Header.h"; sourceTree = "<group>"; };
 		B3F4604B1ABCB17500B09F7D /* FlashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashView.h; sourceTree = "<group>"; };
@@ -166,7 +182,8 @@
 		B34788971AB75584009FF25C /* Photo StunnerTests */ = {
 			isa = PBXGroup;
 			children = (
-				B30FA99A1AC78B210035C6B3 /* ImageManagerTests.m */,
+				B30FA99A1AC78B210035C6B3 /* MediaManagerImageTests.m */,
+				B37333481ACB5E80001B9780 /* MediaManagerVideoTests.m */,
 				B34788981AB75584009FF25C /* Supporting Files */,
 			);
 			path = "Photo StunnerTests";
@@ -235,8 +252,12 @@
 			isa = PBXGroup;
 			children = (
 				B34788E61AB79651009FF25C /* Library */,
-				B34788E41AB79651009FF25C /* ImageManager.h */,
-				B34788E51AB79651009FF25C /* ImageManager.m */,
+				B34788E41AB79651009FF25C /* MediaManager.h */,
+				B34788E51AB79651009FF25C /* MediaManager.m */,
+				B37333421ACB574A001B9780 /* MediaManager+CMTimeImageKeys.h */,
+				B37333431ACB574A001B9780 /* MediaManager+CMTimeImageKeys.m */,
+				B37333451ACB5755001B9780 /* MediaManager+CMTimeRangeVideoKeys.h */,
+				B37333461ACB5755001B9780 /* MediaManager+CMTimeRangeVideoKeys.m */,
 				B3F2DA2F1AC928F900E96A74 /* StunningImageManager.swift */,
 			);
 			path = Model;
@@ -267,9 +288,14 @@
 		B34788EC1AB79655009FF25C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B37133E71ACC9BD500174A4C /* UICollectionViewVideoCell.h */,
+				B37133E81ACC9BD500174A4C /* UICollectionViewVideoCell.m */,
 				B34788ED1AB79655009FF25C /* UICollectionViewImageCell.h */,
 				B34788EE1AB79655009FF25C /* UICollectionViewImageCell.m */,
 				B34788EF1AB79655009FF25C /* UICollectionViewImageCell.xib */,
+				B3CBC97E1ACDEA1500F840EC /* UICollectionViewHeaderCell.h */,
+				B3CBC97F1ACDEA1500F840EC /* UICollectionViewHeaderCell.m */,
+				B3CBC9801ACDEA1500F840EC /* UICollectionViewHeaderCell.xib */,
 				B3F4604B1ABCB17500B09F7D /* FlashView.h */,
 				B3F4604C1ABCB17500B09F7D /* FlashView.m */,
 			);
@@ -395,6 +421,7 @@
 				B34788E01AB7964C009FF25C /* TapViewController.xib in Resources */,
 				B34789061AB79E2B009FF25C /* 3.mp4 in Resources */,
 				B34789051AB79E2B009FF25C /* 2.mp4 in Resources */,
+				B3CBC9821ACDEA1500F840EC /* UICollectionViewHeaderCell.xib in Resources */,
 				B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */,
 				B38CAF4F1ACA0DE2000D72D6 /* 1.jpg in Resources */,
 				B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */,
@@ -421,11 +448,15 @@
 			files = (
 				B34788F81AB798EA009FF25C /* ALAssetVideoAssetAdapter.m in Sources */,
 				B3F2DA301AC928F900E96A74 /* StunningImageManager.swift in Sources */,
+				B37133EA1ACC9BD500174A4C /* UICollectionViewVideoCell.m in Sources */,
+				B37333471ACB5755001B9780 /* MediaManager+CMTimeRangeVideoKeys.m in Sources */,
+				B3CBC9811ACDEA1500F840EC /* UICollectionViewHeaderCell.m in Sources */,
 				B34788F51AB798DD009FF25C /* AVAssetVideoAssetAdapter.m in Sources */,
 				B34788F01AB79655009FF25C /* UICollectionViewImageCell.m in Sources */,
 				B34788DD1AB7964C009FF25C /* StunningImageViewController.m in Sources */,
-				B34788EA1AB79651009FF25C /* ImageManager.m in Sources */,
+				B34788EA1AB79651009FF25C /* MediaManager.m in Sources */,
 				B34788E11AB7964C009FF25C /* ThumbnailsViewController.m in Sources */,
+				B37333441ACB574A001B9780 /* MediaManager+CMTimeImageKeys.m in Sources */,
 				B34788DF1AB7964C009FF25C /* TapViewController.m in Sources */,
 				B34788DB1AB7964C009FF25C /* LibraryViewController.m in Sources */,
 				B34788841AB75584009FF25C /* AppDelegate.m in Sources */,
@@ -439,7 +470,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B30FA99B1AC78B210035C6B3 /* ImageManagerTests.m in Sources */,
+				B37333491ACB5E80001B9780 /* MediaManagerVideoTests.m in Sources */,
+				B30FA99B1AC78B210035C6B3 /* MediaManagerImageTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

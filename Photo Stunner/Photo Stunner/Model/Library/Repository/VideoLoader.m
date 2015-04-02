@@ -49,7 +49,6 @@ NSString * const VideoLoaderModelChangedNotification = @"videoloader model chang
     dispatch_async(dispatch_get_main_queue(), ^{
         completion (result);
     });
-    
 }
 
 - (NSArray *)videoPathsFromBundle {

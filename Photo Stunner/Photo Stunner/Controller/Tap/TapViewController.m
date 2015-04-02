@@ -7,7 +7,9 @@
 //
 
 #import "TapViewController.h"
-#import "ImageManager.h"
+#import "MediaManager.h"
+#import "MediaManager+CMTimeImageKeys.h"
+#import "MediaManager+CMTimeRangeVideoKeys.h"
 #import "ThumbnailsViewController.h"
 #import "FlashView.h"
 #import "UICollectionViewImageCell.h"
@@ -30,10 +32,12 @@
 @property (nonatomic) AVAssetImageGenerator *previewImageGenerator;
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic) NSMutableArray *previewImages;
-@property (nonatomic) NSMutableArray *tapIndicatorViews;
+@property (nonatomic) NSMutableArray *imageIndicatorViews;
+@property (nonatomic) NSMutableArray *videoIndicatorViews;
 @property (nonatomic) id periodicTimeObserver;
 
-@property (nonatomic) ImageManager *imageManager;
+@property (nonatomic) MediaManager *mediaManager;
+@property (nonatomic) CMTimeRange touchedTimeRange;
 
 @end
 
@@ -45,6 +49,7 @@ static void * PlayerStatusObservingContext = &PlayerStatusObservingContext;
 static void * PlayerRateObservingContext = &PlayerRateObservingContext;
 static NSString * const CellReuseIdentifier = @"cell";
 static const NSUInteger NumberOfPreviewImages = 10;
+#define MaxTapDuration CMTimeMake(1,2)
 
 #pragma mark life cycle
 
@@ -61,7 +66,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     
     [self.previewBarCollectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:ImageManagerSortedTimesChangedNotification object:self.imageManager];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:MediaManagerContentChangedNotification object:self.mediaManager];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -105,14 +110,40 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (IBAction)handleUIGestureRecognizerRecognized:(id)sender {
     
-    // tapped video
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.playbackView) {
+    // touch video
+    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]] && [sender view] == self.playbackView) {
+        UILongPressGestureRecognizer *gr = sender;
         
-        CMTime time = [self.player currentTime];
-        if ([self extractImageAtTime:time]) {
-            [self.flashView flash];
+        // touch down
+        if ([gr state] == UIGestureRecognizerStateBegan) {
+            self.touchedTimeRange = CMTimeRangeMake(self.player.currentTime, kCMTimeIndefinite);
+        }
+        
+        
+        // touch up
+        else if ([gr state] == UIGestureRecognizerStateEnded) {
+            self.touchedTimeRange = CMTimeRangeMake(self.touchedTimeRange.start, CMTimeSubtract(self.player.currentTime, self.touchedTimeRange.start));
+            
+            
+            // extract video
+            if (CMTIME_COMPARE_INLINE(self.touchedTimeRange.duration, >, MaxTapDuration)) {
+                [self extractVideoForTimeRange:self.touchedTimeRange];
+            }
+            
+            
+            // extract image
+            else {
+                CMTime time = [self.player currentTime];
+                if ([self extractImageAtTime:time]) {
+                    [self.flashView flash];
+                }
+            }
         }
 
+        else {
+            // handle this
+        }
+        
     // tapped preview bar
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.previewBarCollectionView){
         
@@ -135,7 +166,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
         
         assert(self.navigationController);
         ThumbnailsViewController *thumbnailsViewController = [ThumbnailsViewController new];
-        [thumbnailsViewController setImageManager:[self imageManager]];
+        [thumbnailsViewController setMediaManager:[self mediaManager]];
         [self.navigationController pushViewController:thumbnailsViewController animated:YES];
     
     // << button
@@ -168,17 +199,38 @@ static const NSUInteger NumberOfPreviewImages = 10;
     }
 }
 
+#pragma mark video generation
+
+- (BOOL)extractVideoForTimeRange:(CMTimeRange)timeRange {
+    
+    NSValue *wrappedTimeRange = [NSValue valueWithCMTimeRange:self.touchedTimeRange];
+    if ([[self.mediaManager sortedVideoKeys] containsObject:wrappedTimeRange]) {
+        return NO;
+    }
+    
+    // make asset
+    AVMutableComposition *composition = [AVMutableComposition composition];
+    NSError *error;
+    [composition insertTimeRange:timeRange ofAsset:self.player.currentItem.asset atTime:kCMTimeZero error:&error];
+    assert (!error);
+    
+    // add to media manager
+    [self.mediaManager addVideo:composition forKey:wrappedTimeRange];
+    
+    return YES;
+}
+
+
 #pragma mark image generation
 
 - (BOOL) extractImageAtTime:(CMTime)time {
+
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
-    
-    if ([[self.imageManager sortedTimes] containsObject:wrappedTime]) {
+    if ([[self.mediaManager sortedImageKeys] containsObject:wrappedTime]) {
         return NO;
     }
     
     __weak typeof (self) weakSelf = self;
-    
     NSArray *times =  @[wrappedTime];
     [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
         if ( result == AVAssetImageGeneratorSucceeded ) {
@@ -189,7 +241,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 assert (CMTIME_COMPARE_INLINE(time, ==, requestedTime));
-                [weakSelf.imageManager addImage:image forTime:time];
+                [weakSelf.mediaManager addImage:image forKey:[NSValue valueWithCMTime:time]];
             });
             
         } else {
@@ -210,29 +262,68 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return _imageGenerator;
 }
 
-- (void) addTapIndicatorView:(NSUInteger)idx {
-    
-    NSValue *wrappedTime = [self.imageManager sortedTimes][idx];
+- (void) addImageIndicatorView:(NSUInteger)idx {
+    NSValue *wrappedTime = [self.mediaManager sortedImageKeys][idx];
     assert (wrappedTime);
     
     CMTime time = [wrappedTime CMTimeValue];
     
-    UIView *tapIndicatorView = [self createTapIndicatorForTime:time];
-    [self.view addSubview:tapIndicatorView];
+    UIView *imageIndicatorView = [self createImageIndicatorViewForTime:time];
+    [self.view addSubview:imageIndicatorView];
     
-    assert ([self tapIndicatorViews]);
-    [self.tapIndicatorViews insertObject:tapIndicatorView atIndex:idx];
+    assert ([self imageIndicatorViews]);
+    [self.imageIndicatorViews insertObject:imageIndicatorView atIndex:idx];
 }
 
-- (void) removeTapIndicatorView:(NSUInteger)idx {
-    UIView *tapIndicatorView = self.tapIndicatorViews[idx];
-    [tapIndicatorView removeFromSuperview];
+- (void) removeImageIndicatorView:(NSUInteger)idx {
+    UIView *imageIndicatorView = self.imageIndicatorViews[idx];
+    [imageIndicatorView removeFromSuperview];
     
-    assert([self tapIndicatorViews]);
-    [self.tapIndicatorViews removeObjectAtIndex:idx];
+    assert([self imageIndicatorViews]);
+    [self.imageIndicatorViews removeObjectAtIndex:idx];
 }
 
-- (UIView *)createTapIndicatorForTime:(CMTime)time {
+- (void) addVideoIndicatorView:(NSUInteger)idx {
+    NSValue *wrappedTimeRange = [self.mediaManager sortedVideoKeys][idx];
+    assert (wrappedTimeRange);
+    
+    CMTimeRange timeRange = [wrappedTimeRange CMTimeRangeValue];
+    
+    UIView *videoIndicatorView = [self createVideoIndicatorViewForTimeRange:timeRange];
+    [self.view addSubview:videoIndicatorView];
+    
+    assert ([self videoIndicatorViews]);
+    [self.videoIndicatorViews insertObject:videoIndicatorView atIndex:idx];
+}
+
+- (void) removeVideoIndicatorView:(NSUInteger)idx {
+    UIView *videoIndicatorView = self.videoIndicatorViews[idx];
+    [videoIndicatorView removeFromSuperview];
+    
+    assert([self videoIndicatorViews]);
+    [self.videoIndicatorViews removeObjectAtIndex:idx];
+}
+
+- (UIView *)createVideoIndicatorViewForTimeRange:(CMTimeRange)timeRange {
+    CMTime vidLength = [self.player.currentItem duration];
+    Float64 startPercent = CMTimeGetSeconds(timeRange.start) / CMTimeGetSeconds(vidLength);
+    Float64 endPercent = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange)) / CMTimeGetSeconds(vidLength);
+    
+    CGRect previewBarCollectionViewFrame = [self.previewBarCollectionView frame];
+    CGFloat width = (endPercent - startPercent) * previewBarCollectionViewFrame.size.width;
+    CGFloat height = 3.0f;
+    CGFloat x = (previewBarCollectionViewFrame.origin.x + startPercent * previewBarCollectionViewFrame.size.width);
+    CGFloat y = CGRectGetMidY(previewBarCollectionViewFrame) - (0.5 * height);
+    
+    CGRect frame = CGRectMake(x, y, width, height);
+    
+    UIView *result = [[UIView alloc] initWithFrame:frame];
+    [result setBackgroundColor:[UIColor whiteColor]];
+    
+    return result;
+}
+
+- (UIView *)createImageIndicatorViewForTime:(CMTime)time {
     CMTime vidLength = [self.player.currentItem duration];
     Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds(vidLength);
     
@@ -244,24 +335,31 @@ static const NSUInteger NumberOfPreviewImages = 10;
     
     CGRect frame = CGRectMake(x, y, width, height);
     
-    UIView *photoIndicatorView = [[UIView alloc] initWithFrame:frame];
-    [photoIndicatorView setBackgroundColor:[UIColor whiteColor]];
+    UIView *result = [[UIView alloc] initWithFrame:frame];
+    [result setBackgroundColor:[UIColor whiteColor]];
     
-    return photoIndicatorView;
+    return result;
 }
 
--(NSMutableArray *)tapIndicatorViews {
-    if (!_tapIndicatorViews) {
-        _tapIndicatorViews = [NSMutableArray new];
+-(NSMutableArray *)imageIndicatorViews {
+    if (!_imageIndicatorViews) {
+        _imageIndicatorViews = [NSMutableArray new];
     }
-    return _tapIndicatorViews;
+    return _imageIndicatorViews;
 }
 
-- (ImageManager *)imageManager {
-    if (!_imageManager) {
-        _imageManager = [ImageManager new];
+- (NSMutableArray *)videoIndicatorViews {
+    if (!_videoIndicatorViews) {
+        _videoIndicatorViews = [NSMutableArray new];
     }
-    return _imageManager;
+    return _videoIndicatorViews;
+}
+
+- (MediaManager *)mediaManager {
+    if (!_mediaManager) {
+        _mediaManager = [MediaManager new];
+    }
+    return _mediaManager;
 }
 
 #pragma mark preview images
@@ -442,29 +540,62 @@ static const NSUInteger NumberOfPreviewImages = 10;
 #pragma mark observer methods
 
 - (void)handleNotification:(NSNotification *)notification {
-    if ([notification name] == ImageManagerSortedTimesChangedNotification) {
-        assert ([notification object] == [self imageManager]);
+    if ([notification name] == MediaManagerContentChangedNotification) {
+        assert ([notification object] == [self mediaManager]);
         NSDictionary *userInfo = [notification userInfo];
-        NSNumber *changedIndex;
         
-        // if the user deletes all the images, come back to the tap screen to get more
-        if (![[self.imageManager sortedTimes] count]) {
-            [self.navigationController popToViewController:self animated:YES];
+        id key = userInfo[MediaManagerContentKey]; assert (key);
+        NSString *contentType = userInfo[MediaManagerContentTypeKey]; assert (contentType);
+        NSNumber *changeTypeNum = userInfo[MediaManagerContentChangeTypeKey]; assert (changeTypeNum);
+        
+        MediaManagerContentChangeType changeType = [changeTypeNum unsignedIntValue];
+        
+        // video
+        if ([MediaManagerContentTypeVideo isEqualToString:contentType]) {
+            
+            // added
+            if (MediaManagerContentChangeAdd == changeType) {
+                NSUInteger idx = [self.mediaManager indexOfAddedVideoKey:key];
+                [self addVideoIndicatorView:idx];
+                
+            // removed
+            } else if (MediaManagerContentChangeRemove == changeType) {
+                NSUInteger idx = [self.mediaManager indexOfRemovedVideoKey:key];
+                [self removeVideoIndicatorView:idx];
+                
+            } else {
+                assert (NO);
+            }
         }
         
-        if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesAddedIndexKey]) ) {
-            NSUInteger idx = [changedIndex unsignedIntegerValue];
-            [self addTapIndicatorView:idx];
-
-        } else if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesRemovedIndexKey]) ) {
-            NSUInteger idx = [changedIndex unsignedIntegerValue];
-            [self removeTapIndicatorView:idx];
+        // image
+        else if ([MediaManagerContentTypeImage isEqualToString:contentType]) {
+            
+            // added
+            if (MediaManagerContentChangeAdd == changeType) {
+                NSUInteger idx = [self.mediaManager indexOfAddedImageKey:key];
+                [self addImageIndicatorView:idx];
+                
+            // removed
+            } else if (MediaManagerContentChangeRemove == changeType) {
+                NSUInteger idx = [self.mediaManager indexOfRemovedImageKey:key];
+                [self removeImageIndicatorView:idx];
+                
+            } else {
+                assert (NO);
+            }
             
         } else {
             assert (NO);
         }
         
-        BOOL rightBarButtonItemEnabled = [[self.imageManager sortedTimes] count] > 0;
+        // if the user deletes all media, come back to the tap screen to get more
+        if (![[self.mediaManager sortedImageKeys] count] && ![[self.mediaManager sortedVideoKeys] count]) {
+            [self.navigationController popToViewController:self animated:YES];
+        }
+        
+        // don't go to the next screen if there are no photos/videos pulled out
+        BOOL rightBarButtonItemEnabled = ([[self.mediaManager sortedImageKeys] count] + [[self.mediaManager sortedVideoKeys] count]) > 0;
         [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];
         
     } else {
