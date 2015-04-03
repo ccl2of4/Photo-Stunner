@@ -45,6 +45,7 @@
 		B3CBC9821ACDEA1500F840EC /* UICollectionViewHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3CBC9801ACDEA1500F840EC /* UICollectionViewHeaderCell.xib */; };
 		B3F2DA301AC928F900E96A74 /* StunningImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2DA2F1AC928F900E96A74 /* StunningImageManager.swift */; };
 		B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F4604C1ABCB17500B09F7D /* FlashView.m */; };
+		B3FFD82E1ACF2D8000E28F0A /* PreviewBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3FFD82D1ACF2D8000E28F0A /* PreviewBarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +118,8 @@
 		B3F2DA311AC92C9000E96A74 /* Photo Stunner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Photo Stunner-Bridging-Header.h"; sourceTree = "<group>"; };
 		B3F4604B1ABCB17500B09F7D /* FlashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashView.h; sourceTree = "<group>"; };
 		B3F4604C1ABCB17500B09F7D /* FlashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashView.m; sourceTree = "<group>"; };
+		B3FFD82C1ACF2D8000E28F0A /* PreviewBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewBarView.h; sourceTree = "<group>"; };
+		B3FFD82D1ACF2D8000E28F0A /* PreviewBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewBarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -312,6 +315,8 @@
 				B3CBC9801ACDEA1500F840EC /* UICollectionViewHeaderCell.xib */,
 				B3F4604B1ABCB17500B09F7D /* FlashView.h */,
 				B3F4604C1ABCB17500B09F7D /* FlashView.m */,
+				B3FFD82C1ACF2D8000E28F0A /* PreviewBarView.h */,
+				B3FFD82D1ACF2D8000E28F0A /* PreviewBarView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -476,6 +481,7 @@
 				B34788DB1AB7964C009FF25C /* LibraryViewController.m in Sources */,
 				B34788841AB75584009FF25C /* AppDelegate.m in Sources */,
 				B34788EB1AB79651009FF25C /* VideoLoader.m in Sources */,
+				B3FFD82E1ACF2D8000E28F0A /* PreviewBarView.m in Sources */,
 				B34788811AB75584009FF25C /* main.m in Sources */,
 				B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */,
 				B31502DF1ACE0269007A9755 /* PreviewViewController.swift in Sources */,
