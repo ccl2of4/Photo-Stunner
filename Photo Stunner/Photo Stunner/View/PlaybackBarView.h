@@ -9,25 +9,28 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface PreviewBarView : UIView
+@interface PlaybackBarView : UIView
 
 @property (nonatomic) CMTime videoDuration;
 
-
+// preview images
 @property (nonatomic) NSUInteger numberOfPreviewImages;
 - (void) setPreviewImage:(UIImage *)image atIndex:(NSUInteger)index;
 
-
+// image indicators
 @property (nonatomic, readonly) NSArray *imageIndicatorTimes;
 - (void) addImageIndicatorForTime:(CMTime)time;
 - (void) removeImageIndicatorForTime:(CMTime)time;
 
-
+// video indicators
 @property (nonatomic, readonly) NSArray *videoIndicatorTimeRanges;
 - (void) addVideoIndicatorForTimeRange:(CMTimeRange)timeRange;
 - (void) addVideoIndicatorForStartTime:(CMTime)startTime
                              updateBlock:(BOOL(^)(CMTime currentDuration))updateBlock
                          updateFrequency:(float)seconds;
 - (void) removeVideoIndicatorForTimeRange:(CMTimeRange)timeRange;
+
+// tracking playback
+@property (nonatomic) CMTime currentTime;
 
 @end

@@ -6,18 +6,19 @@
 //  Copyright (c) 2015 Connor Lirot. All rights reserved.
 //
 
-#import "PreviewBarView.h"
+#import "PlaybackBarView.h"
 
-@interface PreviewBarView ()
+@interface PlaybackBarView ()
 
 @property (nonatomic) NSMutableArray *imageViews;
+@property (nonatomic) UIView *trackerView;
 
 @property (nonatomic) NSMutableDictionary *imageIndicatorViews;
 @property (nonatomic) NSMutableDictionary *videoIndicatorViews;
 
 @end
 
-@implementation PreviewBarView
+@implementation PlaybackBarView
 
 #pragma mark life cycle
 
@@ -169,6 +170,36 @@
     
     [indicatorView removeFromSuperview];
     self.videoIndicatorViews[wrappedTimeRange] = nil;
+}
+
+- (void)setCurrentTime:(CMTime)currentTime {
+    Float64 percent = CMTimeGetSeconds(currentTime) / CMTimeGetSeconds([self videoDuration]);
+    
+    CGRect frame = [self.trackerView frame];
+    frame.origin.x = ([self bounds].origin.x + percent * [self bounds].size.width) - (0.5 * frame.size.width);
+    [self.trackerView setFrame:frame];
+    
+    _currentTime = currentTime;
+}
+
+- (UIView *)trackerView {
+    if (!_trackerView) {
+
+    CGFloat width = 2.0f;
+    CGFloat height = [self bounds].size.height;
+    CGFloat x = [self bounds].origin.x - (0.5 * width);
+    CGFloat y = [self bounds].origin.y;
+    
+    CGRect frame = CGRectMake(x, y, width, height);
+    
+    UIView *trackerView = [[UIView alloc] initWithFrame:frame];
+    [trackerView setBackgroundColor:[UIColor whiteColor]];
+    [self addSubview:trackerView];
+        
+        _trackerView = trackerView;
+    }
+    
+    return _trackerView;
 }
 
 @end

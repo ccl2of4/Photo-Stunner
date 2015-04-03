@@ -13,20 +13,19 @@
 #import "ThumbnailsViewController.h"
 #import "FlashView.h"
 #import "UICollectionViewImageCell.h"
-#import "PreviewBarView.h"
+#import "PlaybackBarView.h"
 #import <AVFoundation/AVFoundation.h>
 
 @interface TapViewController () <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *playbackView;
 @property (weak, nonatomic) IBOutlet UIView *playerLayerView;
-@property (weak, nonatomic) IBOutlet PreviewBarView *previewBarView;
+@property (weak, nonatomic) IBOutlet PlaybackBarView *previewBarView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIButton *backStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *forwardStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) FlashView *flashView;
-@property (weak, nonatomic) UIView *playbackTrackerView;
 @property (weak, nonatomic) AVPlayerLayer *playerLayer;
 
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
@@ -63,12 +62,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [self.imageView setImage:[self.videoAsset thumbnail]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:MediaManagerContentChangedNotification object:self.mediaManager];
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [self playbackTrackerView];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -322,13 +315,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     if (enabled) {
         assert (![self periodicTimeObserver]);
         self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 100) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-            CMTime vidLength = [weakSelf.player.currentItem duration];
-            Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds(vidLength);
-            
-            CGRect frame = [weakSelf.playbackTrackerView frame];
-            CGRect previewBarCollectionViewFrame = [weakSelf.previewBarView frame];
-            frame.origin.x = (previewBarCollectionViewFrame.origin.x + percent * previewBarCollectionViewFrame.size.width) - (0.5 * frame.size.width);
-            [weakSelf.playbackTrackerView setFrame:frame];
+            [weakSelf.previewBarView setCurrentTime:time];
         }];
     }
     
@@ -376,25 +363,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
         _flashView = flashView;
     }
     return _flashView;
-}
-
-- (UIView *)playbackTrackerView {
-    if (!_playbackTrackerView) {
-        CGRect previewBarCollectionViewFrame = [self.previewBarView frame];
-        CGFloat width = 2.0f;
-        CGFloat height = previewBarCollectionViewFrame.size.height;
-        CGFloat x = previewBarCollectionViewFrame.origin.x - (0.5 * width);
-        CGFloat y = previewBarCollectionViewFrame.origin.y;
-        
-        CGRect frame = CGRectMake(x, y, width, height);
-        
-        UIView *playbackTrackerView = [[UIView alloc] initWithFrame:frame];
-        [playbackTrackerView setBackgroundColor:[UIColor whiteColor]];
-        [self.view addSubview:playbackTrackerView];
-        
-        _playbackTrackerView = playbackTrackerView;
-    }
-    return _playbackTrackerView;
 }
 
 - (CMTime) timePerFrame {
