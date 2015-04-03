@@ -19,7 +19,6 @@
 		B34788DD1AB7964C009FF25C /* StunningImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788D11AB7964C009FF25C /* StunningImageViewController.m */; };
 		B34788DE1AB7964C009FF25C /* StunningImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788D21AB7964C009FF25C /* StunningImageViewController.xib */; };
 		B34788DF1AB7964C009FF25C /* TapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788D51AB7964C009FF25C /* TapViewController.m */; };
-		B34788E01AB7964C009FF25C /* TapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788D61AB7964C009FF25C /* TapViewController.xib */; };
 		B34788E11AB7964C009FF25C /* ThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788D91AB7964C009FF25C /* ThumbnailsViewController.m */; };
 		B34788E21AB7964C009FF25C /* ThumbnailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788DA1AB7964C009FF25C /* ThumbnailsViewController.xib */; };
 		B34788EA1AB79651009FF25C /* MediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788E51AB79651009FF25C /* MediaManager.m */; };
@@ -46,6 +45,7 @@
 		B3F2DA301AC928F900E96A74 /* StunningImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2DA2F1AC928F900E96A74 /* StunningImageManager.swift */; };
 		B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F4604C1ABCB17500B09F7D /* FlashView.m */; };
 		B3FFD82E1ACF2D8000E28F0A /* PreviewBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3FFD82D1ACF2D8000E28F0A /* PreviewBarView.m */; };
+		B3FFD8301ACF416200E28F0A /* TapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3FFD82F1ACF416200E28F0A /* TapViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,7 +79,6 @@
 		B34788D21AB7964C009FF25C /* StunningImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StunningImageViewController.xib; sourceTree = "<group>"; };
 		B34788D41AB7964C009FF25C /* TapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapViewController.h; sourceTree = "<group>"; };
 		B34788D51AB7964C009FF25C /* TapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapViewController.m; sourceTree = "<group>"; };
-		B34788D61AB7964C009FF25C /* TapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapViewController.xib; sourceTree = "<group>"; };
 		B34788D81AB7964C009FF25C /* ThumbnailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailsViewController.h; sourceTree = "<group>"; };
 		B34788D91AB7964C009FF25C /* ThumbnailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailsViewController.m; sourceTree = "<group>"; };
 		B34788DA1AB7964C009FF25C /* ThumbnailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailsViewController.xib; sourceTree = "<group>"; };
@@ -120,6 +119,7 @@
 		B3F4604C1ABCB17500B09F7D /* FlashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashView.m; sourceTree = "<group>"; };
 		B3FFD82C1ACF2D8000E28F0A /* PreviewBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewBarView.h; sourceTree = "<group>"; };
 		B3FFD82D1ACF2D8000E28F0A /* PreviewBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewBarView.m; sourceTree = "<group>"; };
+		B3FFD82F1ACF416200E28F0A /* TapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,7 +250,7 @@
 			children = (
 				B34788D41AB7964C009FF25C /* TapViewController.h */,
 				B34788D51AB7964C009FF25C /* TapViewController.m */,
-				B34788D61AB7964C009FF25C /* TapViewController.xib */,
+				B3FFD82F1ACF416200E28F0A /* TapViewController.xib */,
 			);
 			path = Tap;
 			sourceTree = "<group>";
@@ -435,9 +435,9 @@
 				B34788DE1AB7964C009FF25C /* StunningImageViewController.xib in Resources */,
 				B34788E21AB7964C009FF25C /* ThumbnailsViewController.xib in Resources */,
 				B37F22401ABE2AAD009FB9CC /* Localizable.strings in Resources */,
+				B3FFD8301ACF416200E28F0A /* TapViewController.xib in Resources */,
 				B34789091AB79E2B009FF25C /* 6.mp4 in Resources */,
 				B38CAF521ACA0DE2000D72D6 /* 2.jpg in Resources */,
-				B34788E01AB7964C009FF25C /* TapViewController.xib in Resources */,
 				B34789061AB79E2B009FF25C /* 3.mp4 in Resources */,
 				B34789051AB79E2B009FF25C /* 2.mp4 in Resources */,
 				B3CBC9821ACDEA1500F840EC /* UICollectionViewHeaderCell.xib in Resources */,

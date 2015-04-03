@@ -13,14 +13,15 @@
 #import "ThumbnailsViewController.h"
 #import "FlashView.h"
 #import "UICollectionViewImageCell.h"
+#import "PreviewBarView.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface TapViewController () <UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UIGestureRecognizerDelegate>
+@interface TapViewController () <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *playbackView;
 @property (weak, nonatomic) IBOutlet UIView *playerLayerView;
+@property (weak, nonatomic) IBOutlet PreviewBarView *previewBarView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UICollectionView *previewBarCollectionView;
 @property (weak, nonatomic) IBOutlet UIButton *backStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *forwardStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
@@ -31,9 +32,6 @@
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic) AVAssetImageGenerator *previewImageGenerator;
 @property (nonatomic) AVPlayer *player;
-@property (nonatomic) NSMutableArray *previewImages;
-@property (nonatomic) NSMutableArray *imageIndicatorViews;
-@property (nonatomic) NSMutableArray *videoIndicatorViews;
 @property (nonatomic) id periodicTimeObserver;
 
 @property (nonatomic) MediaManager *mediaManager;
@@ -64,17 +62,11 @@ static const NSUInteger NumberOfPreviewImages = 10;
     
     [self.imageView setImage:[self.videoAsset thumbnail]];
     
-    [self.previewBarCollectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:MediaManagerContentChangedNotification object:self.mediaManager];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    if (![self previewImages]) {
-        [self generatePreviewImages];
-    }
     
     [self playbackTrackerView];
 }
@@ -84,6 +76,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     
     dispatch_once(&_firstVisitToken, ^{
         [self.player play];
+        [self generatePreviewImages];
     });
     
     [self setPeriodicTimeObserverEnabled:YES];
@@ -102,8 +95,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.imageGenerator cancelAllCGImageGeneration];
     [self.previewImageGenerator cancelAllCGImageGeneration];
-    [self.previewBarCollectionView setDelegate:nil];
-    [self.previewBarCollectionView setDataSource:nil];
 }
 
 #pragma mark UI events
@@ -143,17 +134,16 @@ static const NSUInteger NumberOfPreviewImages = 10;
         else {
             // handle this
         }
-        
+       
     // tapped preview bar
-    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.previewBarCollectionView){
+    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.previewBarView){
         
-        CGPoint location = [sender locationInView:self.previewBarCollectionView];
-        CGFloat percent = location.x / self.previewBarCollectionView.bounds.size.width;
+        CGPoint location = [sender locationInView:self.previewBarView];
+        CGFloat percent = location.x / self.previewBarView.bounds.size.width;
         CMTime soughtTime = CMTimeMultiplyByFloat64([self.player.currentItem duration], percent);
         
         [self.player pause];
         [self.player seekToTime:soughtTime];
-        
     } else {
         assert (NO);
     }
@@ -262,99 +252,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return _imageGenerator;
 }
 
-- (void) addImageIndicatorView:(NSUInteger)idx {
-    NSValue *wrappedTime = [self.mediaManager sortedImageKeys][idx];
-    assert (wrappedTime);
-    
-    CMTime time = [wrappedTime CMTimeValue];
-    
-    UIView *imageIndicatorView = [self createImageIndicatorViewForTime:time];
-    [self.view addSubview:imageIndicatorView];
-    
-    assert ([self imageIndicatorViews]);
-    [self.imageIndicatorViews insertObject:imageIndicatorView atIndex:idx];
-}
-
-- (void) removeImageIndicatorView:(NSUInteger)idx {
-    UIView *imageIndicatorView = self.imageIndicatorViews[idx];
-    [imageIndicatorView removeFromSuperview];
-    
-    assert([self imageIndicatorViews]);
-    [self.imageIndicatorViews removeObjectAtIndex:idx];
-}
-
-- (void) addVideoIndicatorView:(NSUInteger)idx {
-    NSValue *wrappedTimeRange = [self.mediaManager sortedVideoKeys][idx];
-    assert (wrappedTimeRange);
-    
-    CMTimeRange timeRange = [wrappedTimeRange CMTimeRangeValue];
-    
-    UIView *videoIndicatorView = [self createVideoIndicatorViewForTimeRange:timeRange];
-    [self.view addSubview:videoIndicatorView];
-    
-    assert ([self videoIndicatorViews]);
-    [self.videoIndicatorViews insertObject:videoIndicatorView atIndex:idx];
-}
-
-- (void) removeVideoIndicatorView:(NSUInteger)idx {
-    UIView *videoIndicatorView = self.videoIndicatorViews[idx];
-    [videoIndicatorView removeFromSuperview];
-    
-    assert([self videoIndicatorViews]);
-    [self.videoIndicatorViews removeObjectAtIndex:idx];
-}
-
-- (UIView *)createVideoIndicatorViewForTimeRange:(CMTimeRange)timeRange {
-    CMTime vidLength = [self.player.currentItem duration];
-    Float64 startPercent = CMTimeGetSeconds(timeRange.start) / CMTimeGetSeconds(vidLength);
-    Float64 endPercent = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange)) / CMTimeGetSeconds(vidLength);
-    
-    CGRect previewBarCollectionViewFrame = [self.previewBarCollectionView frame];
-    CGFloat width = (endPercent - startPercent) * previewBarCollectionViewFrame.size.width;
-    CGFloat height = 3.0f;
-    CGFloat x = (previewBarCollectionViewFrame.origin.x + startPercent * previewBarCollectionViewFrame.size.width);
-    CGFloat y = CGRectGetMidY(previewBarCollectionViewFrame) - (0.5 * height);
-    
-    CGRect frame = CGRectMake(x, y, width, height);
-    
-    UIView *result = [[UIView alloc] initWithFrame:frame];
-    [result setBackgroundColor:[UIColor whiteColor]];
-    
-    return result;
-}
-
-- (UIView *)createImageIndicatorViewForTime:(CMTime)time {
-    CMTime vidLength = [self.player.currentItem duration];
-    Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds(vidLength);
-    
-    CGRect previewBarCollectionViewFrame = [self.previewBarCollectionView frame];
-    CGFloat width = 3.0f;
-    CGFloat height = 3.0f;
-    CGFloat x = (previewBarCollectionViewFrame.origin.x + percent * previewBarCollectionViewFrame.size.width) - (0.5 * width);
-    CGFloat y = CGRectGetMidY(previewBarCollectionViewFrame) - (0.5 * height);
-    
-    CGRect frame = CGRectMake(x, y, width, height);
-    
-    UIView *result = [[UIView alloc] initWithFrame:frame];
-    [result setBackgroundColor:[UIColor whiteColor]];
-    
-    return result;
-}
-
--(NSMutableArray *)imageIndicatorViews {
-    if (!_imageIndicatorViews) {
-        _imageIndicatorViews = [NSMutableArray new];
-    }
-    return _imageIndicatorViews;
-}
-
-- (NSMutableArray *)videoIndicatorViews {
-    if (!_videoIndicatorViews) {
-        _videoIndicatorViews = [NSMutableArray new];
-    }
-    return _videoIndicatorViews;
-}
-
 - (MediaManager *)mediaManager {
     if (!_mediaManager) {
         _mediaManager = [MediaManager new];
@@ -365,21 +262,19 @@ static const NSUInteger NumberOfPreviewImages = 10;
 #pragma mark preview images
 
 - (void)generatePreviewImages {
-    assert (![self previewImages]);
-    
-    self.previewImages = [NSMutableArray new];
-    
     NSArray *times = [self timesForPreviewImages];
+    [self.previewBarView setNumberOfPreviewImages:[times count]];
+    [self.previewBarView setVideoDuration:CMTimeMakeWithSeconds([self.videoAsset duration], 30)];
     
     [self.previewImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
         
         // even if the generation was unsuccessful, add a UIImage as a placeholder
         UIImage *image = [UIImage imageWithCGImage:cgimg];
+        NSValue *wrappedTime = [NSValue valueWithCMTime:requestedTime];
+        NSUInteger idx = [times indexOfObject:wrappedTime];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.previewImages addObject:image];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self.previewImages indexOfObject:image] inSection:0];
-            [self.previewBarCollectionView insertItemsAtIndexPaths:@[indexPath]];
+            [self.previewBarView setPreviewImage:image atIndex:idx];
         });
     }];
 }
@@ -398,7 +293,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
 }
 
 - (CGSize)maximumSizeForPreviewImages {
-    CGSize size = self.previewBarCollectionView.bounds.size;
+    CGSize size = self.previewBarView.bounds.size;
     size.width /= NumberOfPreviewImages;
     return size;
 }
@@ -431,7 +326,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
             Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds(vidLength);
             
             CGRect frame = [weakSelf.playbackTrackerView frame];
-            CGRect previewBarCollectionViewFrame = [weakSelf.previewBarCollectionView frame];
+            CGRect previewBarCollectionViewFrame = [weakSelf.previewBarView frame];
             frame.origin.x = (previewBarCollectionViewFrame.origin.x + percent * previewBarCollectionViewFrame.size.width) - (0.5 * frame.size.width);
             [weakSelf.playbackTrackerView setFrame:frame];
         }];
@@ -485,7 +380,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (UIView *)playbackTrackerView {
     if (!_playbackTrackerView) {
-        CGRect previewBarCollectionViewFrame = [self.previewBarCollectionView frame];
+        CGRect previewBarCollectionViewFrame = [self.previewBarView frame];
         CGFloat width = 2.0f;
         CGFloat height = previewBarCollectionViewFrame.size.height;
         CGFloat x = previewBarCollectionViewFrame.origin.x - (0.5 * width);
@@ -509,34 +404,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return timePerFrame;
 }
 
-#pragma mark UICollectionViewDelegate/UICollectionViewDataSouce methods
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
-    
-    UIImage *image = self.previewImages[indexPath.item];
-    
-    assert (cell);
-    assert (image);
-    
-    [cell.imageView setImage:image];
-    
-    return cell;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.previewImages count];
-}
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
-}
-
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize size = [self maximumSizeForPreviewImages];
-    return size;
-}
-
 #pragma mark observer methods
 
 - (void)handleNotification:(NSNotification *)notification {
@@ -555,13 +422,11 @@ static const NSUInteger NumberOfPreviewImages = 10;
             
             // added
             if (MediaManagerContentChangeAdd == changeType) {
-                NSUInteger idx = [self.mediaManager indexOfAddedVideoKey:key];
-                [self addVideoIndicatorView:idx];
+                [self.previewBarView addVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
                 
             // removed
             } else if (MediaManagerContentChangeRemove == changeType) {
-                NSUInteger idx = [self.mediaManager indexOfRemovedVideoKey:key];
-                [self removeVideoIndicatorView:idx];
+                [self.previewBarView removeVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
                 
             } else {
                 assert (NO);
@@ -573,13 +438,11 @@ static const NSUInteger NumberOfPreviewImages = 10;
             
             // added
             if (MediaManagerContentChangeAdd == changeType) {
-                NSUInteger idx = [self.mediaManager indexOfAddedImageKey:key];
-                [self addImageIndicatorView:idx];
+                [self.previewBarView addImageIndicatorForTime:[key CMTimeValue]];
                 
             // removed
             } else if (MediaManagerContentChangeRemove == changeType) {
-                NSUInteger idx = [self.mediaManager indexOfRemovedImageKey:key];
-                [self removeImageIndicatorView:idx];
+                [self.previewBarView removeImageIndicatorForTime:[key CMTimeValue]];
                 
             } else {
                 assert (NO);

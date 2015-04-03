@@ -44,6 +44,7 @@
         CGFloat x = startX + idx * width;
         frame.size = CGSizeMake(width, height);
         frame.origin = CGPointMake(x,y);
+        [imageView setFrame:frame];
     }];
 }
 
@@ -62,13 +63,21 @@
     // populate the array with the appropriate number of image views
     NSMutableArray *newImageViews = [NSMutableArray new];
     NSRange reusedRange = NSMakeRange(0, MIN(numberOfPreviewImages,[self.imageViews count]));
+    NSRange discardedRange = NSMakeRange(reusedRange.length, [self.imageViews count] - reusedRange.length);
     NSRange newRange = NSMakeRange(reusedRange.length, numberOfPreviewImages - reusedRange.length);
 
     [[NSIndexSet indexSetWithIndexesInRange:reusedRange] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         [newImageViews addObject:self.imageViews[idx]];
     }];
+    [[NSIndexSet indexSetWithIndexesInRange:discardedRange] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [self.imageViews[idx] removeFromSuperview];
+    }];
     [[NSIndexSet indexSetWithIndexesInRange:newRange] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        [newImageViews addObject:[UIImageView new]];
+        UIImageView *imageView = [UIImageView new];
+        [imageView setContentMode:UIViewContentModeScaleAspectFill];
+        [imageView setClipsToBounds:YES];
+        [newImageViews addObject:imageView];
+        [self addSubview:imageView];
     }];
     
     self.imageViews = newImageViews;
