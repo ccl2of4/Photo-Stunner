@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B30FA99B1AC78B210035C6B3 /* MediaManagerImageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FA99A1AC78B210035C6B3 /* MediaManagerImageTests.m */; };
+		B31502DF1ACE0269007A9755 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31502DD1ACE0269007A9755 /* PreviewViewController.swift */; };
+		B31502E01ACE0269007A9755 /* PreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B31502DE1ACE0269007A9755 /* PreviewViewController.xib */; };
 		B34788811AB75584009FF25C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788801AB75584009FF25C /* main.m */; };
 		B34788841AB75584009FF25C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788831AB75584009FF25C /* AppDelegate.m */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
@@ -57,6 +59,8 @@
 
 /* Begin PBXFileReference section */
 		B30FA99A1AC78B210035C6B3 /* MediaManagerImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManagerImageTests.m; sourceTree = "<group>"; };
+		B31502DD1ACE0269007A9755 /* PreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		B31502DE1ACE0269007A9755 /* PreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewViewController.xib; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B34788801AB75584009FF25C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -133,6 +137,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B31502D71ACE01FD007A9755 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				B31502DD1ACE0269007A9755 /* PreviewViewController.swift */,
+				B31502DE1ACE0269007A9755 /* PreviewViewController.xib */,
+			);
+			path = Preview;
+			sourceTree = "<group>";
+		};
 		B34788721AB75584009FF25C = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +217,7 @@
 				B34788CF1AB7964C009FF25C /* StunningImage */,
 				B34788D31AB7964C009FF25C /* Tap */,
 				B34788D71AB7964C009FF25C /* Thumbnails */,
+				B31502D71ACE01FD007A9755 /* Preview */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -427,6 +441,7 @@
 				B34788F11AB79655009FF25C /* UICollectionViewImageCell.xib in Resources */,
 				B34789041AB79E2B009FF25C /* 1.mp4 in Resources */,
 				B34789081AB79E2B009FF25C /* 5.mp4 in Resources */,
+				B31502E01ACE0269007A9755 /* PreviewViewController.xib in Resources */,
 				B347888C1AB75584009FF25C /* Images.xcassets in Resources */,
 				B34788DC1AB7964C009FF25C /* LibraryViewController.xib in Resources */,
 			);
@@ -463,6 +478,7 @@
 				B34788EB1AB79651009FF25C /* VideoLoader.m in Sources */,
 				B34788811AB75584009FF25C /* main.m in Sources */,
 				B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */,
+				B31502DF1ACE0269007A9755 /* PreviewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

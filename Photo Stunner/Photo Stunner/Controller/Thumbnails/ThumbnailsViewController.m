@@ -13,6 +13,7 @@
 #import "StunningImageViewController.h"
 #import "UICollectionViewImageCell.h"
 #import "UICollectionViewHeaderCell.h"
+#import "Photo_Stunner-Swift.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -35,16 +36,30 @@ static NSString * const ImageSection = @"image section";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)];
+    [rightBarButtonItem setEnabled:!![[self.mediaManager allVideoKeys] count]];
+    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewHeaderCell" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HeaderReuseIdentifier];
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:MediaManagerContentChangedNotification object:self.mediaManager];
 }
 
--(void)dealloc {
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.collectionView setDelegate:nil];
     [self.collectionView setDataSource:nil];
+}
+
+#pragma mark UI events
+
+- (void)handleUIControlEventTouchUpInside:(id)sender {
+    PreviewViewController *vc = [[PreviewViewController alloc] initWithNibName:@"PreviewViewController" bundle:nil];
+    [vc setMediaManager:[self mediaManager]];
+    
+    assert ([self navigationController]);
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark UICollectionViewDelegate/UICollectionViewDataSource methods
@@ -257,6 +272,10 @@ static NSString * const ImageSection = @"image section";
         } else {
             assert (NO);
         }
+        
+        // don't go to the next screen if there are no videos
+        BOOL rightBarButtonItemEnabled = [[self.mediaManager sortedVideoKeys] count] > 0;
+        [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];
         
     } else {
         assert (NO);

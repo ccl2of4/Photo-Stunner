@@ -424,14 +424,14 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
 - (void)addVideo:(AVAsset *)video completion:(void(^)(AVAsset *video, NSString *filePath))completion {
     dispatch_async([[self class] fileIOQueue], ^{
         
-        NSString *filePath = [[self class] freshFilePathWithExtension:@"m4a"];
+        NSString *filePath = [[self class] freshFilePathWithExtension:@"mov"];
         
         AVAssetExportSession *exportSession = [AVAssetExportSession
                                                exportSessionWithAsset:video
-                                               presetName:AVAssetExportPresetAppleM4A];
+                                               presetName:AVAssetExportPresetPassthrough];
         
         exportSession.outputURL = [NSURL fileURLWithPath:filePath];
-        exportSession.outputFileType = AVFileTypeAppleM4A;
+        exportSession.outputFileType = AVFileTypeQuickTimeMovie;
         
         [exportSession exportAsynchronouslyWithCompletionHandler:^{
             
