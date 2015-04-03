@@ -64,12 +64,12 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:MediaManagerContentChangedNotification object:self.mediaManager];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     dispatch_once(&_firstVisitToken, ^{
-        [self.player play];
         [self generatePreviewImages];
+        [self.player play];
     });
     
     [self setPeriodicTimeObserverEnabled:YES];
@@ -256,7 +256,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (void)generatePreviewImages {
     NSArray *times = [self timesForPreviewImages];
-    [self.previewBarView setNumberOfPreviewImages:[times count]];
+    [self.previewBarView setNumberOfPreviewImages:NumberOfPreviewImages];
     [self.previewBarView setVideoDuration:CMTimeMakeWithSeconds([self.videoAsset duration], 30)];
     
     [self.previewImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
@@ -287,7 +287,10 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (CGSize)maximumSizeForPreviewImages {
     CGSize size = self.previewBarView.bounds.size;
-    size.width /= NumberOfPreviewImages;
+    
+    // don't restrict the width because images are frequently wider than they are tall
+    // and we use UIViewContentModeScaleAspectFill
+    
     return size;
 }
 

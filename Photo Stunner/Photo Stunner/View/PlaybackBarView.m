@@ -22,12 +22,24 @@
 
 #pragma mark life cycle
 
+- (void) commonInit {
+    self.imageViews = [NSMutableArray new];
+    self.imageIndicatorViews = [NSMutableDictionary new];
+    self.videoIndicatorViews = [NSMutableDictionary new];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.imageViews = [NSMutableArray new];
-        self.imageIndicatorViews = [NSMutableDictionary new];
-        self.videoIndicatorViews = [NSMutableDictionary new];
+        [self commonInit];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self commonInit];
     }
     return self;
 }
@@ -129,7 +141,7 @@
     }
     
     [indicatorView removeFromSuperview];
-    self.imageIndicatorViews[wrappedTime] = nil;
+    [self.imageIndicatorViews removeObjectForKey:wrappedTime];
 }
 
 
@@ -155,7 +167,7 @@
     [self addSubview:indicatorView];
 }
 
-- (void)addVideoIndicatorForStartTime:(CMTime)startTime updateBlock:(BOOL (^)(CMTime))updateBlock updateFrequency:(float)seconds {
+- (void)addVideoIndicatorForStartTime:(CMTime)startTime updateBlock:(CMTime (^)(CMTime, BOOL *))updateBlock updateFrequency:(float)seconds {
     assert (NO);
 }
 
@@ -169,7 +181,7 @@
     }
     
     [indicatorView removeFromSuperview];
-    self.videoIndicatorViews[wrappedTimeRange] = nil;
+    [self.videoIndicatorViews removeObjectForKey:wrappedTimeRange];
 }
 
 - (void)setCurrentTime:(CMTime)currentTime {

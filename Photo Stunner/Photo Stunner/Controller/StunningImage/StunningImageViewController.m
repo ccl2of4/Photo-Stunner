@@ -137,22 +137,60 @@ static NSString * const ImageSection = @"image section";
     if ([notification name] == MediaManagerContentChangedNotification) {
         assert ([notification object] == [self mediaManager]);
         NSDictionary *userInfo = [notification userInfo];
-        NSNumber *changedIndex;
-        /*
-        // added an image
-        if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesAddedIndexKey]) ) {
-            NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
-            [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
+        
+        id key = userInfo[MediaManagerContentKey]; assert (key);
+        NSString *contentType = userInfo[MediaManagerContentTypeKey]; assert (contentType);
+        NSNumber *changeTypeNum = userInfo[MediaManagerContentChangeTypeKey]; assert (changeTypeNum);
+        
+        MediaManagerContentChangeType changeType = [changeTypeNum unsignedIntValue];
+        
+        // video
+        if ([MediaManagerContentTypeVideo isEqualToString:contentType]) {
             
-        // removed an image
-        } else if ( (changedIndex = [userInfo objectForKey:ImageManagerSortedTimesRemovedIndexKey]) ) {
-            NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:[changedIndex integerValue] inSection:0];
-            [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
+            NSUInteger section = [[[self class] sectionInfo] indexOfObject:VideoSection];
+            
+            // added
+            if (MediaManagerContentChangeAdd == changeType) {
+                int changedIndex = [self.mediaManager indexOfAddedVideoKey:key];
+                NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+                [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
+                
+                // removed
+            } else if (MediaManagerContentChangeRemove == changeType) {
+                int changedIndex = [self.mediaManager indexOfRemovedVideoKey:key];
+                NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+                [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
+                
+            } else {
+                assert (NO);
+            }
+        }
+        
+        // image
+        else if ([MediaManagerContentTypeImage isEqualToString:contentType]) {
+            
+            NSUInteger section = [[[self class] sectionInfo] indexOfObject:ImageSection];
+            
+            // added
+            if (MediaManagerContentChangeAdd == changeType) {
+                int changedIndex = [self.mediaManager indexOfAddedImageKey:key];
+                NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+                [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
+                
+                // removed
+            } else if (MediaManagerContentChangeRemove == changeType) {
+                int changedIndex = [self.mediaManager indexOfRemovedImageKey:key];
+                NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+                [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
+                
+            } else {
+                assert (NO);
+            }
             
         } else {
             assert (NO);
         }
-        */
+        
     } else {
         assert (NO);
     }

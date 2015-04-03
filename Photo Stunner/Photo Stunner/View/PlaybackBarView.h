@@ -26,7 +26,7 @@
 @property (nonatomic, readonly) NSArray *videoIndicatorTimeRanges;
 - (void) addVideoIndicatorForTimeRange:(CMTimeRange)timeRange;
 - (void) addVideoIndicatorForStartTime:(CMTime)startTime
-                             updateBlock:(BOOL(^)(CMTime currentDuration))updateBlock
+                             updateBlock:(CMTime(^)(CMTime startTime, BOOL *stop))updateBlock
                          updateFrequency:(float)seconds;
 - (void) removeVideoIndicatorForTimeRange:(CMTimeRange)timeRange;
 
