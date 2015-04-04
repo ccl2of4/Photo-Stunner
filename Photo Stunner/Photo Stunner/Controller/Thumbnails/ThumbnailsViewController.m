@@ -36,7 +36,10 @@ static NSString * const ImageSection = @"image section";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)];
+    self.title = NSLocalizedString(@"ThumbnailsViewController title", nil);
+    
+    NSString *nextButtonTitle = NSLocalizedString(@"ThumbnailsViewController next button", nil);
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nextButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)];
     [rightBarButtonItem setEnabled:!![[self.mediaManager allVideoKeys] count]];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     
@@ -103,9 +106,9 @@ static NSString * const ImageSection = @"image section";
     NSArray *sectionInfo = [[self class] sectionInfo];
     NSString *title;
     if (indexPath.section == [sectionInfo indexOfObject:VideoSection]) {
-        title = NSLocalizedString(@"ThumbnailsViewControllerVideoSectionTitle", nil);
+        title = NSLocalizedString(@"ThumbnailsViewController video section title", nil);
     } else if (indexPath.section == [sectionInfo indexOfObject:ImageSection]) {
-        title = NSLocalizedString(@"ThumbnailsViewControllerImageSectionTitle", nil);
+        title = NSLocalizedString(@"ThumbnailsViewController image section title", nil);
     } else assert (NO);
     
     [cell.titleLabel setText:title];
@@ -128,13 +131,11 @@ static NSString * const ImageSection = @"image section";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
-    NSString *title = NSLocalizedString(@"ThumbnailsViewController Title", nil);
-    NSString *remove = NSLocalizedString(@"ThumbnailsViewController Remove", @"Remove/Delete selected image");
-    NSString *view = NSLocalizedString(@"ThumbnailsViewController View", @"View selected image");
-    NSString *save = NSLocalizedString(@"ThumbnailsViewController Save", @"Save selected image");
+    NSString *remove = NSLocalizedString(@"ThumbnailsViewController ActionSheet remove", nil);
+    NSString *view = NSLocalizedString(@"ThumbnailsViewController ActionSheet view", nil);
+    NSString *save = NSLocalizedString(@"ThumbnailsViewController ActionSheet save", nil);
     
-    NSString *fullTitle = [NSString stringWithFormat:@"%@ %d", title, (indexPath.item + 1)];
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:fullTitle delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:remove otherButtonTitles:view,save, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:remove otherButtonTitles:view,save, nil];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet setTag:indexPath.item];
     [actionSheet showInView:self.view];

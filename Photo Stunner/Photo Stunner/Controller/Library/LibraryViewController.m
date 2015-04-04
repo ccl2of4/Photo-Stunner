@@ -28,6 +28,8 @@ static NSString * const CellReuseIdentifier = @"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = NSLocalizedString(@"LibraryViewController title", nil);
+    
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
     
     [self reloadData];

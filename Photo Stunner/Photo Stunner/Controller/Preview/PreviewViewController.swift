@@ -10,54 +10,97 @@ import UIKit
 import AVFoundation
 
 class PreviewViewController: UIViewController {
-    @IBOutlet weak var playbackView: UIView!
     
-    var mediaManager : MediaManager? = nil
+    @IBOutlet weak var playbackView: UIView!
+    var mediaManager : MediaManager?
+    
+    private var onceToken : dispatch_once_t = 0
+    private var playerLayer : AVPlayerLayer = AVPlayerLayer()
+    private var player : AVPlayer?
+    private var saveBarButtonItem : UIBarButtonItem!
+    private var savingBarButtonItem : UIBarButtonItem!
+    private var savedBarButtonItem : UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.playerLayer = AVPlayerLayer ()
-        self.playbackView.layer.addSublayer (self.playerLayer)
         
-        var barButtonItem = UIBarButtonItem (title:"Save", style: UIBarButtonItemStyle.Plain, target: self, action:"handleUIControlEventTouchUpInside:")
-        self.navigationItem.rightBarButtonItem = barButtonItem
+        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
+
+        self.playbackView.layer.addSublayer(self.playerLayer)
+        
+        // title
+        let title = NSLocalizedString("PreviewViewController title", comment: "")
+        self.title = title
+        
+        // save
+        let saveString = NSLocalizedString("PreviewViewController save", comment: "")
+        self.saveBarButtonItem = UIBarButtonItem(title: saveString, style: UIBarButtonItemStyle.Plain, target: self, action:"handleUIControlEventTouchUpInside:")
+        self.navigationItem.rightBarButtonItem = saveBarButtonItem
+        
+        // saving
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        self.savingBarButtonItem = UIBarButtonItem(customView:activityIndicatorView)
+        
+        // saved
+        let savedString = NSLocalizedString("PreviewViewController saved", comment: "")
+        self.savedBarButtonItem = UIBarButtonItem(title: savedString, style: UIBarButtonItemStyle.Plain, target: self, action:"handleUIControlEventTouchUpInside:")
+        self.savedBarButtonItem.enabled = false
     }
     
     override func viewDidLayoutSubviews() {
-        self.playerLayer!.frame = self.playbackView.bounds
+        self.playerLayer.frame = self.playbackView.bounds
     }
     
-    override func viewDidAppear(animated: Bool) {
-        self.createComposition { (composition) -> Void in
-            var player = AVPlayer (playerItem : AVPlayerItem (asset : composition))
-            self.player = self.player (composition)
-            self.playerLayer!.player = self.player
-            self.player!.play ()
-        }
+    override func viewWillAppear(animated: Bool) {
+        dispatch_once(&self.onceToken, { () -> Void in
+            self.createComposition { (composition) -> Void in
+                self.player = AVPlayer(playerItem: AVPlayerItem(asset: composition))
+                self.playerLayer.player = self.player
+                self.player!.play()
+            }
+        });
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func viewWillDisappear(animated: Bool) {
+        self.player?.pause()
     }
     
     func handleUIControlEventTouchUpInside(sender : AnyObject) {
+        
+        self.navigationItem.rightBarButtonItem = self.savingBarButtonItem
+        (self.savingBarButtonItem.customView as UIActivityIndicatorView).startAnimating()
+        
         self.createVideo { (video) -> Void in
             assert (NSFileManager.defaultManager().fileExistsAtPath(video.path!))
             assert (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(video.path))
-            UISaveVideoAtPathToSavedPhotosAlbum(video.path, self, nil, nil)
+            UISaveVideoAtPathToSavedPhotosAlbum(video.path, self, "video:didFinishSavingWithError:contextInfo:", nil)
         }
     }
     
-    private func createVideo (completion : (video : NSURL) -> Void) {
+    func video(video: NSString, didFinishSavingWithError:NSError, contextInfo:UnsafePointer<Void>) {
+        (self.savingBarButtonItem.customView as UIActivityIndicatorView).stopAnimating()
+        self.navigationItem.rightBarButtonItem = self.savedBarButtonItem
+    }
+    
+    private func createVideo(completion: (video: NSURL) -> Void) {
         self.createComposition { (composition) -> Void in
-            var exportSession = self.exportSession (composition)
+            
+            let exportSession = AVAssetExportSession(asset:composition, presetName:AVAssetExportPresetHighestQuality)
+            exportSession.outputURL = NSURL (fileURLWithPath:self.freshTempFilePath())
+            exportSession.outputFileType = AVFileTypeQuickTimeMovie
+            
             exportSession.exportAsynchronouslyWithCompletionHandler({ () -> Void in
                 if exportSession.status == AVAssetExportSessionStatus.Completed {
                     var asset : AVAsset = AVAsset.assetWithURL(exportSession.outputURL) as AVAsset
-                    assert (asset.playable)
-                    assert (asset.readable)
-                    assert (NSFileManager.defaultManager().fileExistsAtPath(exportSession.outputURL.path!))
-                    completion (video : exportSession.outputURL)
+                    
+                    assert(asset.playable)
+                    assert(asset.readable)
+                    assert(NSFileManager.defaultManager().fileExistsAtPath(exportSession.outputURL.path!))
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        completion(video : exportSession.outputURL)
+                    });
+                    
                 } else {
                     assert (false)
                 }
@@ -65,76 +108,55 @@ class PreviewViewController: UIViewController {
         }
     }
     
-    private var onceToken : dispatch_once_t = 0
-    
-    private var playerLayer : AVPlayerLayer? = nil
-    
-    private var player : AVPlayer? = nil
-    
-    private func player (asset : AVAsset) -> AVPlayer {
-        var player = AVPlayer (playerItem : AVPlayerItem (asset : asset))
-        player.actionAtItemEnd = AVPlayerActionAtItemEnd.Pause
-        return player
-    }
-    
-    private func freshTempFilePath () -> String {
-        var fileManager = NSFileManager.defaultManager()
-        var filePath : NSString? = nil
-
-        do {
+    private func createComposition(completion:(composition: AVComposition) -> Void) {
+        let composition = AVMutableComposition()
+        let dict = NSMutableDictionary()
+        var currentStartTime = kCMTimeZero
         
-            var random = arc4random();
-            var fileName = NSString (format: "%d.mov", random)
-            filePath = NSTemporaryDirectory().stringByAppendingPathComponent(fileName)
-        
-        } while (fileManager.fileExistsAtPath(filePath!))
-            
-        return filePath!
-    }
-    
-    private func exportSession (asset : AVAsset) -> AVAssetExportSession {
-        var exportSession = AVAssetExportSession (asset: asset, presetName: AVAssetExportPresetHighestQuality)
-        exportSession.outputURL = NSURL (fileURLWithPath:self.freshTempFilePath())
-        exportSession.outputFileType = AVFileTypeQuickTimeMovie
-        return exportSession
-    }
-    
-    private func createComposition (completion: (composition : AVComposition) -> Void) {
-        var composition = AVMutableComposition ()
-        var dict = NSMutableDictionary ()
-        var start = kCMTimeZero
-        
-        // figure out where stuff goes in
+        // find starting times for all videos
         for key in self.mediaManager!.sortedVideoKeys() {
-            if let timeRange = key as? NSValue {
-                var timeRangeValue = timeRange.CMTimeRangeValue
-                dict[timeRange] = NSValue (CMTime:start)
-                start = CMTimeAdd (start, timeRangeValue.duration)
-            } else {
-                assert (false)
-            }
+            let timeRange = key as NSValue
+            let timeRangeValue = timeRange.CMTimeRangeValue
+            
+            dict[timeRange] = NSValue(CMTime:currentStartTime)
+            currentStartTime = CMTimeAdd (currentStartTime, timeRangeValue.duration)
         }
         
-        // put stuff in
-        for key in self.mediaManager!.sortedVideoKeys () {
-            self.mediaManager?.retrieveVideoForKey(key, completion: { (key, video) -> Void in
-                if let timeRange = key as? NSValue {
-                    if let startTime = dict[timeRange] as? NSValue {
-                        var startTimeValue = startTime.CMTimeValue
-                        var error : NSErrorPointer = nil
-                        composition.insertTimeRange(CMTimeRangeMake(kCMTimeZero, video.duration), ofAsset: video, atTime: startTimeValue, error:error)
-                        
-                        dict.removeObjectForKey(timeRange)
-                        if dict.count == 0 {
-                            completion (composition:composition)
-                        }
-                    } else {
-                        assert (false)
-                    }
-                } else {
-                    assert (false)
+        // insert videos into composition
+        // the for loop shouldn't have to insert the tracks using sortedVideoKeys() (as opposed to allVideoKeys)
+        // but AVMutableComposition doesn't seem to work if they're not put in order
+        // also the completion handlers are not guaranteed to be called in order
+        // so technically this code could potentially be buggy, but it's an easy fix
+        // but I don't feel like fixing it since it's AVMutableComposition's fault in the first place
+        for key in self.mediaManager!.sortedVideoKeys() {
+            self.mediaManager!.retrieveVideoForKey(key, completion: { (key, video) -> Void in
+                let startTime = (dict[key as NSValue] as NSValue).CMTimeValue
+                
+                var error : NSError?
+                composition.insertTimeRange(CMTimeRangeMake(kCMTimeZero, video.duration), ofAsset: video, atTime: startTime, error: &error)
+                assert(error == nil)
+                
+                dict.removeObjectForKey(key)
+                if dict.count == 0 {
+                    completion(composition:composition)
                 }
             })
         }
+        assert(dict.count == 0)
+    }
+    
+    private func freshTempFilePath() -> String {
+        let fileManager = NSFileManager.defaultManager()
+        var filePath : NSString? = nil
+        
+        do {
+            
+            var random = arc4random();
+            var fileName = NSString(format: "%d.mov", random)
+            filePath = NSTemporaryDirectory().stringByAppendingPathComponent(fileName)
+            
+        } while (fileManager.fileExistsAtPath(filePath!))
+        
+        return filePath!
     }
 }

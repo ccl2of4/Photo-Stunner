@@ -50,7 +50,10 @@ static const NSUInteger NumberOfPreviewImages = 10;
     
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)];
+    self.title = NSLocalizedString(@"TapViewController title", nil);
+    
+    NSString *nextButtonTitle = NSLocalizedString(@"TapViewController next button", nil);
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nextButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(handleUIControlEventTouchUpInside:)];
     [rightBarButtonItem setEnabled:NO];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     

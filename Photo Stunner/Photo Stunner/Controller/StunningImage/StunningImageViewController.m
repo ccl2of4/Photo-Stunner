@@ -32,7 +32,7 @@ static NSString * const ImageSection = @"image section";
     [super viewDidLoad];
 
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
-    
+        
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:ImageCellReuseIdentifier];
     [self.collectionView registerClass:[UICollectionViewVideoCell class] forCellWithReuseIdentifier:VideoCellReuseIdentifier];
     
