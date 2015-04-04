@@ -30,6 +30,8 @@
     self.flashView = [FlashView new];
     self.touchedTimeRange = kCMTimeRangeInvalid;
 
+    [self.flashView setBackgroundColor:[UIColor lightGrayColor]];
+    
     [self addSubview:self.playbackView];
     [self addSubview:self.flashView];
     
@@ -58,8 +60,8 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self.playbackView setFrame:[self bounds]];
-    [self.flashView setFrame:[self bounds]];
     [self.playerLayer setFrame:[self.playbackView.layer bounds]];
+    [self.flashView setFrame:[self.playerLayer videoRect]];
 }
 
 #pragma mark UI events
@@ -88,6 +90,15 @@
             if ([self.timer isValid]) {
                 CMTime time = [self.player currentTime];
                 [self.delegate playerView:self didSelectImageAtTime:time];
+                if ([self.delegate playerView:self shouldFlashForImageAtTime:time]) {
+                   
+                    // flashView's frame might not be set correctly if layoutSubviews was
+                    // only called before self.playerLayer's videoRect was established
+                    [self setNeedsLayout];
+                    [self layoutIfNeeded];
+                    
+                    [self.flashView flash];
+                }
                 
             // take out video
             } else {

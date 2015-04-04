@@ -378,6 +378,10 @@ static const NSUInteger NumberOfPreviewImages = 10;
     }];
 }
 
+- (BOOL)playerView:(PlayerView *)playerView shouldFlashForImageAtTime:(CMTime)time {
+    return YES;
+}
+
 - (void)videosChanged:(id)key changeType:(MediaManagerContentChangeType)changeType {
    
     if (MediaManagerContentChangeAdd == changeType) {

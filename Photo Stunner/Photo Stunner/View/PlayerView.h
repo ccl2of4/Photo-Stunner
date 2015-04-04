@@ -14,6 +14,7 @@
 @protocol PlayerViewDelegate <NSObject>
 
 - (void) playerView:(PlayerView *)playerView didSelectImageAtTime:(CMTime)time;
+- (BOOL) playerView:(PlayerView *)playerView shouldFlashForImageAtTime:(CMTime)time;
 
 - (void) playerView:(PlayerView *)playerView didStartVideoSelection:(CMTimeRange)startTimeRange;
 - (void) playerView:(PlayerView *)playerView didCancelVideoSelection:(CMTimeRange)timeRange;
