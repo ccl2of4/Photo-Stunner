@@ -25,9 +25,7 @@
 // video indicators
 @property (nonatomic, readonly) NSArray *videoIndicatorTimeRanges;
 - (void) addVideoIndicatorForTimeRange:(CMTimeRange)timeRange;
-- (void) addVideoIndicatorForStartTime:(CMTime)startTime
-                             updateBlock:(CMTime(^)(CMTime startTime, BOOL *stop))updateBlock
-                         updateFrequency:(float)seconds;
+- (void) changeVideoIndicatorForTimeRange:(CMTimeRange)oldTimeRange toTimeRange:(CMTimeRange)newTimeRange;
 - (void) removeVideoIndicatorForTimeRange:(CMTimeRange)timeRange;
 
 // tracking playback

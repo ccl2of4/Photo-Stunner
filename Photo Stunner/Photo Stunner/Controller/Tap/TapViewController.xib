@@ -8,11 +8,9 @@
             <connections>
                 <outlet property="backStepButton" destination="vWT-hW-iXC" id="ban-KK-One"/>
                 <outlet property="forwardStepButton" destination="e1U-51-7v7" id="XNN-4P-Zai"/>
-                <outlet property="imageView" destination="SIF-Q5-orY" id="A2v-Kn-iin"/>
                 <outlet property="playButton" destination="A5f-qg-cLY" id="0iN-6k-5ba"/>
-                <outlet property="playbackView" destination="RAO-PA-off" id="sFT-Zg-pTE"/>
-                <outlet property="playerLayerView" destination="FeT-Xa-8xT" id="r3R-VK-saz"/>
-                <outlet property="previewBarView" destination="OTs-AB-5q6" id="wO6-x6-vVv"/>
+                <outlet property="playbackBarView" destination="OTs-AB-5q6" id="rgW-hX-Iaq"/>
+                <outlet property="playerView" destination="jie-9W-pxc" id="Acu-5G-VpL"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -32,32 +30,9 @@
                         <outletCollection property="gestureRecognizers" destination="GYb-Jg-kmL" appends="YES" id="heg-NF-hit"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAO-PA-off" userLabel="playbackView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jie-9W-pxc" userLabel="playerView" customClass="PlayerView">
                     <rect key="frame" x="0.0" y="48" width="600" height="500"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SIF-Q5-orY" userLabel="imageView">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
-                        </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FeT-Xa-8xT" userLabel="playerLayerView">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        </view>
-                    </subviews>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <gestureRecognizers/>
-                    <constraints>
-                        <constraint firstAttribute="bottom" secondItem="FeT-Xa-8xT" secondAttribute="bottom" id="H5d-xh-kxd"/>
-                        <constraint firstAttribute="bottom" secondItem="SIF-Q5-orY" secondAttribute="bottom" id="PNX-Mc-ldQ"/>
-                        <constraint firstItem="SIF-Q5-orY" firstAttribute="leading" secondItem="RAO-PA-off" secondAttribute="leading" id="Plb-PS-sz9"/>
-                        <constraint firstAttribute="trailing" secondItem="SIF-Q5-orY" secondAttribute="trailing" id="Xn3-dj-dd5"/>
-                        <constraint firstItem="FeT-Xa-8xT" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="top" id="d2k-zk-dyx"/>
-                        <constraint firstItem="SIF-Q5-orY" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="top" id="l5Z-Pv-bdz"/>
-                        <constraint firstAttribute="trailing" secondItem="FeT-Xa-8xT" secondAttribute="trailing" id="npV-OF-kSN"/>
-                        <constraint firstItem="FeT-Xa-8xT" firstAttribute="leading" secondItem="RAO-PA-off" secondAttribute="leading" id="zEK-lA-amO"/>
-                    </constraints>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="coF-cZ-Piy" appends="YES" id="HfT-nD-yEo"/>
-                    </connections>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A5f-qg-cLY" userLabel="playButton">
                     <rect key="frame" x="277" y="562" width="46" height="30"/>
@@ -103,29 +78,23 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="e1U-51-7v7" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="bottom" constant="14" id="0zh-ED-VfX"/>
+                <constraint firstItem="A5f-qg-cLY" firstAttribute="top" secondItem="jie-9W-pxc" secondAttribute="bottom" constant="14" id="3T5-Q8-pih"/>
                 <constraint firstAttribute="bottom" secondItem="vWT-hW-iXC" secondAttribute="bottom" constant="8" id="4FD-XZ-AjX"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4RT-P2-FCs"/>
                 <constraint firstAttribute="bottom" secondItem="e1U-51-7v7" secondAttribute="bottom" constant="8" id="AQR-bh-Xqa"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="OTs-AB-5q6" secondAttribute="bottom" id="JQT-eT-Qjk"/>
                 <constraint firstItem="OTs-AB-5q6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="KKX-cw-23z"/>
                 <constraint firstAttribute="trailing" secondItem="OTs-AB-5q6" secondAttribute="trailing" id="KQb-hC-SqE"/>
-                <constraint firstItem="RAO-PA-off" firstAttribute="top" secondItem="OTs-AB-5q6" secondAttribute="bottom" id="Lmr-dr-WhR"/>
                 <constraint firstAttribute="trailing" secondItem="e1U-51-7v7" secondAttribute="trailing" constant="20" id="OjW-Gw-vMP"/>
-                <constraint firstAttribute="trailing" secondItem="RAO-PA-off" secondAttribute="trailing" id="Qpl-c5-yqb"/>
-                <constraint firstItem="vWT-hW-iXC" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="bottom" constant="14" id="SNf-zO-HR0"/>
                 <constraint firstItem="OTs-AB-5q6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Sbc-ke-zoo"/>
                 <constraint firstAttribute="centerX" secondItem="A5f-qg-cLY" secondAttribute="centerX" id="cd5-rw-b0Q"/>
-                <constraint firstItem="A5f-qg-cLY" firstAttribute="top" secondItem="RAO-PA-off" secondAttribute="bottom" constant="14" id="mmf-ZG-cmF"/>
+                <constraint firstItem="vWT-hW-iXC" firstAttribute="top" secondItem="jie-9W-pxc" secondAttribute="bottom" constant="14" id="gWE-4W-8gS"/>
+                <constraint firstItem="jie-9W-pxc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jeS-CE-iN3"/>
+                <constraint firstItem="e1U-51-7v7" firstAttribute="top" secondItem="jie-9W-pxc" secondAttribute="bottom" constant="14" id="l6S-Zf-Cfj"/>
                 <constraint firstAttribute="bottom" secondItem="A5f-qg-cLY" secondAttribute="bottom" constant="8" id="nK9-Em-dvC"/>
+                <constraint firstAttribute="trailing" secondItem="jie-9W-pxc" secondAttribute="trailing" id="r70-iD-Tbb"/>
                 <constraint firstItem="vWT-hW-iXC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="wPr-A3-xwt"/>
+                <constraint firstItem="jie-9W-pxc" firstAttribute="top" secondItem="OTs-AB-5q6" secondAttribute="bottom" id="yoq-MY-bvB"/>
             </constraints>
         </view>
-        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="coF-cZ-Piy">
-            <connections>
-                <action selector="handleUIGestureRecognizerRecognized:" destination="-1" id="ARx-6a-DKL"/>
-            </connections>
-        </pongPressGestureRecognizer>
         <tapGestureRecognizer id="GYb-Jg-kmL">
             <connections>
                 <action selector="handleUIGestureRecognizerRecognized:" destination="-1" id="bDW-dx-HHT"/>

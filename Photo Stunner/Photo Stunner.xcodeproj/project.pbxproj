@@ -10,6 +10,7 @@
 		B30FA99B1AC78B210035C6B3 /* MediaManagerImageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FA99A1AC78B210035C6B3 /* MediaManagerImageTests.m */; };
 		B31502DF1ACE0269007A9755 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31502DD1ACE0269007A9755 /* PreviewViewController.swift */; };
 		B31502E01ACE0269007A9755 /* PreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B31502DE1ACE0269007A9755 /* PreviewViewController.xib */; };
+		B320DB211ACF82E5007F50A2 /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B320DB201ACF82E5007F50A2 /* PlayerView.m */; };
 		B34788811AB75584009FF25C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788801AB75584009FF25C /* main.m */; };
 		B34788841AB75584009FF25C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788831AB75584009FF25C /* AppDelegate.m */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
@@ -62,6 +63,8 @@
 		B30FA99A1AC78B210035C6B3 /* MediaManagerImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManagerImageTests.m; sourceTree = "<group>"; };
 		B31502DD1ACE0269007A9755 /* PreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		B31502DE1ACE0269007A9755 /* PreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewViewController.xib; sourceTree = "<group>"; };
+		B320DB1F1ACF82E5007F50A2 /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
+		B320DB201ACF82E5007F50A2 /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B34788801AB75584009FF25C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -317,6 +320,8 @@
 				B3F4604C1ABCB17500B09F7D /* FlashView.m */,
 				B3FFD82C1ACF2D8000E28F0A /* PlaybackBarView.h */,
 				B3FFD82D1ACF2D8000E28F0A /* PlaybackBarView.m */,
+				B320DB1F1ACF82E5007F50A2 /* PlayerView.h */,
+				B320DB201ACF82E5007F50A2 /* PlayerView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -485,6 +490,7 @@
 				B34788811AB75584009FF25C /* main.m in Sources */,
 				B3F4604D1ABCB17500B09F7D /* FlashView.m in Sources */,
 				B31502DF1ACE0269007A9755 /* PreviewViewController.swift in Sources */,
+				B320DB211ACF82E5007F50A2 /* PlayerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

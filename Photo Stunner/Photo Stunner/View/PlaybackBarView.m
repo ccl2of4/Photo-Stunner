@@ -155,7 +155,7 @@
     CGFloat width = (endPercent - startPercent) * [self bounds].size.width;
     CGFloat height = 3.0f;
     CGFloat x = ([self bounds].origin.x + startPercent * [self bounds].size.width);
-    CGFloat y = CGRectGetMidY([self bounds]) - (0.5 * height);
+    CGFloat y = CGRectGetMidY([self bounds]) + (0.5 * height);
     
     CGRect frame = CGRectMake(x, y, width, height);
     
@@ -165,10 +165,6 @@
     NSValue *wrappedTimeRange = [NSValue valueWithCMTimeRange:timeRange];
     self.videoIndicatorViews[wrappedTimeRange] = indicatorView;
     [self addSubview:indicatorView];
-}
-
-- (void)addVideoIndicatorForStartTime:(CMTime)startTime updateBlock:(CMTime (^)(CMTime, BOOL *))updateBlock updateFrequency:(float)seconds {
-    assert (NO);
 }
 
 - (void)removeVideoIndicatorForTimeRange:(CMTimeRange)timeRange {
@@ -182,6 +178,12 @@
     
     [indicatorView removeFromSuperview];
     [self.videoIndicatorViews removeObjectForKey:wrappedTimeRange];
+}
+
+// might want to make this more fancy in the future
+- (void)changeVideoIndicatorForTimeRange:(CMTimeRange)oldTimeRange toTimeRange:(CMTimeRange)newTimeRange {
+    [self removeVideoIndicatorForTimeRange:oldTimeRange];
+    [self addVideoIndicatorForTimeRange:newTimeRange];
 }
 
 - (void)setCurrentTime:(CMTime)currentTime {

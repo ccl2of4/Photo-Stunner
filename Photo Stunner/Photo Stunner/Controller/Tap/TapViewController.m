@@ -14,27 +14,23 @@
 #import "FlashView.h"
 #import "UICollectionViewImageCell.h"
 #import "PlaybackBarView.h"
+#import "PlayerView.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface TapViewController () <UIGestureRecognizerDelegate>
+@interface TapViewController () <UIGestureRecognizerDelegate, PlayerViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *playbackView;
-@property (weak, nonatomic) IBOutlet UIView *playerLayerView;
-@property (weak, nonatomic) IBOutlet PlaybackBarView *previewBarView;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet PlaybackBarView *playbackBarView;
 @property (weak, nonatomic) IBOutlet UIButton *backStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *forwardStepButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
-@property (weak, nonatomic) FlashView *flashView;
-@property (weak, nonatomic) AVPlayerLayer *playerLayer;
+@property (weak, nonatomic) IBOutlet PlayerView *playerView;
 
+@property (nonatomic, readonly) AVPlayer *player;
 @property (nonatomic) AVAssetImageGenerator *imageGenerator;
 @property (nonatomic) AVAssetImageGenerator *previewImageGenerator;
-@property (nonatomic) AVPlayer *player;
 @property (nonatomic) id periodicTimeObserver;
 
 @property (nonatomic) MediaManager *mediaManager;
-@property (nonatomic) CMTimeRange touchedTimeRange;
 
 @end
 
@@ -46,7 +42,7 @@ static void * PlayerStatusObservingContext = &PlayerStatusObservingContext;
 static void * PlayerRateObservingContext = &PlayerRateObservingContext;
 static NSString * const CellReuseIdentifier = @"cell";
 static const NSUInteger NumberOfPreviewImages = 10;
-#define MaxTapDuration CMTimeMake(1,2)
+#define MinimumVideoDuration CMTimeMake(1,2)
 
 #pragma mark life cycle
 
@@ -59,7 +55,9 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [rightBarButtonItem setEnabled:NO];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     
-    [self.imageView setImage:[self.videoAsset thumbnail]];
+    [self.playerView setThumbnailImage:[self.videoAsset thumbnail]];
+    [self.playerView setMinimumVideoDuration:MinimumVideoDuration];
+    [self.playerView setDelegate:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:MediaManagerContentChangedNotification object:self.mediaManager];
 }
@@ -94,52 +92,19 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (IBAction)handleUIGestureRecognizerRecognized:(id)sender {
     
-    // touch video
-    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]] && [sender view] == self.playbackView) {
-        UILongPressGestureRecognizer *gr = sender;
-        
-        // touch down
-        if ([gr state] == UIGestureRecognizerStateBegan) {
-            self.touchedTimeRange = CMTimeRangeMake(self.player.currentTime, kCMTimeIndefinite);
-        }
-        
-        
-        // touch up
-        else if ([gr state] == UIGestureRecognizerStateEnded) {
-            self.touchedTimeRange = CMTimeRangeMake(self.touchedTimeRange.start, CMTimeSubtract(self.player.currentTime, self.touchedTimeRange.start));
-            
-            
-            // extract video
-            if (CMTIME_COMPARE_INLINE(self.touchedTimeRange.duration, >, MaxTapDuration)) {
-                [self extractVideoForTimeRange:self.touchedTimeRange];
-            }
-            
-            
-            // extract image
-            else {
-                CMTime time = [self.player currentTime];
-                if ([self extractImageAtTime:time]) {
-                    [self.flashView flash];
-                }
-            }
-        }
-
-        else {
-            // handle this
-        }
-       
     // tapped preview bar
-    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.previewBarView){
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]] && [sender view] == self.playbackBarView){
         
-        CGPoint location = [sender locationInView:self.previewBarView];
-        CGFloat percent = location.x / self.previewBarView.bounds.size.width;
+        CGPoint location = [sender locationInView:self.playbackBarView];
+        CGFloat percent = location.x / self.playbackBarView.bounds.size.width;
         CMTime soughtTime = CMTimeMultiplyByFloat64([self.player.currentItem duration], percent);
         
         [self.player pause];
-        [self.player seekToTime:soughtTime];
+        [self.player seekToTime:soughtTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     } else {
         assert (NO);
     }
+    
 }
 
 - (IBAction)handleUIControlEventTouchUpInside:(id)sender{
@@ -182,11 +147,25 @@ static const NSUInteger NumberOfPreviewImages = 10;
     }
 }
 
-#pragma mark video generation
+- (void) updateNextButtonVisibility {
+    BOOL rightBarButtonItemEnabled = ([[self.mediaManager sortedImageKeys] count] + [[self.mediaManager sortedVideoKeys] count]) > 0;
+    [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];
+}
 
-- (BOOL)extractVideoForTimeRange:(CMTimeRange)timeRange {
+- (void) checkIfShouldReturnToTapScreen {
+    if (![[self.mediaManager sortedImageKeys] count] && ![[self.mediaManager sortedVideoKeys] count]) {
+        [self.navigationController popToViewController:self animated:YES];
+    }
+}
+
+#pragma mark video extraction
+
+// return YES if no video exists for this time
+// but can still fail because of AVMutableComposition failure
+// completion block not called if returns NO
+- (BOOL)extractVideoForTimeRange:(CMTimeRange)timeRange completion:(void(^)(BOOL success))completion {
     
-    NSValue *wrappedTimeRange = [NSValue valueWithCMTimeRange:self.touchedTimeRange];
+    NSValue *wrappedTimeRange = [NSValue valueWithCMTimeRange:timeRange];
     if ([[self.mediaManager sortedVideoKeys] containsObject:wrappedTimeRange]) {
         return NO;
     }
@@ -195,18 +174,33 @@ static const NSUInteger NumberOfPreviewImages = 10;
     AVMutableComposition *composition = [AVMutableComposition composition];
     NSError *error;
     [composition insertTimeRange:timeRange ofAsset:self.player.currentItem.asset atTime:kCMTimeZero error:&error];
-    assert (!error);
+
+    if (!error) {
+        // add to media manager
+        [self.mediaManager addVideo:composition forKey:wrappedTimeRange completion:^(id key, AVAsset *video) {
+            if (completion) {
+                completion (YES);
+            }
+        }];
     
-    // add to media manager
-    [self.mediaManager addVideo:composition forKey:wrappedTimeRange];
+    
+    } else {
+        // yes we're already on the main queue, but make the call asynchronous so the method returns
+        // before the completion block is called
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion (NO);
+        });
+    }
     
     return YES;
 }
 
+#pragma mark image extraction
 
-#pragma mark image generation
-
-- (BOOL) extractImageAtTime:(CMTime)time {
+// return YES if no image exists for this time
+// but can still fail because of AVAssetImageGenerator failure
+// completion block not called if returns NO
+- (BOOL)extractImageAtTime:(CMTime)time completion:(void(^)(BOOL success))completion {
 
     NSValue *wrappedTime = [NSValue valueWithCMTime:time];
     if ([[self.mediaManager sortedImageKeys] containsObject:wrappedTime]) {
@@ -216,7 +210,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
     __weak typeof (self) weakSelf = self;
     NSArray *times =  @[wrappedTime];
     [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
-        if ( result == AVAssetImageGeneratorSucceeded ) {
+        
+        if (AVAssetImageGeneratorSucceeded == result) {
             assert (!error);
             assert (cgimg);
             UIImage *image = [UIImage imageWithCGImage:cgimg];
@@ -224,11 +219,19 @@ static const NSUInteger NumberOfPreviewImages = 10;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 assert (CMTIME_COMPARE_INLINE(time, ==, requestedTime));
-                [weakSelf.mediaManager addImage:image forKey:[NSValue valueWithCMTime:time]];
+                [weakSelf.mediaManager addImage:image forKey:[NSValue valueWithCMTime:time] completion:^(id key, UIImage *image) {
+                    if (completion) {
+                        completion (YES);
+                    }
+                }];
             });
             
-        } else {
-            // generation failed. ignore silently
+        } else if (completion) {
+            // yes we're already on the main queue, but make the call asynchronous so the method returns
+            // before the completion block is called
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion (NO);
+            });
         }
     }];
     
@@ -256,8 +259,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 - (void)generatePreviewImages {
     NSArray *times = [self timesForPreviewImages];
-    [self.previewBarView setNumberOfPreviewImages:NumberOfPreviewImages];
-    [self.previewBarView setVideoDuration:CMTimeMakeWithSeconds([self.videoAsset duration], 30)];
+    [self.playbackBarView setNumberOfPreviewImages:NumberOfPreviewImages];
+    [self.playbackBarView setVideoDuration:CMTimeMakeWithSeconds([self.videoAsset duration], 30)];
     
     [self.previewImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef cgimg, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
         
@@ -267,7 +270,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
         NSUInteger idx = [times indexOfObject:wrappedTime];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.previewBarView setPreviewImage:image atIndex:idx];
+            [self.playbackBarView setPreviewImage:image atIndex:idx];
         });
     }];
 }
@@ -286,7 +289,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
 }
 
 - (CGSize)maximumSizeForPreviewImages {
-    CGSize size = self.previewBarView.bounds.size;
+    CGSize size = self.playbackBarView.bounds.size;
     
     // don't restrict the width because images are frequently wider than they are tall
     // and we use UIViewContentModeScaleAspectFill
@@ -318,7 +321,7 @@ static const NSUInteger NumberOfPreviewImages = 10;
     if (enabled) {
         assert (![self periodicTimeObserver]);
         self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 100) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-            [weakSelf.previewBarView setCurrentTime:time];
+            [weakSelf.playbackBarView setCurrentTime:time];
         }];
     }
     
@@ -329,45 +332,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     }
 }
 
-- (AVPlayer *)player {
-    if (!_player) {
-        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:[self.videoAsset asset]];
-        AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
-        [player setActionAtItemEnd:AVPlayerActionAtItemEndPause];
-        _player = player;
-        
-        [self.playerLayer setPlayer:player];
-    }
-    
-    return _player;
-}
-
-- (AVPlayerLayer *)playerLayer {
-    if (!_playerLayer) {
-        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:nil];
-        [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
-        
-        [self.playerLayerView.layer addSublayer:playerLayer];
-        [playerLayer setFrame:[self.playerLayerView.layer bounds]];
-        
-        _playerLayer = playerLayer;
-    }
-    return _playerLayer;
-}
-
-- (FlashView *)flashView {
-    if (!_flashView) {
-        FlashView *flashView = [FlashView new];
-        [flashView setBackgroundColor:[UIColor grayColor]];
-        CGRect frame = [self.playerLayer videoRect];
-        [flashView setFrame:frame];
-        [self.playbackView addSubview:flashView];
-        
-        _flashView = flashView;
-    }
-    return _flashView;
-}
-
 - (CMTime) timePerFrame {
     AVAsset *asset = [self.videoAsset asset];
     AVAssetTrack *track = [[asset tracksWithMediaType:AVMediaTypeVideo] firstObject];
@@ -375,62 +339,100 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return timePerFrame;
 }
 
+- (AVPlayer *)player {
+    if (![self.playerView player]) {
+        [self.playerView setPlayer:[AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:[self.videoAsset asset]]]];
+    }
+    return [self.playerView player];
+}
+
+#pragma mark PlayerViewDelegate methods
+
+- (void)playerView:(PlayerView *)playerView didStartVideoSelection:(CMTimeRange)startTimeRange {
+    [self.playbackBarView addVideoIndicatorForTimeRange:startTimeRange];
+}
+
+- (void)playerView:(PlayerView *)playerView didUpdateVideoSelection:(CMTimeRange)updatedTimeRange oldTimeRange:(CMTimeRange)oldTimeRange finished:(BOOL)finished {
+    
+    [self.playbackBarView changeVideoIndicatorForTimeRange:oldTimeRange toTimeRange:updatedTimeRange];
+
+    if (finished) {
+        [self extractVideoForTimeRange:updatedTimeRange completion:^(BOOL success) {
+            if (!success) {
+                [self.playbackBarView removeVideoIndicatorForTimeRange:updatedTimeRange];
+            }
+        }];
+    }
+}
+
+- (void)playerView:(PlayerView *)playerView didCancelVideoSelection:(CMTimeRange)timeRange {
+    [self.playbackBarView removeVideoIndicatorForTimeRange:timeRange];
+}
+
+- (void)playerView:(PlayerView *)playerView didSelectImageAtTime:(CMTime)time {
+    [self.playbackBarView addImageIndicatorForTime:time];
+    [self extractImageAtTime:time completion:^(BOOL success) {
+        if (!success) {
+            [self.playbackBarView removeImageIndicatorForTime:time];
+        }
+    }];
+}
+
+- (void)videosChanged:(id)key changeType:(MediaManagerContentChangeType)changeType {
+   
+    if (MediaManagerContentChangeAdd == changeType) {
+        
+        if (![[self.playbackBarView videoIndicatorTimeRanges] containsObject:key]) {
+            [self.playbackBarView addVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
+            assert (NO);
+        }
+        
+    } else if (MediaManagerContentChangeRemove == changeType) {
+        [self.playbackBarView removeVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
+        
+    } else assert (NO);
+}
+
+- (void)imagesChanged:(id)key changeType:(MediaManagerContentChangeType)changeType {
+
+    if (MediaManagerContentChangeAdd == changeType) {
+        
+        if (![[self.playbackBarView imageIndicatorTimes] containsObject:key]) {
+            [self.playbackBarView addImageIndicatorForTime:[key CMTimeValue]];
+            assert (NO);
+        }
+        
+    } else if (MediaManagerContentChangeRemove == changeType) {
+        [self.playbackBarView removeImageIndicatorForTime:[key CMTimeValue]];
+        
+    } else assert (NO);
+}
+
 #pragma mark observer methods
 
 - (void)handleNotification:(NSNotification *)notification {
     if ([notification name] == MediaManagerContentChangedNotification) {
         assert ([notification object] == [self mediaManager]);
-        NSDictionary *userInfo = [notification userInfo];
         
+        NSDictionary *userInfo = [notification userInfo];
         id key = userInfo[MediaManagerContentKey]; assert (key);
         NSString *contentType = userInfo[MediaManagerContentTypeKey]; assert (contentType);
         NSNumber *changeTypeNum = userInfo[MediaManagerContentChangeTypeKey]; assert (changeTypeNum);
-        
         MediaManagerContentChangeType changeType = [changeTypeNum unsignedIntValue];
         
-        // video
-        if ([MediaManagerContentTypeVideo isEqualToString:contentType]) {
-            
-            // added
-            if (MediaManagerContentChangeAdd == changeType) {
-                [self.previewBarView addVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
-                
-            // removed
-            } else if (MediaManagerContentChangeRemove == changeType) {
-                [self.previewBarView removeVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
-                
-            } else {
-                assert (NO);
-            }
-        }
         
-        // image
-        else if ([MediaManagerContentTypeImage isEqualToString:contentType]) {
-            
-            // added
-            if (MediaManagerContentChangeAdd == changeType) {
-                [self.previewBarView addImageIndicatorForTime:[key CMTimeValue]];
-                
-            // removed
-            } else if (MediaManagerContentChangeRemove == changeType) {
-                [self.previewBarView removeImageIndicatorForTime:[key CMTimeValue]];
-                
-            } else {
-                assert (NO);
-            }
-            
+        if ([MediaManagerContentTypeVideo isEqualToString:contentType]) {
+            [self videosChanged:key changeType:changeType];
+        } else if ([MediaManagerContentTypeImage isEqualToString:contentType]) {
+            [self imagesChanged:key changeType:changeType];
         } else {
             assert (NO);
         }
         
-        // if the user deletes all media, come back to the tap screen to get more
-        if (![[self.mediaManager sortedImageKeys] count] && ![[self.mediaManager sortedVideoKeys] count]) {
-            [self.navigationController popToViewController:self animated:YES];
-        }
         
-        // don't go to the next screen if there are no photos/videos pulled out
-        BOOL rightBarButtonItemEnabled = ([[self.mediaManager sortedImageKeys] count] + [[self.mediaManager sortedVideoKeys] count]) > 0;
-        [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];
+        // housekeeping
+        [self checkIfShouldReturnToTapScreen];
+        [self updateNextButtonVisibility];
         
     } else {
         assert (NO);
