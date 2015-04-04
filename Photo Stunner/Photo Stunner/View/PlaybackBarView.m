@@ -114,8 +114,14 @@
 #pragma mark image indicators
 
 - (void)addImageIndicatorForTime:(CMTime)time {
-    Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds([self videoDuration]);
+    NSValue *wrappedTime = [NSValue valueWithCMTime:time];
+    if (self.imageIndicatorViews[wrappedTime]) {
+        NSString *reason = [NSString stringWithFormat:@"Cannot add image indicator for time %@ because an indicator for that time already exists.", wrappedTime];
+        [[NSException exceptionWithName:NSGenericException reason:reason userInfo:nil] raise];
+    }
     
+    Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds([self videoDuration]);
+
     CGFloat width = 3.0f;
     CGFloat height = 3.0f;
     CGFloat x = ([self bounds].origin.x + percent * [self bounds].size.width) - (0.5 * width);
@@ -126,7 +132,6 @@
     UIView *indicatorView = [[UIView alloc] initWithFrame:frame];
     [indicatorView setBackgroundColor:[UIColor whiteColor]];
     
-    NSValue *wrappedTime = [NSValue valueWithCMTime:time];
     self.imageIndicatorViews[wrappedTime] = indicatorView;
     [self addSubview:indicatorView];
 }
@@ -149,6 +154,13 @@
 #pragma mark video indicators
 
 - (void)addVideoIndicatorForTimeRange:(CMTimeRange)timeRange {
+    
+    NSValue *wrappedTimeRange = [NSValue valueWithCMTimeRange:timeRange];
+    if (self.videoIndicatorViews[wrappedTimeRange]) {
+        NSString *reason = [NSString stringWithFormat:@"Cannot add video indicator for time range %@ because an indicator for that time range already exists.", wrappedTimeRange];
+        [[NSException exceptionWithName:NSGenericException reason:reason userInfo:nil] raise];
+    }
+    
     Float64 startPercent = CMTimeGetSeconds(timeRange.start) / CMTimeGetSeconds([self videoDuration]);
     Float64 endPercent = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange)) / CMTimeGetSeconds([self videoDuration]);
     
@@ -162,7 +174,6 @@
     UIView *indicatorView = [[UIView alloc] initWithFrame:frame];
     [indicatorView setBackgroundColor:[UIColor whiteColor]];
     
-    NSValue *wrappedTimeRange = [NSValue valueWithCMTimeRange:timeRange];
     self.videoIndicatorViews[wrappedTimeRange] = indicatorView;
     [self addSubview:indicatorView];
 }
