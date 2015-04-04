@@ -29,6 +29,6 @@
 @property (nonatomic) CMTime minimumVideoDuration;
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic, weak) id<PlayerViewDelegate> delegate;
-@property (nonatomic) UIImage *thumbnailImage;
+@property (nonatomic) UIImage *previewImage;
 
 @end

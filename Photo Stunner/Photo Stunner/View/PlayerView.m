@@ -12,6 +12,7 @@
 @interface PlayerView () <UIGestureRecognizerDelegate>
 
 @property (nonatomic) AVPlayerLayer *playerLayer;
+@property (nonatomic) UIImageView *previewImageView;
 @property (nonatomic) UIView *playbackView;
 @property (nonatomic) FlashView *flashView;
 
@@ -28,10 +29,13 @@
 - (void) commonInit {
     self.playbackView = [UIView new];
     self.flashView = [FlashView new];
+    self.previewImageView = [UIImageView new];
     self.touchedTimeRange = kCMTimeRangeInvalid;
 
+    [self.previewImageView setContentMode:UIViewContentModeScaleAspectFit];
     [self.flashView setBackgroundColor:[UIColor lightGrayColor]];
     
+    [self addSubview:self.previewImageView];
     [self addSubview:self.playbackView];
     [self addSubview:self.flashView];
     
@@ -59,6 +63,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    [self.previewImageView setFrame:[self bounds]];
     [self.playbackView setFrame:[self bounds]];
     [self.playerLayer setFrame:[self.playbackView.layer bounds]];
     [self.flashView setFrame:[self.playerLayer videoRect]];
@@ -171,6 +176,14 @@
     
     [self setNeedsLayout];
     [self layoutIfNeeded];
+}
+
+- (void)setPreviewImage:(UIImage *)thumbnailImage {
+    [self.previewImageView setImage:thumbnailImage];
+}
+
+- (UIImage *)previewImage {
+    return [self.previewImageView image];
 }
 
 #pragma mark UIGestureRecognizerDelegate methods

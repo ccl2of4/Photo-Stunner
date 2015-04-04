@@ -16,6 +16,8 @@
 @property (nonatomic) NSMutableDictionary *imageIndicatorViews;
 @property (nonatomic) NSMutableDictionary *videoIndicatorViews;
 
+@property (nonatomic) id periodicTimeObserver;
+
 @end
 
 @implementation PlaybackBarView
@@ -26,6 +28,9 @@
     self.imageViews = [NSMutableArray new];
     self.imageIndicatorViews = [NSMutableDictionary new];
     self.videoIndicatorViews = [NSMutableDictionary new];
+    
+    UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleUIGestureRecognizerRecognized:)];
+    [self addGestureRecognizer:gr];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -67,6 +72,26 @@
 
 - (NSArray *)videoIndicatorTimeRanges {
     return [self.videoIndicatorViews allKeys];
+}
+
+#pragma mark UI events
+
+- (void) handleUIGestureRecognizerRecognized:(id)sender {
+    CGPoint location = [sender locationInView:self];
+    CGFloat percent = location.x / self.bounds.size.width;
+    CMTime soughtTime = CMTimeMultiplyByFloat64([self.player.currentItem duration], percent);
+    
+    if (![self.delegate respondsToSelector:@selector(playbackBarView:shouldSeekToTime:)] ||
+        [self.delegate playbackBarView:self shouldSeekToTime:soughtTime]) {
+                
+        [self.player pause];
+        
+        [self.player seekToTime:soughtTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+            if ([self.delegate respondsToSelector:@selector(playbackBarView:didSeekToTime:)]) {
+                [self.delegate playbackBarView:self didSeekToTime:soughtTime];
+            }
+        }];
+    }
 }
 
 #pragma mark preview images
@@ -120,7 +145,7 @@
         [[NSException exceptionWithName:NSGenericException reason:reason userInfo:nil] raise];
     }
     
-    Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds([self videoDuration]);
+    Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds([self.player.currentItem duration]);
 
     CGFloat width = 3.0f;
     CGFloat height = 3.0f;
@@ -149,8 +174,6 @@
     [self.imageIndicatorViews removeObjectForKey:wrappedTime];
 }
 
-
-
 #pragma mark video indicators
 
 - (void)addVideoIndicatorForTimeRange:(CMTimeRange)timeRange {
@@ -161,8 +184,8 @@
         [[NSException exceptionWithName:NSGenericException reason:reason userInfo:nil] raise];
     }
     
-    Float64 startPercent = CMTimeGetSeconds(timeRange.start) / CMTimeGetSeconds([self videoDuration]);
-    Float64 endPercent = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange)) / CMTimeGetSeconds([self videoDuration]);
+    Float64 startPercent = CMTimeGetSeconds(timeRange.start) / CMTimeGetSeconds([self.player.currentItem duration]);
+    Float64 endPercent = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange)) / CMTimeGetSeconds([self.player.currentItem duration]);
     
     CGFloat width = (endPercent - startPercent) * [self bounds].size.width;
     CGFloat height = 3.0f;
@@ -197,14 +220,11 @@
     [self addVideoIndicatorForTimeRange:newTimeRange];
 }
 
-- (void)setCurrentTime:(CMTime)currentTime {
-    Float64 percent = CMTimeGetSeconds(currentTime) / CMTimeGetSeconds([self videoDuration]);
-    
+- (void) updateTrackerView:(CMTime)time {
+    Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds([self.player.currentItem duration]);
     CGRect frame = [self.trackerView frame];
     frame.origin.x = ([self bounds].origin.x + percent * [self bounds].size.width) - (0.5 * frame.size.width);
     [self.trackerView setFrame:frame];
-    
-    _currentTime = currentTime;
 }
 
 - (UIView *)trackerView {
@@ -227,22 +247,32 @@
     return _trackerView;
 }
 
+#pragma mark miscellaneous
+
+- (void)setPlayer:(AVPlayer *)player {
+    [self setPeriodicTimeObserverEnabled:NO];
+    _player = player;
+    [self setPeriodicTimeObserverEnabled:YES];
+}
+
+- (void) setPeriodicTimeObserverEnabled:(BOOL)enabled {
+    if (enabled == !![self periodicTimeObserver]) {
+        return;
+    }
+    
+    if (enabled) {
+        assert (![self periodicTimeObserver]);
+
+        __weak typeof (self) weakSelf = self;
+        self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 100) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+            [weakSelf updateTrackerView:time];
+        }];
+    }
+    
+    else {
+        assert ([self periodicTimeObserver]);
+        [self.player removeTimeObserver:[self periodicTimeObserver]];
+        self.periodicTimeObserver = nil;
+    }
+}
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

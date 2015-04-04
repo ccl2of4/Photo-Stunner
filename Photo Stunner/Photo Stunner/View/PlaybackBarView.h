@@ -9,9 +9,20 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+@class PlaybackBarView;
+
+@protocol PlaybackBarViewDelegate <NSObject>
+
+@optional
+- (BOOL) playbackBarView:(PlaybackBarView *)playbackBarView shouldSeekToTime:(CMTime)time;
+- (void) playbackBarView:(PlaybackBarView *)playbackBarView didSeekToTime:(CMTime)time;
+
+@end
+
 @interface PlaybackBarView : UIView
 
-@property (nonatomic) CMTime videoDuration;
+@property (nonatomic) AVPlayer *player;
+@property (nonatomic, weak) id<PlaybackBarViewDelegate> delegate;
 
 // preview images
 @property (nonatomic) NSUInteger numberOfPreviewImages;
@@ -27,8 +38,5 @@
 - (void) addVideoIndicatorForTimeRange:(CMTimeRange)timeRange;
 - (void) changeVideoIndicatorForTimeRange:(CMTimeRange)oldTimeRange toTimeRange:(CMTimeRange)newTimeRange;
 - (void) removeVideoIndicatorForTimeRange:(CMTimeRange)timeRange;
-
-// tracking playback
-@property (nonatomic) CMTime currentTime;
 
 @end

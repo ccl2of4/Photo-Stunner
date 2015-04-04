@@ -26,9 +26,6 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="SeN-ma-2xn"/>
                     </constraints>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="GYb-Jg-kmL" appends="YES" id="heg-NF-hit"/>
-                    </connections>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jie-9W-pxc" userLabel="playerView" customClass="PlayerView">
                     <rect key="frame" x="0.0" y="48" width="600" height="500"/>
@@ -95,10 +92,5 @@
                 <constraint firstItem="jie-9W-pxc" firstAttribute="top" secondItem="OTs-AB-5q6" secondAttribute="bottom" id="yoq-MY-bvB"/>
             </constraints>
         </view>
-        <tapGestureRecognizer id="GYb-Jg-kmL">
-            <connections>
-                <action selector="handleUIGestureRecognizerRecognized:" destination="-1" id="bDW-dx-HHT"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
 </document>
