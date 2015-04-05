@@ -13,10 +13,12 @@
 #import "UICollectionViewImageCell.h"
 #import "UICollectionViewVideoCell.h"
 #import <AVFoundation/AVFoundation.h>
+#import "Photo_Stunner-Swift.h"
 
-@interface StunningImageViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface StunningImageViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaManagerObserverDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (nonatomic) MediaManagerObserver *mediaManagerObserver;
 
 @end
 
@@ -28,6 +30,8 @@ static NSString * const VideoCellReuseIdentifier = @"video cell";
 static NSString * const VideoSection = @"video section";
 static NSString * const ImageSection = @"image section";
 
+#pragma mark life cycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -35,13 +39,10 @@ static NSString * const ImageSection = @"image section";
         
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:ImageCellReuseIdentifier];
     [self.collectionView registerClass:[UICollectionViewVideoCell class] forCellWithReuseIdentifier:VideoCellReuseIdentifier];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:MediaManagerContentChangedNotification object:self.mediaManager];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
     [self.view layoutIfNeeded];
-    
     [self.collectionView scrollToItemAtIndexPath:[self activeIndexPath] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
 }
 
@@ -49,6 +50,15 @@ static NSString * const ImageSection = @"image section";
     [self.collectionView setDelegate:nil];
     [self.collectionView setDataSource:nil];
 }
+
+- (void)setMediaManager:(MediaManager *)mediaManager {
+    self.mediaManagerObserver = [[MediaManagerObserver alloc] initWithMediaManager:mediaManager];
+    self.mediaManagerObserver.delegate = self;
+    
+    _mediaManager = mediaManager;
+}
+
+#pragma mark UICollectionViewDelegate/UICollectionViewDataSource methods
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *sectionInfo = [[self class] sectionInfo];
@@ -69,37 +79,43 @@ static NSString * const ImageSection = @"image section";
     }
 }
 
--  (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView videoCellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewVideoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:VideoCellReuseIdentifier forIndexPath:indexPath];
+    
+    id timeRange = [self.mediaManager sortedVideoKeys][indexPath.item];
+    
+    [self.mediaManager retrieveVideoForKey:timeRange completion:^(id key, AVAsset *video) {
+        AVPlayer *player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:video]];
+        [cell setPlayer:player];
+        [player play];
+    }];
+    return cell;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView imageCellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellReuseIdentifier forIndexPath:indexPath];
+    
+    id time = [self.mediaManager sortedImageKeys][indexPath.item];
+    
+    [self.mediaManager retrieveImageForKey:time completion:^(id key, UIImage *image) {
+        assert (image);
+        [cell.imageView setImage:image];
+    }];
+    return cell;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *sectionInfo = [[self class] sectionInfo];
     
-    // video
-    if (indexPath.section == [sectionInfo indexOfObject:VideoSection]) {
-        UICollectionViewVideoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:VideoCellReuseIdentifier forIndexPath:indexPath];
+    if ([sectionInfo indexOfObject:VideoSection] == indexPath.section) {
+        return [self collectionView:collectionView videoCellForItemAtIndexPath:indexPath];
         
-        id timeRange = [self.mediaManager sortedVideoKeys][indexPath.item];
-        
-        [self.mediaManager retrieveVideoForKey:timeRange completion:^(id key, AVAsset *video) {
-            AVPlayer *player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:video]];
-            [cell setPlayer:player];
-            [player play];
-        }];
-        return cell;
-        
-    // image
-    } else if (indexPath.section == [sectionInfo indexOfObject:ImageSection]){
-        UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellReuseIdentifier forIndexPath:indexPath];
-        
-        id time = [self.mediaManager sortedImageKeys][indexPath.item];
-        
-        [self.mediaManager retrieveImageForKey:time completion:^(id key, UIImage *image) {
-            assert (image);
-            [cell.imageView setImage:image];
-        }];
-        return cell;
-        
+    } else if ([sectionInfo indexOfObject:ImageSection] == indexPath.section){
+        return [self collectionView:collectionView imageCellForItemAtIndexPath:indexPath];
     }
+    
     assert (NO);
+    return nil;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -115,6 +131,7 @@ static NSString * const ImageSection = @"image section";
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return [[[self class] sectionInfo] count];
 }
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     CGSize size = self.collectionView.frame.size;
@@ -130,70 +147,46 @@ static NSString * const ImageSection = @"image section";
     return sectionInfo;
 }
 
-#pragma mark notification handling
+#pragma mark MediaManagerObserverDelegate methods
 
-- (void) handleNotification:(NSNotification *)notification {
-    
-    if ([notification name] == MediaManagerContentChangedNotification) {
-        assert ([notification object] == [self mediaManager]);
-        NSDictionary *userInfo = [notification userInfo];
-        
-        id key = userInfo[MediaManagerContentKey]; assert (key);
-        NSString *contentType = userInfo[MediaManagerContentTypeKey]; assert (contentType);
-        NSNumber *changeTypeNum = userInfo[MediaManagerContentChangeTypeKey]; assert (changeTypeNum);
-        
-        MediaManagerContentChangeType changeType = [changeTypeNum unsignedIntValue];
-        
-        // video
-        if ([MediaManagerContentTypeVideo isEqualToString:contentType]) {
-            
-            NSUInteger section = [[[self class] sectionInfo] indexOfObject:VideoSection];
-            
-            // added
-            if (MediaManagerContentChangeAdd == changeType) {
-                int changedIndex = [self.mediaManager indexOfAddedVideoKey:key];
-                NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
-                [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
-                
-                // removed
-            } else if (MediaManagerContentChangeRemove == changeType) {
-                int changedIndex = [self.mediaManager indexOfRemovedVideoKey:key];
-                NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
-                [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
-                
-            } else {
-                assert (NO);
-            }
-        }
-        
-        // image
-        else if ([MediaManagerContentTypeImage isEqualToString:contentType]) {
-            
-            NSUInteger section = [[[self class] sectionInfo] indexOfObject:ImageSection];
-            
-            // added
-            if (MediaManagerContentChangeAdd == changeType) {
-                int changedIndex = [self.mediaManager indexOfAddedImageKey:key];
-                NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
-                [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
-                
-                // removed
-            } else if (MediaManagerContentChangeRemove == changeType) {
-                int changedIndex = [self.mediaManager indexOfRemovedImageKey:key];
-                NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
-                [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
-                
-            } else {
-                assert (NO);
-            }
-            
-        } else {
-            assert (NO);
-        }
-        
-    } else {
-        assert (NO);
-    }
+- (void)mediaManagerAddedVideo:(id)key {
+    NSUInteger section = [self indexPathForVideoKey:key];
+    int changedIndex = [self.mediaManager indexOfAddedVideoKey:key];
+    NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+    [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
+}
+
+- (void)mediaManagerRemovedVideo:(id)key {
+    NSUInteger section = [self indexPathForVideoKey:key];
+    int changedIndex = [self.mediaManager indexOfRemovedVideoKey:key];
+    NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+    [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
+}
+
+- (void)mediaManagerAddedImage:(id)key {
+    NSUInteger section = [self indexPathForImageKey:key];
+    int changedIndex = [self.mediaManager indexOfAddedImageKey:key];
+    NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+    [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
+}
+
+- (void)mediaManagerRemovedImage:(id)key {
+    NSUInteger section = [self indexPathForImageKey:key];
+    int changedIndex = [self.mediaManager indexOfRemovedImageKey:key];
+    NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+    [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
+}
+
+- (NSUInteger)indexPathForVideoKey:(id)key {
+    return [[[self class] sectionInfo] indexOfObject:VideoSection];
+}
+
+- (NSUInteger)indexPathForImageKey:(id)key {
+    return [[[self class] sectionInfo] indexOfObject:ImageSection];
+}
+
+- (BOOL) shouldEnableNextButton {
+    return [[self.mediaManager sortedVideoKeys] count] > 0;
 }
 
 @end

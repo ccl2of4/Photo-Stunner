@@ -15,9 +15,10 @@
 #import "UICollectionViewImageCell.h"
 #import "PlaybackBarView.h"
 #import "PlayerView.h"
+#import "Photo_Stunner-Swift.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface TapViewController () <UIGestureRecognizerDelegate, PlayerViewDelegate, PlaybackBarViewDelegate>
+@interface TapViewController () <UIGestureRecognizerDelegate, MediaManagerObserverDelegate, PlayerViewDelegate, PlaybackBarViewDelegate>
 
 @property (weak, nonatomic) IBOutlet PlaybackBarView *playbackBarView;
 @property (weak, nonatomic) IBOutlet UIButton *backStepButton;
@@ -30,6 +31,7 @@
 @property (nonatomic) AVAssetImageGenerator *previewImageGenerator;
 
 @property (nonatomic) MediaManager *mediaManager;
+@property (nonatomic) MediaManagerObserver *mediaManagerObserver;
 
 @end
 
@@ -226,6 +228,8 @@ static const NSUInteger NumberOfPreviewImages = 10;
 - (MediaManager *)mediaManager {
     if (!_mediaManager) {
         _mediaManager = [MediaManager new];
+        self.mediaManagerObserver = [[MediaManagerObserver alloc] initWithMediaManager:_mediaManager];
+        self.mediaManagerObserver.delegate = self;
     }
     return _mediaManager;
 }
@@ -351,64 +355,39 @@ static const NSUInteger NumberOfPreviewImages = 10;
     return [self canAddImageForTime:time];
 }
 
-- (void)videosChanged:(id)key changeType:(MediaManagerContentChangeType)changeType {
-   
-    if (MediaManagerContentChangeAdd == changeType) {
-        
-        if (![[self.playbackBarView videoIndicatorTimeRanges] containsObject:key]) {
-            [self.playbackBarView addVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
-            assert (NO);
-        }
-        
-    } else if (MediaManagerContentChangeRemove == changeType) {
-        [self.playbackBarView removeVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
-        
-    } else assert (NO);
+#pragma mark MediaManagerObserverDelegate methods
+
+- (void)mediaManagerAddedVideo:(id)key {
+    if (![[self.playbackBarView videoIndicatorTimeRanges] containsObject:key]) {
+        [self.playbackBarView addVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
+        assert (NO);
+    }
 }
 
-- (void)imagesChanged:(id)key changeType:(MediaManagerContentChangeType)changeType {
+- (void)mediaManagerRemovedVideo:(id)key {
+    [self.playbackBarView removeVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
+}
 
-    if (MediaManagerContentChangeAdd == changeType) {
-        
-        if (![[self.playbackBarView imageIndicatorTimes] containsObject:key]) {
-            [self.playbackBarView addImageIndicatorForTime:[key CMTimeValue]];
-            assert (NO);
-        }
-        
-    } else if (MediaManagerContentChangeRemove == changeType) {
-        [self.playbackBarView removeImageIndicatorForTime:[key CMTimeValue]];
-        
-    } else assert (NO);
+- (void)mediaManagerAddedImage:(id)key {
+    if (![[self.playbackBarView imageIndicatorTimes] containsObject:key]) {
+        [self.playbackBarView addImageIndicatorForTime:[key CMTimeValue]];
+        assert (NO);
+    }
+}
+
+- (void)mediaManagerRemovedImage:(id)key {
+    [self.playbackBarView removeImageIndicatorForTime:[key CMTimeValue]];
 }
 
 #pragma mark observer methods
 
+// logic common to all MediaManagerObserverDelegate methods
 - (void)handleNotification:(NSNotification *)notification {
     if ([notification name] == MediaManagerContentChangedNotification) {
         assert ([notification object] == [self mediaManager]);
         
-        NSDictionary *userInfo = [notification userInfo];
-        id key = userInfo[MediaManagerContentKey]; assert (key);
-        NSString *contentType = userInfo[MediaManagerContentTypeKey]; assert (contentType);
-        NSNumber *changeTypeNum = userInfo[MediaManagerContentChangeTypeKey]; assert (changeTypeNum);
-        MediaManagerContentChangeType changeType = [changeTypeNum unsignedIntValue];
-        
-        
-        if ([MediaManagerContentTypeVideo isEqualToString:contentType]) {
-            [self videosChanged:key changeType:changeType];
-        } else if ([MediaManagerContentTypeImage isEqualToString:contentType]) {
-            [self imagesChanged:key changeType:changeType];
-        } else {
-            assert (NO);
-        }
-        
-        
-        // housekeeping
         [self checkIfShouldReturnToTapScreen];
         [self updateNextButtonVisibility];
-        
-    } else {
-        assert (NO);
     }
 }
 

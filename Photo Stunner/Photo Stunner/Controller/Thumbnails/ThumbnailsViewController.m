@@ -17,17 +17,17 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-@interface ThumbnailsViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIActionSheetDelegate>
+@interface ThumbnailsViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIActionSheetDelegate, MediaManagerObserverDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property MediaManagerObserver *mediaManagerObserver;
 
 @end
 
-static NSString * const CellReuseIdentifier = @"cell";
-static NSString * const HeaderReuseIdentifier = @"header";
-
 @implementation ThumbnailsViewController
 
+static NSString * const CellReuseIdentifier = @"cell";
+static NSString * const HeaderReuseIdentifier = @"header";
 static NSString * const VideoSection = @"video section";
 static NSString * const ImageSection = @"image section";
 
@@ -45,14 +45,18 @@ static NSString * const ImageSection = @"image section";
     
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewHeaderCell" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HeaderReuseIdentifier];
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:MediaManagerContentChangedNotification object:self.mediaManager];
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.collectionView setDelegate:nil];
     [self.collectionView setDataSource:nil];
+}
+
+- (void)setMediaManager:(MediaManager *)mediaManager {
+    self.mediaManagerObserver = [[MediaManagerObserver alloc] initWithMediaManager:mediaManager];
+    self.mediaManagerObserver.delegate = self;
+    
+    _mediaManager = mediaManager;
 }
 
 #pragma mark UI events
@@ -67,34 +71,40 @@ static NSString * const ImageSection = @"image section";
 
 #pragma mark UICollectionViewDelegate/UICollectionViewDataSource methods
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView videoCellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
-    NSArray *sectionInfo = [[self class] sectionInfo];
+    id timeRange = [self.mediaManager sortedVideoKeys][indexPath.item];
     
-    // video
-    if (indexPath.section == [sectionInfo indexOfObject:VideoSection]) {
-    
-        id timeRange = [self.mediaManager sortedVideoKeys][indexPath.item];
-        
-        [self.mediaManager retrieveVideoThumbnailImageForKey:timeRange completion:^(id key, UIImage *image) {
-            assert (image);
-            [cell.imageView setImage:image];
-        }];
-    
-    // image
-    } else if (indexPath.section == [sectionInfo indexOfObject:ImageSection]){
-        
-        id time = [self.mediaManager sortedImageKeys][indexPath.item];
-
-        [self.mediaManager retrieveThumbnailImageForKey:time completion:^(id key, UIImage *image) {
-            assert (image);
-            [cell.imageView setImage:image];
-        }];
-    
-    
-    } else assert (NO);
-    
+    [self.mediaManager retrieveVideoThumbnailImageForKey:timeRange completion:^(id key, UIImage *image) {
+        assert (image);
+        [cell.imageView setImage:image];
+    }];
     return cell;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView imageCellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
+    id time = [self.mediaManager sortedImageKeys][indexPath.item];
+    
+    [self.mediaManager retrieveThumbnailImageForKey:time completion:^(id key, UIImage *image) {
+        assert (image);
+        [cell.imageView setImage:image];
+    }];
+    return cell;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+   NSArray *sectionInfo = [[self class] sectionInfo];
+    
+    if ([sectionInfo indexOfObject:VideoSection] == indexPath.section) {
+        return [self collectionView:collectionView videoCellForItemAtIndexPath:indexPath];
+    
+    } else if ([sectionInfo indexOfObject:ImageSection] == indexPath.section){
+        return [self collectionView:collectionView imageCellForItemAtIndexPath:indexPath];
+    }
+    
+    assert (NO);
+    return nil;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -208,74 +218,48 @@ static NSString * const ImageSection = @"image section";
     }
 }
 
-#pragma mark notification handling
+#pragma mark MediaManagerObserverDelegate methods
 
-- (void) handleNotification:(NSNotification *)notification {
+- (void)mediaManagerAddedVideo:(id)key {
+    NSUInteger section = [self indexPathForVideoKey:key];
+    int changedIndex = [self.mediaManager indexOfAddedVideoKey:key];
+    NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+    [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
+}
+
+- (void)mediaManagerRemovedVideo:(id)key {
+    NSUInteger section = [self indexPathForVideoKey:key];
+    int changedIndex = [self.mediaManager indexOfRemovedVideoKey:key];
+    NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+    [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
     
-    if ([notification name] == MediaManagerContentChangedNotification) {
-        assert ([notification object] == [self mediaManager]);
-        NSDictionary *userInfo = [notification userInfo];
+    [self.navigationItem.rightBarButtonItem setEnabled:[self shouldEnableNextButton]];
+}
 
-        id key = userInfo[MediaManagerContentKey]; assert (key);
-        NSString *contentType = userInfo[MediaManagerContentTypeKey]; assert (contentType);
-        NSNumber *changeTypeNum = userInfo[MediaManagerContentChangeTypeKey]; assert (changeTypeNum);
-        
-        MediaManagerContentChangeType changeType = [changeTypeNum unsignedIntValue];
-                
-        // video
-        if ([MediaManagerContentTypeVideo isEqualToString:contentType]) {
-            
-            NSUInteger section = [[[self class] sectionInfo] indexOfObject:VideoSection];
-            
-            // added
-            if (MediaManagerContentChangeAdd == changeType) {
-                int changedIndex = [self.mediaManager indexOfAddedVideoKey:key];
-                NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
-                [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
-                
-            // removed
-            } else if (MediaManagerContentChangeRemove == changeType) {
-                int changedIndex = [self.mediaManager indexOfRemovedVideoKey:key];
-                NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
-                [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
-                
-            } else {
-                assert (NO);
-            }
-        }
-        
-        // image
-        else if ([MediaManagerContentTypeImage isEqualToString:contentType]) {
-            
-            NSUInteger section = [[[self class] sectionInfo] indexOfObject:ImageSection];
-            
-            // added
-            if (MediaManagerContentChangeAdd == changeType) {
-                int changedIndex = [self.mediaManager indexOfAddedImageKey:key];
-                NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
-                [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
-                
-            // removed
-            } else if (MediaManagerContentChangeRemove == changeType) {
-                int changedIndex = [self.mediaManager indexOfRemovedImageKey:key];
-                NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
-                [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
-                
-            } else {
-                assert (NO);
-            }
-            
-        } else {
-            assert (NO);
-        }
-        
-        // don't go to the next screen if there are no videos
-        BOOL rightBarButtonItemEnabled = [[self.mediaManager sortedVideoKeys] count] > 0;
-        [self.navigationItem.rightBarButtonItem setEnabled:rightBarButtonItemEnabled];
-        
-    } else {
-        assert (NO);
-    }
+- (void)mediaManagerAddedImage:(id)key {
+    NSUInteger section = [self indexPathForImageKey:key];
+    int changedIndex = [self.mediaManager indexOfAddedImageKey:key];
+    NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+    [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
+}
+
+- (void)mediaManagerRemovedImage:(id)key {
+    NSUInteger section = [self indexPathForImageKey:key];
+    int changedIndex = [self.mediaManager indexOfRemovedImageKey:key];
+    NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
+    [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
+}
+
+- (NSUInteger)indexPathForVideoKey:(id)key {
+    return [[[self class] sectionInfo] indexOfObject:VideoSection];
+}
+
+- (NSUInteger)indexPathForImageKey:(id)key {
+    return [[[self class] sectionInfo] indexOfObject:ImageSection];
+}
+
+- (BOOL) shouldEnableNextButton {
+    return [[self.mediaManager sortedVideoKeys] count] > 0;
 }
 
 @end

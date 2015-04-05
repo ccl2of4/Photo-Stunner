@@ -11,6 +11,7 @@
 		B31502DF1ACE0269007A9755 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31502DD1ACE0269007A9755 /* PreviewViewController.swift */; };
 		B31502E01ACE0269007A9755 /* PreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B31502DE1ACE0269007A9755 /* PreviewViewController.xib */; };
 		B320DB211ACF82E5007F50A2 /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B320DB201ACF82E5007F50A2 /* PlayerView.m */; };
+		B328F0431AD0E26400BBA088 /* MediaManagerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B328F0421AD0E26400BBA088 /* MediaManagerObserver.swift */; };
 		B34788811AB75584009FF25C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788801AB75584009FF25C /* main.m */; };
 		B34788841AB75584009FF25C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B34788831AB75584009FF25C /* AppDelegate.m */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
@@ -65,6 +66,7 @@
 		B31502DE1ACE0269007A9755 /* PreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewViewController.xib; sourceTree = "<group>"; };
 		B320DB1F1ACF82E5007F50A2 /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
 		B320DB201ACF82E5007F50A2 /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
+		B328F0421AD0E26400BBA088 /* MediaManagerObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaManagerObserver.swift; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B34788801AB75584009FF25C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				B34788E61AB79651009FF25C /* Library */,
 				B34788E41AB79651009FF25C /* MediaManager.h */,
 				B34788E51AB79651009FF25C /* MediaManager.m */,
+				B328F0421AD0E26400BBA088 /* MediaManagerObserver.swift */,
 				B37333421ACB574A001B9780 /* MediaManager+CMTimeImageKeys.h */,
 				B37333431ACB574A001B9780 /* MediaManager+CMTimeImageKeys.m */,
 				B37333451ACB5755001B9780 /* MediaManager+CMTimeRangeVideoKeys.h */,
@@ -472,6 +475,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B34788F81AB798EA009FF25C /* ALAssetVideoAssetAdapter.m in Sources */,
+				B328F0431AD0E26400BBA088 /* MediaManagerObserver.swift in Sources */,
 				B3F2DA301AC928F900E96A74 /* StunningImageManager.swift in Sources */,
 				B37133EA1ACC9BD500174A4C /* UICollectionViewVideoCell.m in Sources */,
 				B37333471ACB5755001B9780 /* MediaManager+CMTimeRangeVideoKeys.m in Sources */,
