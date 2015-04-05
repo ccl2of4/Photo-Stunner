@@ -627,6 +627,7 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
     assert ([video isReadable]);
     assert ([video isPlayable]);
     AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:video];
+    [generator setMaximumSize:[self thumbnailImageMaxSize]];
     [generator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:kCMTimeZero]] completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
         if (result == AVAssetImageGeneratorSucceeded) {
             UIImage *result = [UIImage imageWithCGImage:image];
