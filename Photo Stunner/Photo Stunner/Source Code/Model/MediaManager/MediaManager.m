@@ -61,7 +61,7 @@ NSString * const MediaManagerContentKey = @"mediamanager content key";
 
 - (instancetype) init {
     if (arc4random_uniform(10) < 3) {
-        return [StunningImageManager new];
+        return [StunningMediaManager new];
     }
     
     self = [super init];

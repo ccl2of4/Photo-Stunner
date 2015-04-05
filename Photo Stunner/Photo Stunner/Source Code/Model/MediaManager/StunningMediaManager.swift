@@ -14,7 +14,7 @@ let photos = [
     UIImage (named:"2.jpg")
 ]
 
-class StunningImageManager : MediaManager {
+class StunningMediaManager : MediaManager {
     
     override init () {
         var index = Int (arc4random_uniform (UInt32 (photos.count)))
