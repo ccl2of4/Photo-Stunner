@@ -46,6 +46,10 @@ extern NSString * const MediaManagerContentTypeImage;
 - (void) removeAllImages;
 - (void) removeAllImagesWithCompletionBlock:(void(^)(void))completion;
 
+// saving
+- (void) saveImageToSavedPhotosAlbumForKey:(id)key;
+- (void) saveImageToSavedPhotosAlbumForKey:(id)key completion:(void(^)(void))completion;
+
 @end
 
 @interface MediaManager (Video)
@@ -68,5 +72,9 @@ extern NSString * const MediaManagerContentTypeVideo;
 - (void) removeVideoForKey:(id)key completion:(void(^)(id key))completion;;
 - (void) removeAllVideos;
 - (void) removeAllVideosWithCompletionBlock:(void(^)(void))completion;
+
+// saving
+- (void) saveVideoToSavedPhotosAlbumForKey:(id)key;
+- (void) saveVideoToSavedPhotosAlbumForKey:(id)key completion:(void(^)(void))completion;
 
 @end

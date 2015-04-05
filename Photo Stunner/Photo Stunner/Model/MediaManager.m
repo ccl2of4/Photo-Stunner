@@ -22,9 +22,6 @@ NSString * const MediaManagerContentChangeTypeKey = @"mediamanager content chang
 NSString * const MediaManagerContentTypeKey = @"mediamanager content type key";
 NSString * const MediaManagerContentKey = @"mediamanager content key";
 
-static NSString * const FilePathsContentKey = @"filepaths content key";
-static NSString * const FilePathsThumbnailImageKey = @"filepaths thumbnail image key";
-
 #define ImageManagerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
 #define DefaultThumbnailSize CGSizeMake (100.0f, 100.0f)
 
@@ -366,6 +363,29 @@ static NSString * const FilePathsThumbnailImagePathKey = @"filepaths thumbnail i
     });
 }
 
+#pragma mark saving
+
+- (void)saveImageToSavedPhotosAlbumForKey:(id)key {
+    [self saveImageToSavedPhotosAlbumForKey:key completion:nil];
+}
+
+- (void) saveImageToSavedPhotosAlbumForKey:(id)key completion:(void (^)(void))completion {
+    [self retrieveImageForKey:key completion:^(id key, UIImage *image) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), (__bridge void *)(completion));
+        });
+    }];
+}
+
+- (void) image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    assert ([NSThread isMainThread]);
+
+    void(^completion)(void) = (__bridge void (^)(void))(contextInfo);
+    if (completion) {
+        completion ();
+    }
+}
+
 @end
 
 @implementation MediaManager (Video)
@@ -568,6 +588,39 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
     };
 }
 
+#pragma mark saving
+
+- (void)saveVideoToSavedPhotosAlbumForKey:(id)key {
+    [self saveVideoToSavedPhotosAlbumForKey:key completion:nil];
+}
+
+- (void)saveVideoToSavedPhotosAlbumForKey:(id)key completion:(void (^)(void))completion {
+    if (!self.videoFilePaths[key]) {
+        NSString *reason = [NSString stringWithFormat:@"Cannot save video for key %@ because it has not been added.", key];
+        [[NSException exceptionWithName:NSGenericException reason:reason userInfo:nil] raise];
+    }
+    
+    NSString *filePath = self.videoFilePaths[key][FilePathsVideoPathKey];
+    assert (filePath);
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        assert (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(filePath));
+        UISaveVideoAtPathToSavedPhotosAlbum(filePath,
+                                            self,
+                                            @selector(video:didFinishSavingWithError:contextInfo:),
+                                            (__bridge void *)(completion));
+    });
+}
+
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    assert ([NSThread isMainThread]);
+
+    void(^completion)(void) = (__bridge void(^)(void))contextInfo;
+    if (completion) {
+        completion ();
+    }
+}
+
 #pragma mark miscellaneous
 
 - (void)createThumbnailImageForVideo:(AVAsset *)video completion:(void(^)(AVAsset *video, UIImage *thumbnailImage)) completion {
@@ -581,8 +634,6 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
                 completion (video, result);
             });
         } else {
-            NSLog(@"%d",result);
-            NSLog(@"%@",error);
             assert (NO);
         }
     }];

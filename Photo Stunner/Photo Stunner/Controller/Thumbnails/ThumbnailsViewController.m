@@ -180,10 +180,7 @@ static NSString * const ImageSection = @"image section";
             
         // save
         } else if (buttonIndex == ([actionSheet firstOtherButtonIndex] + 1)) {
-            [self.mediaManager retrieveVideoForKey:key completion:^(id key, AVAsset *video) {
-                NSString *videoPath = [[(AVURLAsset *)video URL] absoluteString]; // probably not the best way to get the URL
-                UISaveVideoAtPathToSavedPhotosAlbum(videoPath, nil, nil, nil);
-            }];
+            [self.mediaManager saveVideoToSavedPhotosAlbumForKey:key completion:nil];
         }
     
     // image
@@ -206,9 +203,7 @@ static NSString * const ImageSection = @"image section";
             
         // save
         } else if (buttonIndex == ([actionSheet firstOtherButtonIndex] + 1)) {
-            [self.mediaManager retrieveImageForKey:key completion:^(id key, UIImage *image) {
-                UIImageWriteToSavedPhotosAlbum(image, nil, nil, NULL);
-            }];
+            [self.mediaManager saveImageToSavedPhotosAlbumForKey:key completion:nil];
         }
     }
 }
