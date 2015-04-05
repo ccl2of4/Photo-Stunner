@@ -220,6 +220,10 @@ static NSString * const ImageSection = @"image section";
 
 #pragma mark MediaManagerObserverDelegate methods
 
+- (void)mediaManagerContentChanged {
+    [self.navigationItem.rightBarButtonItem setEnabled:[self shouldEnableNextButton]];
+}
+
 - (void)mediaManagerAddedVideo:(id)key {
     NSUInteger section = [self indexPathForVideoKey:key];
     int changedIndex = [self.mediaManager indexOfAddedVideoKey:key];
@@ -232,8 +236,6 @@ static NSString * const ImageSection = @"image section";
     int changedIndex = [self.mediaManager indexOfRemovedVideoKey:key];
     NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
     [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
-    
-    [self.navigationItem.rightBarButtonItem setEnabled:[self shouldEnableNextButton]];
 }
 
 - (void)mediaManagerAddedImage:(id)key {

@@ -64,8 +64,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [self.playerView setDelegate:self];
     
     [self.playbackBarView setDelegate:self];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:MediaManagerContentChangedNotification object:self.mediaManager];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -87,7 +85,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.imageGenerator cancelAllCGImageGeneration];
     [self.previewImageGenerator cancelAllCGImageGeneration];
 }
@@ -237,10 +234,11 @@ static const NSUInteger NumberOfPreviewImages = 10;
 - (BOOL) canAddImageForTime:(CMTime)time {
     NSValue *key = [NSValue valueWithCMTime:time];
     
-    BOOL imageHasBeenExtracted = [[self.mediaManager allImageKeys] containsObject:key];
-    BOOL imageWillBeExtracted = [[self.playbackBarView imageIndicatorTimes] containsObject:key];
+    if ([[self.mediaManager allImageKeys] containsObject:key]) {
+        assert ([[self.playbackBarView imageIndicatorTimes] containsObject:key]);
+    }
     
-    return !imageHasBeenExtracted && !imageWillBeExtracted;
+    return ![[self.playbackBarView imageIndicatorTimes] containsObject:key];
 }
 
 #pragma mark preview images
@@ -357,6 +355,11 @@ static const NSUInteger NumberOfPreviewImages = 10;
 
 #pragma mark MediaManagerObserverDelegate methods
 
+- (void)mediaManagerContentChanged {
+    [self updateNextButtonVisibility];
+    [self checkIfShouldReturnToTapScreen];
+}
+
 - (void)mediaManagerAddedVideo:(id)key {
     if (![[self.playbackBarView videoIndicatorTimeRanges] containsObject:key]) {
         [self.playbackBarView addVideoIndicatorForTimeRange:[key CMTimeRangeValue]];
@@ -380,16 +383,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
 }
 
 #pragma mark observer methods
-
-// logic common to all MediaManagerObserverDelegate methods
-- (void)handleNotification:(NSNotification *)notification {
-    if ([notification name] == MediaManagerContentChangedNotification) {
-        assert ([notification object] == [self mediaManager]);
-        
-        [self checkIfShouldReturnToTapScreen];
-        [self updateNextButtonVisibility];
-    }
-}
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (PlayerRateObservingContext == context) {

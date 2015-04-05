@@ -12,23 +12,11 @@
 
 @interface MediaManager : NSObject
 
-extern NSString * const MediaManagerContentChangedNotification;
-extern NSString * const MediaManagerContentChangeTypeKey;
-typedef enum {
-    MediaManagerContentChangeAdd,
-    MediaManagerContentChangeRemove
-} MediaManagerContentChangeType;
-
-extern NSString * const MediaManagerContentTypeKey;
-extern NSString * const MediaManagerContentKey;
-
 @property (readonly, nonatomic) CGSize thumbnailImageMaxSize;
 
 @end
 
 @interface MediaManager (Image)
-
-extern NSString * const MediaManagerContentTypeImage;
 
 @property (readonly, nonatomic) NSArray *allImageKeys;
 
@@ -55,8 +43,6 @@ extern NSString * const MediaManagerContentTypeImage;
 @interface MediaManager (Video)
 
 @property (readonly, nonatomic) NSArray *allVideoKeys;
-
-extern NSString * const MediaManagerContentTypeVideo;
 
 // retrieving
 - (void) retrieveVideoForKey:(id)key completion:(void(^)(id key, AVAsset *video))completion;

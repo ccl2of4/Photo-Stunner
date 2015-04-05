@@ -3,4 +3,5 @@
 //
 
 #import "MediaManager.h"
+#import "MediaManager+Private.h"
 #import "MediaManager+CMTimeRangeVideoKeys.h"

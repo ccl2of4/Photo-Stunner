@@ -185,8 +185,4 @@ static NSString * const ImageSection = @"image section";
     return [[[self class] sectionInfo] indexOfObject:ImageSection];
 }
 
-- (BOOL) shouldEnableNextButton {
-    return [[self.mediaManager sortedVideoKeys] count] > 0;
-}
-
 @end
