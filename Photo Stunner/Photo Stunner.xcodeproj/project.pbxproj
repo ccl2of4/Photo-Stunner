@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4785630B74F6E35D4124E3F8 /* libPods-Photo StunnerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A47F0C10CB8D81A935AE15 /* libPods-Photo StunnerTests.a */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
 		B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788A41AB755A9009FF25C /* LaunchScreen.xib */; };
 		B34789041AB79E2B009FF25C /* 1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FB1AB79E2B009FF25C /* 1.mp4 */; };
@@ -48,6 +49,7 @@
 		B38B1CDD1AD1E13800733112 /* MediaManagerVideoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B38B1CDB1AD1E13800733112 /* MediaManagerVideoTests.m */; };
 		B38CAF4F1ACA0DE2000D72D6 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B38CAF4B1ACA0DE2000D72D6 /* 1.jpg */; };
 		B38CAF521ACA0DE2000D72D6 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B38CAF4E1ACA0DE2000D72D6 /* 2.jpg */; };
+		C01CC5AE9AC357EA836753A4 /* libPods-Photo Stunner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEBD8BCD4673599AB5D891D1 /* libPods-Photo Stunner.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01A47F0C10CB8D81A935AE15 /* libPods-Photo StunnerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Photo StunnerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E4E8F7CFC2CCE22A81F0836 /* Pods-Photo StunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo StunnerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Photo StunnerTests/Pods-Photo StunnerTests.release.xcconfig"; sourceTree = "<group>"; };
+		2A48D80F6DD15881ADCB7892 /* Pods-Photo Stunner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo Stunner.release.xcconfig"; path = "Pods/Target Support Files/Pods-Photo Stunner/Pods-Photo Stunner.release.xcconfig"; sourceTree = "<group>"; };
+		2A52477F41A4C718FED0D9B3 /* Pods-Photo StunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo StunnerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Photo StunnerTests/Pods-Photo StunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A4AB22C816497D8EEF84A618 /* Pods-Photo Stunner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo Stunner.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Photo Stunner/Pods-Photo Stunner.debug.xcconfig"; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B347888B1AB75584009FF25C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -126,6 +133,7 @@
 		B38B1CDB1AD1E13800733112 /* MediaManagerVideoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManagerVideoTests.m; sourceTree = "<group>"; };
 		B38CAF4B1ACA0DE2000D72D6 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		B38CAF4E1ACA0DE2000D72D6 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
+		EEBD8BCD4673599AB5D891D1 /* libPods-Photo Stunner.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Photo Stunner.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +141,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C01CC5AE9AC357EA836753A4 /* libPods-Photo Stunner.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,18 +149,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4785630B74F6E35D4124E3F8 /* libPods-Photo StunnerTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0FEC096DE7DAC50274A0295C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2A52477F41A4C718FED0D9B3 /* Pods-Photo StunnerTests.debug.xcconfig */,
+				1E4E8F7CFC2CCE22A81F0836 /* Pods-Photo StunnerTests.release.xcconfig */,
+				A4AB22C816497D8EEF84A618 /* Pods-Photo Stunner.debug.xcconfig */,
+				2A48D80F6DD15881ADCB7892 /* Pods-Photo Stunner.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		B34788721AB75584009FF25C = {
 			isa = PBXGroup;
 			children = (
 				B347887D1AB75584009FF25C /* Photo Stunner */,
 				B34788971AB75584009FF25C /* Photo StunnerTests */,
 				B347887C1AB75584009FF25C /* Products */,
+				0FEC096DE7DAC50274A0295C /* Pods */,
+				FAFECC834A6E9A283A172028 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -369,6 +392,15 @@
 			path = "Stunning Photos";
 			sourceTree = "<group>";
 		};
+		FAFECC834A6E9A283A172028 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01A47F0C10CB8D81A935AE15 /* libPods-Photo StunnerTests.a */,
+				EEBD8BCD4673599AB5D891D1 /* libPods-Photo Stunner.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -376,9 +408,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B347889E1AB75584009FF25C /* Build configuration list for PBXNativeTarget "Photo Stunner" */;
 			buildPhases = (
+				EF38B4802623AA8EB722C290 /* Check Pods Manifest.lock */,
 				B34788771AB75584009FF25C /* Sources */,
 				B34788781AB75584009FF25C /* Frameworks */,
 				B34788791AB75584009FF25C /* Resources */,
+				58FAC7262E1CBCF2A7D358F0 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -393,9 +427,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B34788A11AB75584009FF25C /* Build configuration list for PBXNativeTarget "Photo StunnerTests" */;
 			buildPhases = (
+				F5D56E4EA41E447A47BC31F5 /* Check Pods Manifest.lock */,
 				B34788901AB75584009FF25C /* Sources */,
 				B34788911AB75584009FF25C /* Frameworks */,
 				B34788921AB75584009FF25C /* Resources */,
+				62A82A9E65F81C074C73CACC /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -478,6 +514,69 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		58FAC7262E1CBCF2A7D358F0 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Photo Stunner/Pods-Photo Stunner-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		62A82A9E65F81C074C73CACC /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Photo StunnerTests/Pods-Photo StunnerTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EF38B4802623AA8EB722C290 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F5D56E4EA41E447A47BC31F5 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B34788771AB75584009FF25C /* Sources */ = {
@@ -619,6 +718,7 @@
 		};
 		B347889F1AB75584009FF25C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4AB22C816497D8EEF84A618 /* Pods-Photo Stunner.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -633,6 +733,7 @@
 		};
 		B34788A01AB75584009FF25C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2A48D80F6DD15881ADCB7892 /* Pods-Photo Stunner.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -646,6 +747,7 @@
 		};
 		B34788A21AB75584009FF25C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2A52477F41A4C718FED0D9B3 /* Pods-Photo StunnerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -665,6 +767,7 @@
 		};
 		B34788A31AB75584009FF25C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1E4E8F7CFC2CCE22A81F0836 /* Pods-Photo StunnerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
