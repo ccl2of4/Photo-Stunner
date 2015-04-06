@@ -151,28 +151,28 @@ static NSString * const ImageSection = @"image section";
 
 - (void)mediaManagerAddedVideo:(id)key {
     NSUInteger section = [self indexPathForVideoKey:key];
-    int changedIndex = [self.mediaManager indexOfAddedVideoKey:key];
+    NSUInteger changedIndex = [self.mediaManager indexOfAddedVideoKey:key];
     NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
     [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
 }
 
 - (void)mediaManagerRemovedVideo:(id)key {
     NSUInteger section = [self indexPathForVideoKey:key];
-    int changedIndex = [self.mediaManager indexOfRemovedVideoKey:key];
+    NSUInteger changedIndex = [self.mediaManager indexOfRemovedVideoKey:key];
     NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
     [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
 }
 
 - (void)mediaManagerAddedImage:(id)key {
     NSUInteger section = [self indexPathForImageKey:key];
-    int changedIndex = [self.mediaManager indexOfAddedImageKey:key];
+    NSUInteger changedIndex = [self.mediaManager indexOfAddedImageKey:key];
     NSIndexPath *addedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
     [self.collectionView insertItemsAtIndexPaths:@[addedIndexPath]];
 }
 
 - (void)mediaManagerRemovedImage:(id)key {
     NSUInteger section = [self indexPathForImageKey:key];
-    int changedIndex = [self.mediaManager indexOfRemovedImageKey:key];
+    NSUInteger changedIndex = [self.mediaManager indexOfRemovedImageKey:key];
     NSIndexPath *removedIndexPath = [NSIndexPath indexPathForItem:changedIndex inSection:section];
     [self.collectionView deleteItemsAtIndexPaths:@[removedIndexPath]];
 }

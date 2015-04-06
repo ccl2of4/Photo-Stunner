@@ -128,7 +128,7 @@
 
 - (void)setPreviewImage:(UIImage *)image atIndex:(NSUInteger)index {
     if (index >= [self numberOfPreviewImages]) {
-        NSString *reason = [NSString stringWithFormat:@"Out of range setting image at index %d", index];
+        NSString *reason = [NSString stringWithFormat:@"Out of range setting image at index %lu", (unsigned long)index];
         [[NSException exceptionWithName:NSRangeException reason:reason userInfo:nil] raise];
     }
     
