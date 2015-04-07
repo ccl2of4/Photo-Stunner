@@ -9,7 +9,7 @@
 #import "PlayerView.h"
 #import "FlashView.h"
 
-@interface PlayerView () <UIGestureRecognizerDelegate>
+@interface PlayerView ()
 
 @property (nonatomic) AVPlayerLayer *playerLayer;
 @property (nonatomic) UIImageView *previewImageView;
@@ -41,7 +41,6 @@
     
     UILongPressGestureRecognizer *gr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleUIGestureRecognizerRecognized:)];
     [gr setMinimumPressDuration:0.0];
-    [gr setDelegate:self];
     [self addGestureRecognizer:gr];
 }
 
@@ -88,6 +87,13 @@
         
         // touch up
         else if ([gr state] == UIGestureRecognizerStateEnded) {
+            
+            // sometimes the gesture recognizer will get to StateEnded without ever getting to StateBegan.
+            // in that case, we need to ignore the entire gesture
+            if (CMTimeRangeEqual(self.touchedTimeRange, kCMTimeRangeInvalid)) {
+                return;
+            }
+            
             CMTimeRange oldTimeRange = self.touchedTimeRange;
             self.touchedTimeRange = CMTimeRangeMake(self.touchedTimeRange.start, CMTimeSubtract(self.player.currentTime, self.touchedTimeRange.start));
             
@@ -107,6 +113,7 @@
                 
             // take out video
             } else {
+
                 if (CMTIME_COMPARE_INLINE(self.touchedTimeRange.duration, >, self.minimumVideoDuration)) {
                     [self.delegate playerView:self didUpdateVideoSelection:self.touchedTimeRange oldTimeRange:oldTimeRange finished:YES];
                 } else {
@@ -184,16 +191,6 @@
 
 - (UIImage *)previewImage {
     return [self.previewImageView image];
-}
-
-#pragma mark UIGestureRecognizerDelegate methods
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return YES;
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    return YES;
 }
 
 @end

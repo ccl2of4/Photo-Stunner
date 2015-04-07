@@ -322,10 +322,15 @@ static const NSUInteger NumberOfPreviewImages = 10;
 }
 
 - (void)playerView:(PlayerView *)playerView didUpdateVideoSelection:(CMTimeRange)updatedTimeRange oldTimeRange:(CMTimeRange)oldTimeRange finished:(BOOL)finished {
-    
+
     [self.playbackBarView changeVideoIndicatorForTimeRange:oldTimeRange toTimeRange:updatedTimeRange];
 
     if (finished) {
+        
+        // it is theoretically possible that the time range for this new video is equal to an existing time range.
+        // we should probably check to see if we can actually add a video for this time range
+        // however since the time ranges are extremely precise, the probability of two time ranges colliding is almost too low for
+        // it to be worth handling the error
         [self extractVideoForTimeRange:updatedTimeRange completion:^(BOOL success) {
             if (!success) {
                 [self.playbackBarView removeVideoIndicatorForTimeRange:updatedTimeRange];
