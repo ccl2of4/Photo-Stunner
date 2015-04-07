@@ -118,23 +118,25 @@ NSString * const MediaManagerContentKey = @"mediamanager content key";
     return result;
 }
 
-- (void)createThumbnailImageForImage:(UIImage *)image completion:(void(^)(UIImage *image, UIImage *thumbnailImage)) completion {
-    assert (image);
+- (void) removeItemAtPath:(NSString *)filePath completion:(void(^)(NSString *filePath, NSError *error))completion {
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        CGSize size = [[self class] sizeForImage:image givenMaximumSize:[self thumbnailImageMaxSize]];
+    dispatch_async([[self class] fileIOQueue], ^{
+        NSError *error;
+        NSFileManager *fileManager = [NSFileManager defaultManager];
         
-        UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
-        [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
-        UIImage *thumbnailImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        assert (thumbnailImage);
+        assert (filePath);
+        assert ([fileManager fileExistsAtPath:filePath]);
         
-        if (completion) {
-            dispatch_async_main_safe(^{completion (image, thumbnailImage);});
-        }
+        [fileManager removeItemAtPath:filePath error:&error];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+                dispatch_async_main_safe(^{ completion(filePath, error); });
+            }
+        });
     });
 }
+
 
 + (dispatch_queue_t)fileIOQueue {
     static dispatch_queue_t fileIOQueue;
@@ -323,8 +325,8 @@ static NSString * const FilePathsThumbnailImagePathKey = @"filepaths thumbnail i
     
     __weak typeof(self) weakSelf = self;
     
-    [self removeImageAtPath:filePath completion:^(NSString *filePath) {
-        [weakSelf removeImageAtPath:thumbnailFilePath completion:^(NSString *filePath) {
+    [self removeItemAtPath:filePath completion:^(NSString *filePath, NSError *error) {
+        [weakSelf removeItemAtPath:thumbnailFilePath completion:^(NSString *filePath, NSError *error) {
             
             assert (weakSelf.imageFilePaths[key]);
             [weakSelf.imageFilePaths removeObjectForKey:key];
@@ -340,27 +342,6 @@ static NSString * const FilePathsThumbnailImagePathKey = @"filepaths thumbnail i
                                                                          MediaManagerContentKey : key}];
         }];
     }];
-}
-
-- (void) removeImageAtPath:(NSString *)filePath completion:(void(^)(NSString *filePath))completion {
-
-    dispatch_async([[self class] fileIOQueue], ^{
-        NSError *error;
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        
-        assert (filePath);
-        assert ([fileManager fileExistsAtPath:filePath]);
-        
-        [fileManager removeItemAtPath:filePath error:&error];
-        
-        assert (!error);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-                dispatch_async_main_safe(^{completion (filePath);});
-            }
-        });
-    });
 }
 
 #pragma mark saving
@@ -386,6 +367,26 @@ static NSString * const FilePathsThumbnailImagePathKey = @"filepaths thumbnail i
     }
 }
 
+#pragma mark miscellaneous
+
+- (void)createThumbnailImageForImage:(UIImage *)image completion:(void(^)(UIImage *image, UIImage *thumbnailImage)) completion {
+    assert (image);
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        CGSize size = [[self class] sizeForImage:image givenMaximumSize:[self thumbnailImageMaxSize]];
+        
+        UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+        [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+        UIImage *thumbnailImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        assert (thumbnailImage);
+        
+        if (completion) {
+            dispatch_async_main_safe(^{completion (image, thumbnailImage);});
+        }
+    });
+}
+
 @end
 
 @implementation MediaManager (Video)
@@ -399,10 +400,10 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
 }
 
 - (void)addVideo:(AVAsset *)video forKey:(id)key {
-    [self addVideo:video forKey:key completion:nil];
+    [self addVideo:video forKey:key completion:nil failure:nil];
 }
 
-- (void)addVideo:(AVAsset *)video forKey:(id)key completion:(void (^)(id, AVAsset *))completion {
+- (void)addVideo:(AVAsset *)video forKey:(id)key completion:(void (^)(id, AVAsset *))completion failure:(void(^)(id, AVAsset *, NSError *))failure {
     __weak typeof (self) weakSelf = self;
     
     if (self.videoFilePaths[key]) {
@@ -437,11 +438,19 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
                                                                              MediaManagerContentKey : key}];
                 
             }];
+        } failure:^(AVAsset *video, NSError *error) {
+            if (failure) {
+                dispatch_async_main_safe(^{ failure(key,video,error); });
+            }
         }];
+    } failure:^(AVAsset *video, NSError *error) {
+        if (failure) {
+            dispatch_async_main_safe(^{ failure(key,video,error); });
+        }
     }];
 }
 
-- (void)addVideo:(AVAsset *)video completion:(void(^)(AVAsset *video, NSString *filePath))completion {
+- (void)addVideo:(AVAsset *)video completion:(void(^)(AVAsset *video, NSString *filePath))completion failure:(void(^)(AVAsset *video, NSError *error))failure {
     dispatch_async([[self class] fileIOQueue], ^{
         
         NSString *filePath = [[self class] freshFilePathWithExtension:@"mov"];
@@ -462,10 +471,10 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
                         dispatch_async_main_safe(^{completion (video, filePath);});
                     }
                 });
-            } else if (AVAssetExportSessionStatusFailed == exportSession.status) {
-                assert (NO);
             } else {
-                assert (NO);
+                if (failure) {
+                    dispatch_async_main_safe(^{failure (video, [exportSession error]);});
+                }
             }
         }];
     });
@@ -518,11 +527,10 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
     dispatch_async([[self class] fileIOQueue], ^{
         AVAsset *diskVideo = [AVAsset assetWithURL:[NSURL fileURLWithPath:filePath]];
         assert (diskVideo);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-                dispatch_async_main_safe(^{completion (filePath, diskVideo);});
-            }
-        });
+        
+        if (completion) {
+            dispatch_async_main_safe(^{completion (filePath, diskVideo);});
+        }
     });
 }
 
@@ -543,8 +551,8 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
     
     __weak typeof(self) weakSelf = self;
     
-    [self removeImageAtPath:filePath completion:^(NSString *filePath) {
-        [weakSelf removeImageAtPath:thumbnailFilePath completion:^(NSString *filePath) {
+    [self removeItemAtPath:filePath completion:^(NSString *filePath, NSError *error) {
+        [weakSelf removeItemAtPath:thumbnailFilePath completion:^(NSString *filePath, NSError *error) {
             
             assert (weakSelf.videoFilePaths[key]);
             [weakSelf.videoFilePaths removeObjectForKey:key];
@@ -623,19 +631,23 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
 
 #pragma mark miscellaneous
 
-- (void)createThumbnailImageForVideo:(AVAsset *)video completion:(void(^)(AVAsset *video, UIImage *thumbnailImage)) completion {
+- (void)createThumbnailImageForVideo:(AVAsset *)video completion:(void(^)(AVAsset *video, UIImage *thumbnailImage))completion failure:(void(^)(AVAsset *video, NSError *error))failure {
     assert ([video isReadable]);
     assert ([video isPlayable]);
     AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:video];
     [generator setMaximumSize:[self thumbnailImageMaxSize]];
     [generator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:kCMTimeZero]] completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
+
         if (result == AVAssetImageGeneratorSucceeded) {
-            UIImage *result = [UIImage imageWithCGImage:image];
-            dispatch_async_main_safe(^{
-                completion (video, result);
-            });
-        } else {
-            assert (NO);
+            UIImage *resultImg = [UIImage imageWithCGImage:image];
+            assert (resultImg);
+            
+            if (completion) {
+                dispatch_async_main_safe(^{ completion (video, resultImg); });
+            }
+            
+        } else if (failure) {
+            dispatch_async_main_safe(^{ failure (video, error); });
         }
     }];
 }

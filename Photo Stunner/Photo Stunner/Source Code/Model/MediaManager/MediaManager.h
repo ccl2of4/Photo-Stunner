@@ -51,7 +51,7 @@
 
 // adding
 - (void) addVideo:(AVAsset *)video forKey:(id)key;
-- (void) addVideo:(AVAsset *)video forKey:(id)key completion:(void(^)(id key, AVAsset *video))completion;
+- (void) addVideo:(AVAsset *)video forKey:(id)key completion:(void(^)(id, AVAsset *))completion failure:(void(^)(id, AVAsset *, NSError *))failure;
 
 // removal
 - (void) removeVideoForKey:(id)key;
