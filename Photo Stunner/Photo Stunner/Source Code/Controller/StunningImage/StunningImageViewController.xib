@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StunningImageViewController">
@@ -15,8 +15,12 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dark_background" translatesAutoresizingMaskIntoConstraints="NO" id="upL-ez-NRZ">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                </imageView>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="PYI-o9-5v8">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="C3Z-B2-831">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -31,11 +35,18 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="upL-ez-NRZ" firstAttribute="top" secondItem="PYI-o9-5v8" secondAttribute="top" id="8eR-AM-6GM"/>
+                <constraint firstItem="upL-ez-NRZ" firstAttribute="bottom" secondItem="PYI-o9-5v8" secondAttribute="bottom" id="SCf-Zd-3Px"/>
                 <constraint firstAttribute="trailing" secondItem="PYI-o9-5v8" secondAttribute="trailing" id="cL6-Pk-Eg5"/>
                 <constraint firstItem="PYI-o9-5v8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="eLI-An-lPl"/>
+                <constraint firstItem="upL-ez-NRZ" firstAttribute="trailing" secondItem="PYI-o9-5v8" secondAttribute="trailing" id="juo-9v-l5Y"/>
+                <constraint firstItem="upL-ez-NRZ" firstAttribute="leading" secondItem="PYI-o9-5v8" secondAttribute="leading" id="qxa-pt-rPl"/>
                 <constraint firstAttribute="bottom" secondItem="PYI-o9-5v8" secondAttribute="bottom" id="ubD-8n-wGV"/>
                 <constraint firstItem="PYI-o9-5v8" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vAt-xe-bpq"/>
             </constraints>
         </view>
     </objects>
+    <resources>
+        <image name="dark_background" width="640" height="960"/>
+    </resources>
 </document>

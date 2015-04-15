@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4785630B74F6E35D4124E3F8 /* libPods-Photo StunnerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A47F0C10CB8D81A935AE15 /* libPods-Photo StunnerTests.a */; };
+		605B3C691ADF0A4F009B217A /* PhotoStunnerConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B3C681ADF0A4F009B217A /* PhotoStunnerConstants.m */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
 		B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788A41AB755A9009FF25C /* LaunchScreen.xib */; };
 		B34789041AB79E2B009FF25C /* 1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FB1AB79E2B009FF25C /* 1.mp4 */; };
@@ -67,6 +68,8 @@
 		1E4E8F7CFC2CCE22A81F0836 /* Pods-Photo StunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo StunnerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Photo StunnerTests/Pods-Photo StunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		2A48D80F6DD15881ADCB7892 /* Pods-Photo Stunner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo Stunner.release.xcconfig"; path = "Pods/Target Support Files/Pods-Photo Stunner/Pods-Photo Stunner.release.xcconfig"; sourceTree = "<group>"; };
 		2A52477F41A4C718FED0D9B3 /* Pods-Photo StunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo StunnerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Photo StunnerTests/Pods-Photo StunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		605B3C671ADF0969009B217A /* PhotoStunnerConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoStunnerConstants.h; sourceTree = "<group>"; };
+		605B3C681ADF0A4F009B217A /* PhotoStunnerConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoStunnerConstants.m; sourceTree = "<group>"; };
 		A4AB22C816497D8EEF84A618 /* Pods-Photo Stunner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo Stunner.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Photo Stunner/Pods-Photo Stunner.debug.xcconfig"; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -238,6 +241,8 @@
 				B38B1CAE1AD1E12200733112 /* View */,
 				B38B1C841AD1E12200733112 /* Controller */,
 				B38B1C821AD1E12200733112 /* AppDelegate.h */,
+				605B3C671ADF0969009B217A /* PhotoStunnerConstants.h */,
+				605B3C681ADF0A4F009B217A /* PhotoStunnerConstants.m */,
 				B38B1C831AD1E12200733112 /* AppDelegate.m */,
 				B38B1C981AD1E12200733112 /* main.m */,
 				B38B1CAD1AD1E12200733112 /* Photo Stunner-Bridging-Header.h */,
@@ -587,6 +592,7 @@
 				B38B1CD01AD1E12200733112 /* StunningMediaManager.swift in Sources */,
 				B38B1CCC1AD1E12200733112 /* MediaManager+CMTimeImageKeys.m in Sources */,
 				B38B1CC61AD1E12200733112 /* ThumbnailsViewController.m in Sources */,
+				605B3C691ADF0A4F009B217A /* PhotoStunnerConstants.m in Sources */,
 				B38B1CCE1AD1E12200733112 /* MediaManager.m in Sources */,
 				B38B1CC91AD1E12200733112 /* ALAssetVideoAssetAdapter.m in Sources */,
 				B38B1CCA1AD1E12200733112 /* AVAssetVideoAssetAdapter.m in Sources */,

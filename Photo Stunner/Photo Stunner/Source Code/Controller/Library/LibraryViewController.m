@@ -10,6 +10,7 @@
 #import "UICollectionViewImageCell.h"
 #import "TapViewController.h"
 #import "VideoLoader.h"
+#import "PhotoStunnerConstants.h"
 
 @interface LibraryViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 

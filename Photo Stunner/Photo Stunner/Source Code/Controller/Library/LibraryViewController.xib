@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LibraryViewController">
@@ -15,14 +15,17 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dark_background" translatesAutoresizingMaskIntoConstraints="NO" id="eXI-9E-9Bc">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                </imageView>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="6IX-MC-eoY">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="JQj-29-8bh">
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="JQj-29-8bh">
                         <size key="itemSize" width="106" height="106"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <inset key="sectionInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                     </collectionViewFlowLayout>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="e2u-UP-aK1"/>
@@ -30,13 +33,20 @@
                     </connections>
                 </collectionView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="6IX-MC-eoY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="BV9-zm-0aA"/>
+                <constraint firstItem="eXI-9E-9Bc" firstAttribute="bottom" secondItem="6IX-MC-eoY" secondAttribute="bottom" id="EpS-GC-ebA"/>
                 <constraint firstItem="6IX-MC-eoY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="I9H-QB-ddv"/>
+                <constraint firstItem="eXI-9E-9Bc" firstAttribute="leading" secondItem="6IX-MC-eoY" secondAttribute="leading" id="Jfs-9E-lvn"/>
                 <constraint firstAttribute="trailing" secondItem="6IX-MC-eoY" secondAttribute="trailing" id="Vi2-hM-Ha2"/>
                 <constraint firstAttribute="bottom" secondItem="6IX-MC-eoY" secondAttribute="bottom" id="a5p-un-K0R"/>
+                <constraint firstItem="eXI-9E-9Bc" firstAttribute="trailing" secondItem="6IX-MC-eoY" secondAttribute="trailing" id="izL-fY-GW3"/>
+                <constraint firstItem="eXI-9E-9Bc" firstAttribute="top" secondItem="6IX-MC-eoY" secondAttribute="top" id="zmz-9i-sMP"/>
             </constraints>
         </view>
     </objects>
+    <resources>
+        <image name="dark_background" width="640" height="960"/>
+    </resources>
 </document>

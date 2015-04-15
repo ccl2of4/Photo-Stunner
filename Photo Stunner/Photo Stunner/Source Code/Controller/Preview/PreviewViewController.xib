@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PreviewViewController" customModule="Photo_Stunner" customModuleProvider="target">
@@ -15,18 +15,28 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dark_background" translatesAutoresizingMaskIntoConstraints="NO" id="qwb-Uq-aXi">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vb3-3v-qT7" userLabel="playbackView">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="qwb-Uq-aXi" firstAttribute="top" secondItem="Vb3-3v-qT7" secondAttribute="top" id="25y-h1-wtW"/>
                 <constraint firstAttribute="bottom" secondItem="Vb3-3v-qT7" secondAttribute="bottom" id="7Cr-ks-89s"/>
+                <constraint firstItem="qwb-Uq-aXi" firstAttribute="trailing" secondItem="Vb3-3v-qT7" secondAttribute="trailing" id="QdI-ip-btb"/>
                 <constraint firstItem="Vb3-3v-qT7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="oEQ-2C-LIo"/>
                 <constraint firstAttribute="trailing" secondItem="Vb3-3v-qT7" secondAttribute="trailing" id="pBS-DP-UNC"/>
+                <constraint firstItem="qwb-Uq-aXi" firstAttribute="bottom" secondItem="Vb3-3v-qT7" secondAttribute="bottom" id="pyH-1Q-IU6"/>
                 <constraint firstItem="Vb3-3v-qT7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="tPC-jI-9Vq"/>
+                <constraint firstItem="qwb-Uq-aXi" firstAttribute="leading" secondItem="Vb3-3v-qT7" secondAttribute="leading" id="vId-Kp-QzH"/>
             </constraints>
         </view>
     </objects>
+    <resources>
+        <image name="dark_background" width="640" height="960"/>
+    </resources>
 </document>

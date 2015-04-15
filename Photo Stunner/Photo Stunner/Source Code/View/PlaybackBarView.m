@@ -7,6 +7,7 @@
 //
 
 #import "PlaybackBarView.h"
+#import "PhotoStunnerConstants.h"
 
 @interface PlaybackBarView ()
 
@@ -146,16 +147,16 @@
     }
     
     Float64 percent = CMTimeGetSeconds(time) / CMTimeGetSeconds([self.player.currentItem duration]);
-
-    CGFloat width = 3.0f;
-    CGFloat height = 3.0f;
+    
+    CGFloat height = 5.0f;
+    CGFloat width = height;
     CGFloat x = ([self bounds].origin.x + percent * [self bounds].size.width) - (0.5 * width);
-    CGFloat y = CGRectGetMidY([self bounds]) - (0.5 * height);
+    CGFloat y = CGRectGetMinY([self bounds]);
     
     CGRect frame = CGRectMake(x, y, width, height);
     
     UIView *indicatorView = [[UIView alloc] initWithFrame:frame];
-    [indicatorView setBackgroundColor:[UIColor whiteColor]];
+    [indicatorView setBackgroundColor:ImageColor];
     
     self.imageIndicatorViews[wrappedTime] = indicatorView;
     [self addSubview:indicatorView];
@@ -188,14 +189,14 @@
     Float64 endPercent = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange)) / CMTimeGetSeconds([self.player.currentItem duration]);
     
     CGFloat width = (endPercent - startPercent) * [self bounds].size.width;
-    CGFloat height = 3.0f;
+    CGFloat height = 5.0f;
     CGFloat x = ([self bounds].origin.x + startPercent * [self bounds].size.width);
-    CGFloat y = CGRectGetMidY([self bounds]) + (0.5 * height);
+    CGFloat y = CGRectGetMaxY([self bounds]) - height;
     
     CGRect frame = CGRectMake(x, y, width, height);
     
     UIView *indicatorView = [[UIView alloc] initWithFrame:frame];
-    [indicatorView setBackgroundColor:[UIColor whiteColor]];
+    [indicatorView setBackgroundColor:VideoColor];
     
     self.videoIndicatorViews[wrappedTimeRange] = indicatorView;
     [self addSubview:indicatorView];

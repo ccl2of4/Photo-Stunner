@@ -14,6 +14,7 @@
 #import "UICollectionViewImageCell.h"
 #import "UICollectionViewHeaderCell.h"
 #import "Photo_Stunner-Swift.h"
+#import "PhotoStunnerConstants.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -114,14 +115,20 @@ static NSString * const ImageSection = @"image section";
     UICollectionViewHeaderCell *cell = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HeaderReuseIdentifier forIndexPath:indexPath];
     
     NSArray *sectionInfo = [[self class] sectionInfo];
+    UIColor *backgroundColor;
+
     NSString *title;
     if (indexPath.section == [sectionInfo indexOfObject:VideoSection]) {
         title = NSLocalizedString(@"ThumbnailsViewController video section title", nil);
+        backgroundColor = VideoColor;
     } else if (indexPath.section == [sectionInfo indexOfObject:ImageSection]) {
         title = NSLocalizedString(@"ThumbnailsViewController image section title", nil);
+        backgroundColor = ImageColor;
     } else assert (NO);
     
     [cell.titleLabel setText:title];
+    [cell setBackgroundColor:backgroundColor];
+    [cell.titleLabel setTextColor:[UIColor whiteColor]];
     
     return cell;
 }
@@ -152,8 +159,16 @@ static NSString * const ImageSection = @"image section";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    
-    return CGSizeMake(collectionView.bounds.size.width, 50.0);
+    CGSize size = CGSizeZero;
+    NSArray *sectionInfo = [[self class] sectionInfo];
+    if(section == [sectionInfo indexOfObject:VideoSection] && [self.mediaManager.allVideoKeys count]){
+        size = CGSizeMake(collectionView.bounds.size.width, 50.0);
+    }
+    else if(section ==[sectionInfo indexOfObject:ImageSection] && [self.mediaManager.allImageKeys count]){
+        size =CGSizeMake(collectionView.bounds.size.width, 50.0);
+
+    }
+    return size;
 }
 
 + (NSArray *)sectionInfo {
