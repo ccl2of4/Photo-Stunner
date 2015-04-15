@@ -7,5 +7,6 @@
 //
 #import <Foundation/Foundation.h>
 
-#define VideoColor [UIColor colorWithRed:47/255.0 green:194/255.0 blue:108/255.0 alpha:1]
-#define ImageColor [UIColor colorWithRed:49/255.0 green:204/255.0 blue:114/255.0 alpha:1]
+#define NavigationColor [UIColor colorWithRed:27/255.0 green:188/255.0 blue:155/255.0 alpha:1]
+#define VideoColor [UIColor colorWithRed:22/255.0 green:160/255.0 blue:134/255.0 alpha:1]
+#define ImageColor [UIColor colorWithRed:11/255.0 green:131/255.0 blue:137/255.0 alpha:1]

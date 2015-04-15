@@ -151,12 +151,14 @@
     CGFloat height = 5.0f;
     CGFloat width = height;
     CGFloat x = ([self bounds].origin.x + percent * [self bounds].size.width) - (0.5 * width);
-    CGFloat y = CGRectGetMinY([self bounds]);
+    CGFloat y = CGRectGetMinY([self bounds]) -1;
     
     CGRect frame = CGRectMake(x, y, width, height);
     
     UIView *indicatorView = [[UIView alloc] initWithFrame:frame];
     [indicatorView setBackgroundColor:ImageColor];
+    indicatorView.layer.borderWidth = 1;
+    indicatorView.layer.borderColor = [UIColor colorWithWhite:.5 alpha:.5].CGColor;
     
     self.imageIndicatorViews[wrappedTime] = indicatorView;
     [self addSubview:indicatorView];
@@ -191,12 +193,14 @@
     CGFloat width = (endPercent - startPercent) * [self bounds].size.width;
     CGFloat height = 5.0f;
     CGFloat x = ([self bounds].origin.x + startPercent * [self bounds].size.width);
-    CGFloat y = CGRectGetMaxY([self bounds]) - height;
+    CGFloat y = CGRectGetMaxY([self bounds]) - height -1;
     
     CGRect frame = CGRectMake(x, y, width, height);
     
     UIView *indicatorView = [[UIView alloc] initWithFrame:frame];
     [indicatorView setBackgroundColor:VideoColor];
+    indicatorView.layer.borderWidth = 1;
+    indicatorView.layer.borderColor = [UIColor colorWithWhite:.5 alpha:.5].CGColor;
     
     self.videoIndicatorViews[wrappedTimeRange] = indicatorView;
     [self addSubview:indicatorView];

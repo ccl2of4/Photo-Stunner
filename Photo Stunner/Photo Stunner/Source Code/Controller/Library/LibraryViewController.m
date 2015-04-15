@@ -32,6 +32,9 @@ static NSString * const CellReuseIdentifier = @"cell";
     self.title = NSLocalizedString(@"LibraryViewController title", nil);
     
     [self.collectionView registerNib:[UINib nibWithNibName:@"UICollectionViewImageCell" bundle:nil] forCellWithReuseIdentifier:CellReuseIdentifier];
+    self.navigationController.navigationBar.translucent = NO;
+
+//    self.automaticallyAdjustsScrollViewInsets = YES;
     
     [self reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:VideoLoaderModelChangedNotification object:nil];
@@ -87,6 +90,11 @@ static NSString * const CellReuseIdentifier = @"cell";
     
     assert ([self navigationController]);
     [self.navigationController pushViewController:tapViewController animated:YES];
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    CGFloat width = (MIN(self.view.frame.size.width,self.view.frame.size.height))/3;
+    return CGSizeMake(width, width);
 }
 
 #pragma mark notification handling

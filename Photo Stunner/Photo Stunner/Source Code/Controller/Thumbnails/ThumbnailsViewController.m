@@ -171,6 +171,11 @@ static NSString * const ImageSection = @"image section";
     return size;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    CGFloat width = (MIN(self.view.frame.size.width,self.view.frame.size.height))/3;
+    return CGSizeMake(width, width);
+}
+
 + (NSArray *)sectionInfo {
     static NSArray *sectionInfo;
     if (!sectionInfo) {

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "LibraryViewController.h"
+#import "PhotoStunnerConstants.h"
 
 @interface AppDelegate ()
 
@@ -22,6 +23,14 @@
 
     LibraryViewController *libraryViewController = [LibraryViewController new];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:libraryViewController];
+
+    [[UINavigationBar appearance] setBarTintColor:NavigationColor];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                                                           [UIFont systemFontOfSize:21.0], NSFontAttributeName, nil]];
+
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
     [self.window setRootViewController:navigationController];
     
@@ -50,5 +59,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+
 
 @end

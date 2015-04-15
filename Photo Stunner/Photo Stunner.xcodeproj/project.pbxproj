@@ -70,6 +70,8 @@
 		2A52477F41A4C718FED0D9B3 /* Pods-Photo StunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo StunnerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Photo StunnerTests/Pods-Photo StunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		605B3C671ADF0969009B217A /* PhotoStunnerConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoStunnerConstants.h; sourceTree = "<group>"; };
 		605B3C681ADF0A4F009B217A /* PhotoStunnerConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoStunnerConstants.m; sourceTree = "<group>"; };
+		60FDA15F1ADF2924005B73A1 /* 7.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 7.mp4; sourceTree = "<group>"; };
+		60FDA1601ADF2BD3005B73A1 /* 8.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 8.mp4; sourceTree = "<group>"; };
 		A4AB22C816497D8EEF84A618 /* Pods-Photo Stunner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo Stunner.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Photo Stunner/Pods-Photo Stunner.debug.xcconfig"; sourceTree = "<group>"; };
 		B347887B1AB75584009FF25C /* Photo Stunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Stunner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347887F1AB75584009FF25C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -222,6 +224,8 @@
 				B34788FE1AB79E2B009FF25C /* 4.mp4 */,
 				B34788FF1AB79E2B009FF25C /* 5.mp4 */,
 				B34789001AB79E2B009FF25C /* 6.mp4 */,
+				60FDA15F1ADF2924005B73A1 /* 7.mp4 */,
+				60FDA1601ADF2BD3005B73A1 /* 8.mp4 */,
 			);
 			path = "Sample MP4 Files";
 			sourceTree = "<group>";
