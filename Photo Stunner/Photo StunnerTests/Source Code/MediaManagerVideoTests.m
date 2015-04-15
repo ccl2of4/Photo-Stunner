@@ -60,7 +60,7 @@
         @catch (NSException *e) {
             [expectation fulfill];
         }
-    }];
+    } failure:nil];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
         if (error) {
@@ -77,7 +77,7 @@
         [weakSelf.mediaManager retrieveVideoForKey:@1 completion:^(id key, AVAsset *video) {
             [expectation fulfill];
         }];
-    }];
+    } failure:nil];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
         if (error) {
@@ -94,7 +94,7 @@
         [weakSelf.mediaManager retrieveVideoForKey:@10 completion:^(id key, AVAsset *video) {
             [expectation fulfill];
         }];
-    }];
+    } failure:nil];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
         if (error) {
@@ -126,7 +126,7 @@
         } @catch (NSException *e) {
             [expectation fulfill];
         }
-    }];
+    } failure:nil];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
         if (error) {
@@ -143,7 +143,7 @@
         [weakSelf.mediaManager retrieveVideoThumbnailImageForKey:@0 completion:^(id key, UIImage *image) {
             [expectation fulfill];
         }];
-    }];
+    } failure:nil];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
         if (error) {
@@ -160,7 +160,7 @@
         [weakSelf.mediaManager retrieveVideoThumbnailImageForKey:@1 completion:^(id key, UIImage *image) {
             [expectation fulfill];
         }];
-    }];
+    } failure:nil];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
         if (error) {
@@ -190,7 +190,7 @@
         } @catch (NSException *e) {
             [expectation fulfill];
         }
-    }];
+    } failure:nil];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
         if (error) {
@@ -211,7 +211,7 @@
                 [expectation fulfill];
             }
         }];
-    }];
+    } failure:nil];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
         if (error) {
@@ -232,7 +232,7 @@
                 [expectation fulfill];
             }
         }];
-    }];
+    } failure:nil];
     
     [self waitForExpectationsWithTimeout:5.0f handler:^(NSError *error) {
         if (error) {
@@ -285,7 +285,7 @@
                     }];
                 }];
             }
-        }];
+        } failure:nil];
     }];
     
     [self waitForExpectationsWithTimeout:15 handler:^(NSError *error) {

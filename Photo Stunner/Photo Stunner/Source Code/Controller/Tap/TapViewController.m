@@ -89,6 +89,15 @@ static const NSUInteger NumberOfPreviewImages = 10;
     [self.previewImageGenerator cancelAllCGImageGeneration];
 }
 
+- (MediaManager *)mediaManager {
+    if (!_mediaManager) {
+        _mediaManager = [MediaManager new];
+        self.mediaManagerObserver = [[MediaManagerObserver alloc] initWithMediaManager:_mediaManager];
+        self.mediaManagerObserver.delegate = self;
+    }
+    return _mediaManager;
+}
+
 #pragma mark UI events
 
 - (IBAction)handleUIControlEventTouchUpInside:(id)sender{
@@ -158,10 +167,14 @@ static const NSUInteger NumberOfPreviewImages = 10;
             if (completion) {
                 completion (YES);
             }
+        } failure:^(id key, AVAsset *video, NSError *error) {
+            if (completion) {
+                completion (NO);
+            }
         }];
     
     
-    } else {
+    } else if (completion) {
         // yes we're already on the main queue, but make the call asynchronous so the method returns
         // before the completion block is called
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -212,25 +225,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     }];
 }
 
-- (AVAssetImageGenerator *)imageGenerator {
-    if (!_imageGenerator) {
-        AVAsset *asset = [self.videoAsset asset];
-        _imageGenerator= [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        [_imageGenerator setRequestedTimeToleranceBefore:kCMTimeZero];
-        [_imageGenerator setRequestedTimeToleranceAfter:kCMTimeZero];
-    }
-    return _imageGenerator;
-}
-
-- (MediaManager *)mediaManager {
-    if (!_mediaManager) {
-        _mediaManager = [MediaManager new];
-        self.mediaManagerObserver = [[MediaManagerObserver alloc] initWithMediaManager:_mediaManager];
-        self.mediaManagerObserver.delegate = self;
-    }
-    return _mediaManager;
-}
-
 - (BOOL) canAddImageForTime:(CMTime)time {
     NSValue *key = [NSValue valueWithCMTime:time];
     
@@ -239,6 +233,16 @@ static const NSUInteger NumberOfPreviewImages = 10;
     }
     
     return ![[self.playbackBarView imageIndicatorTimes] containsObject:key];
+}
+
+- (AVAssetImageGenerator *)imageGenerator {
+    if (!_imageGenerator) {
+        AVAsset *asset = [self.videoAsset asset];
+        _imageGenerator= [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        [_imageGenerator setRequestedTimeToleranceBefore:kCMTimeZero];
+        [_imageGenerator setRequestedTimeToleranceAfter:kCMTimeZero];
+    }
+    return _imageGenerator;
 }
 
 #pragma mark preview images
@@ -260,19 +264,6 @@ static const NSUInteger NumberOfPreviewImages = 10;
     }];
 }
 
-- (AVAssetImageGenerator *)previewImageGenerator {
-    if (!_previewImageGenerator) {
-        AVAsset *asset = [self.videoAsset asset];
-        _previewImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-        
-        [self.view layoutIfNeeded];
-        CGSize maximumSize = [self maximumSizeForPreviewImages];
-        
-        [_previewImageGenerator setMaximumSize:maximumSize];
-    }
-    return _previewImageGenerator;
-}
-
 - (CGSize)maximumSizeForPreviewImages {
     CGSize size = self.playbackBarView.bounds.size;
     
@@ -292,6 +283,19 @@ static const NSUInteger NumberOfPreviewImages = 10;
         [times addObject:wrappedTime];
     }];
     return times;
+}
+
+- (AVAssetImageGenerator *)previewImageGenerator {
+    if (!_previewImageGenerator) {
+        AVAsset *asset = [self.videoAsset asset];
+        _previewImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+        
+        [self.view layoutIfNeeded];
+        CGSize maximumSize = [self maximumSizeForPreviewImages];
+        
+        [_previewImageGenerator setMaximumSize:maximumSize];
+    }
+    return _previewImageGenerator;
 }
 
 #pragma mark playback
@@ -318,10 +322,15 @@ static const NSUInteger NumberOfPreviewImages = 10;
 }
 
 - (void)playerView:(PlayerView *)playerView didUpdateVideoSelection:(CMTimeRange)updatedTimeRange oldTimeRange:(CMTimeRange)oldTimeRange finished:(BOOL)finished {
-    
+
     [self.playbackBarView changeVideoIndicatorForTimeRange:oldTimeRange toTimeRange:updatedTimeRange];
 
     if (finished) {
+        
+        // it is theoretically possible that the time range for this new video is equal to an existing time range.
+        // we should probably check to see if we can actually add a video for this time range
+        // however since the time ranges are extremely precise, the probability of two time ranges colliding is almost too low for
+        // it to be worth handling the error
         [self extractVideoForTimeRange:updatedTimeRange completion:^(BOOL success) {
             if (!success) {
                 [self.playbackBarView removeVideoIndicatorForTimeRange:updatedTimeRange];
