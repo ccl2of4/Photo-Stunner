@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4785630B74F6E35D4124E3F8 /* libPods-Photo StunnerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A47F0C10CB8D81A935AE15 /* libPods-Photo StunnerTests.a */; };
 		605B3C691ADF0A4F009B217A /* PhotoStunnerConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B3C681ADF0A4F009B217A /* PhotoStunnerConstants.m */; };
+		60FDA1611ADF4857005B73A1 /* 7.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 60FDA15F1ADF2924005B73A1 /* 7.mp4 */; };
+		60FDA1621ADF4857005B73A1 /* 8.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 60FDA1601ADF2BD3005B73A1 /* 8.mp4 */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
 		B34788A51AB755A9009FF25C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B34788A41AB755A9009FF25C /* LaunchScreen.xib */; };
 		B34789041AB79E2B009FF25C /* 1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B34788FB1AB79E2B009FF25C /* 1.mp4 */; };
@@ -494,6 +496,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60FDA1611ADF4857005B73A1 /* 7.mp4 in Resources */,
+				60FDA1621ADF4857005B73A1 /* 8.mp4 in Resources */,
 				B34789071AB79E2B009FF25C /* 4.mp4 in Resources */,
 				B38B1CC51AD1E12200733112 /* TapViewController.xib in Resources */,
 				B38B1CD71AD1E12200733112 /* UICollectionViewImageCell.xib in Resources */,
