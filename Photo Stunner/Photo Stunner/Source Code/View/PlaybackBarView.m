@@ -151,7 +151,7 @@
     CGFloat height = 5.0f;
     CGFloat width = height;
     CGFloat x = ([self bounds].origin.x + percent * [self bounds].size.width) - (0.5 * width);
-    CGFloat y = CGRectGetMinY([self bounds]) -1;
+    CGFloat y = CGRectGetMinY([self bounds]);
     
     CGRect frame = CGRectMake(x, y, width, height);
     
@@ -193,7 +193,7 @@
     CGFloat width = (endPercent - startPercent) * [self bounds].size.width;
     CGFloat height = 5.0f;
     CGFloat x = ([self bounds].origin.x + startPercent * [self bounds].size.width);
-    CGFloat y = CGRectGetMaxY([self bounds]) - height -1;
+    CGFloat y = CGRectGetMaxY([self bounds]) - height;
     
     CGRect frame = CGRectMake(x, y, width, height);
     
