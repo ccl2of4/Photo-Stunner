@@ -161,12 +161,11 @@ static NSString * const ImageSection = @"image section";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
     NSArray *sectionInfo = [[self class] sectionInfo];
-    if(section == [sectionInfo indexOfObject:VideoSection] && [self.mediaManager.allVideoKeys count]){
+    if(section == [sectionInfo indexOfObject:VideoSection]){
         size = CGSizeMake(collectionView.bounds.size.width, 50.0);
     }
-    else if(section ==[sectionInfo indexOfObject:ImageSection] && [self.mediaManager.allImageKeys count]){
-        size =CGSizeMake(collectionView.bounds.size.width, 50.0);
-
+    else if(section == [sectionInfo indexOfObject:ImageSection]){
+        size = CGSizeMake(collectionView.bounds.size.width, 50.0);
     }
     return size;
 }
