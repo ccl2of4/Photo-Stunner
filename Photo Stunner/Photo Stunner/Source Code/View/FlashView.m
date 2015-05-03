@@ -11,6 +11,7 @@
 @implementation FlashView
 
 - (void) commonInit {
+    [self setAlpha:0.0f];
     [self setHidden:YES];
 }
 
@@ -39,7 +40,7 @@
                         options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          
-        [self setAlpha:0.6];
+        [self setAlpha:0.4];
                      
     } completion:^(BOOL finished) {
         

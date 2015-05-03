@@ -100,7 +100,6 @@
             // didn't hold down long enough -- take out an image
             if ([self.timer isValid]) {
                 CMTime time = [self.player currentTime];
-                [self.delegate playerView:self didSelectImageAtTime:time];
                 if ([self.delegate playerView:self shouldFlashForImageAtTime:time]) {
                    
                     // flashView's frame might not be set correctly if layoutSubviews was
@@ -110,6 +109,7 @@
                     
                     [self.flashView flash];
                 }
+                [self.delegate playerView:self didSelectImageAtTime:time];
                 
             // take out video
             } else {
