@@ -126,7 +126,7 @@ class PreviewViewController: UIViewController {
         // the for loop shouldn't have to insert the tracks using sortedVideoKeys() (as opposed to allVideoKeys)
         // but AVMutableComposition doesn't seem to work if they're not put in order
         // also the completion handlers are not guaranteed to be called in order
-        // so technically this code could potentially be buggy, but it's an easy fix
+        // so technically this code could potentially be buggy because of that,
         // but I don't feel like fixing it since it's AVMutableComposition's fault in the first place
         for key in self.mediaManager!.sortedVideoKeys() {
             self.mediaManager!.retrieveVideoForKey(key, completion: { (key, video) -> Void in

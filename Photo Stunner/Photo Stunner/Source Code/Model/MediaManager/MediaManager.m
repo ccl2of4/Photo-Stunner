@@ -271,11 +271,13 @@ static NSString * const FilePathsThumbnailImagePathKey = @"filepaths thumbnail i
         }
         return;
     }
-        
+    
     dispatch_async([[self class] fileIOQueue], ^{
         UIImage *diskImage = [UIImage imageWithContentsOfFile:filePath];
         assert (diskImage);
+        
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self.cache setObject:diskImage forKey:filePath];
             if (completion) {
                 dispatch_async_main_safe(^{completion (filePath, diskImage);});
             }
@@ -533,6 +535,7 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
         assert (diskVideo);
         
         if (completion) {
+            [self.cache setObject:diskVideo forKey:filePath];
             dispatch_async_main_safe(^{completion (filePath, diskVideo);});
         }
     });
