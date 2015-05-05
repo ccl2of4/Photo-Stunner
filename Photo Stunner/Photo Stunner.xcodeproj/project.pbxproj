@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4785630B74F6E35D4124E3F8 /* libPods-Photo StunnerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A47F0C10CB8D81A935AE15 /* libPods-Photo StunnerTests.a */; };
-		605B3C691ADF0A4F009B217A /* PhotoStunnerConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B3C681ADF0A4F009B217A /* PhotoStunnerConstants.m */; };
 		6084C98F1AF83C6F0007861B /* 9.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C9871AF83C630007861B /* 9.mp4 */; };
 		6084C9901AF83C6F0007861B /* 10.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C9881AF83C630007861B /* 10.mp4 */; };
 		6084C9911AF83C6F0007861B /* 11.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C9891AF83C630007861B /* 11.mp4 */; };
@@ -79,7 +78,6 @@
 		2A48D80F6DD15881ADCB7892 /* Pods-Photo Stunner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo Stunner.release.xcconfig"; path = "Pods/Target Support Files/Pods-Photo Stunner/Pods-Photo Stunner.release.xcconfig"; sourceTree = "<group>"; };
 		2A52477F41A4C718FED0D9B3 /* Pods-Photo StunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo StunnerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Photo StunnerTests/Pods-Photo StunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		605B3C671ADF0969009B217A /* PhotoStunnerConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoStunnerConstants.h; sourceTree = "<group>"; };
-		605B3C681ADF0A4F009B217A /* PhotoStunnerConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoStunnerConstants.m; sourceTree = "<group>"; };
 		6084C9871AF83C630007861B /* 9.mp4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 9.mp4; sourceTree = "<group>"; };
 		6084C9881AF83C630007861B /* 10.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 10.mp4; sourceTree = "<group>"; };
 		6084C9891AF83C630007861B /* 11.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 11.mp4; sourceTree = "<group>"; };
@@ -272,7 +270,6 @@
 				B38B1C841AD1E12200733112 /* Controller */,
 				B38B1C821AD1E12200733112 /* AppDelegate.h */,
 				605B3C671ADF0969009B217A /* PhotoStunnerConstants.h */,
-				605B3C681ADF0A4F009B217A /* PhotoStunnerConstants.m */,
 				B38B1C831AD1E12200733112 /* AppDelegate.m */,
 				B38B1C981AD1E12200733112 /* main.m */,
 				B38B1CAD1AD1E12200733112 /* Photo Stunner-Bridging-Header.h */,
@@ -632,7 +629,6 @@
 				B38B1CD01AD1E12200733112 /* StunningMediaManager.swift in Sources */,
 				B38B1CCC1AD1E12200733112 /* MediaManager+CMTimeImageKeys.m in Sources */,
 				B38B1CC61AD1E12200733112 /* ThumbnailsViewController.m in Sources */,
-				605B3C691ADF0A4F009B217A /* PhotoStunnerConstants.m in Sources */,
 				B38B1CCE1AD1E12200733112 /* MediaManager.m in Sources */,
 				B38B1CC91AD1E12200733112 /* ALAssetVideoAssetAdapter.m in Sources */,
 				B38B1CCA1AD1E12200733112 /* AVAssetVideoAssetAdapter.m in Sources */,
