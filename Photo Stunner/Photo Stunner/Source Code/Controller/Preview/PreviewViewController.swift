@@ -142,7 +142,6 @@ class PreviewViewController: UIViewController {
                 }
             })
         }
-        assert(dict.count == 0)
     }
     
     private func freshTempFilePath() -> String {
