@@ -94,6 +94,7 @@ static NSString * const ImageSection = @"image section";
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView imageCellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellReuseIdentifier forIndexPath:indexPath];
+    [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
     
     id time = [self.mediaManager sortedImageKeys][indexPath.item];
     

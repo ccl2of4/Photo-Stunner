@@ -23,7 +23,6 @@ NSString * const MediaManagerContentTypeKey = @"mediamanager content type key";
 NSString * const MediaManagerContentKey = @"mediamanager content key";
 
 #define ImageManagerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
-#define DefaultThumbnailSize CGSizeMake (100.0f, 100.0f)
 
 @interface MediaManager ()
 
@@ -48,7 +47,6 @@ NSString * const MediaManagerContentKey = @"mediamanager content key";
 @implementation MediaManager
 
 #define ImageManagerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
-#define DefaultThumbnailSize CGSizeMake (100.0f, 100.0f)
 
 #pragma mark life cycle
 
@@ -69,12 +67,18 @@ NSString * const MediaManagerContentKey = @"mediamanager content key";
         self.cache = [NSCache new];
         self.imageFilePaths = [NSMutableDictionary new];
         self.videoFilePaths = [NSMutableDictionary new];
-        self.thumbnailImageMaxSize = DefaultThumbnailSize;
+        self.thumbnailImageMaxSize = [[self class] defaultThumbnailSize];;
     }
     return self;
 }
 
 #pragma mark miscellaneous
+
++ (CGSize)defaultThumbnailSize {
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+    return CGSizeMake(screenSize.width * scale / 3.0f, screenSize.width * scale / 3.0f);
+}
 
 + (void)clearDirectory {
     dispatch_async([[self class] fileIOQueue], ^{
