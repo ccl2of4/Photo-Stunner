@@ -12,11 +12,10 @@
 		6084C98F1AF83C6F0007861B /* 9.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C9871AF83C630007861B /* 9.mp4 */; };
 		6084C9901AF83C6F0007861B /* 10.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C9881AF83C630007861B /* 10.mp4 */; };
 		6084C9911AF83C6F0007861B /* 11.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C9891AF83C630007861B /* 11.mp4 */; };
-		6084C9921AF83C6F0007861B /* 12.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C98A1AF83C630007861B /* 12.mp4 */; };
 		6084C9931AF83C6F0007861B /* 13.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C98B1AF83C630007861B /* 13.mp4 */; };
 		6084C9941AF83C6F0007861B /* 14.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C98C1AF83C630007861B /* 14.mp4 */; };
 		6084C9951AF83C6F0007861B /* 15.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C98D1AF83C630007861B /* 15.mp4 */; };
-		6084C9961AF83C6F0007861B /* 16.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C98E1AF83C630007861B /* 16.mp4 */; };
+		6084C9961AF83C6F0007861B /* 12.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6084C98E1AF83C630007861B /* 12.mp4 */; };
 		60FDA1611ADF4857005B73A1 /* 7.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 60FDA15F1ADF2924005B73A1 /* 7.mp4 */; };
 		60FDA1621ADF4857005B73A1 /* 8.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 60FDA1601ADF2BD3005B73A1 /* 8.mp4 */; };
 		B347888C1AB75584009FF25C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B347888B1AB75584009FF25C /* Images.xcassets */; };
@@ -83,11 +82,10 @@
 		6084C9871AF83C630007861B /* 9.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 9.mp4; sourceTree = "<group>"; };
 		6084C9881AF83C630007861B /* 10.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 10.mp4; sourceTree = "<group>"; };
 		6084C9891AF83C630007861B /* 11.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 11.mp4; sourceTree = "<group>"; };
-		6084C98A1AF83C630007861B /* 12.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 12.mp4; sourceTree = "<group>"; };
 		6084C98B1AF83C630007861B /* 13.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 13.mp4; sourceTree = "<group>"; };
 		6084C98C1AF83C630007861B /* 14.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 14.mp4; sourceTree = "<group>"; };
 		6084C98D1AF83C630007861B /* 15.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 15.mp4; sourceTree = "<group>"; };
-		6084C98E1AF83C630007861B /* 16.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 16.mp4; sourceTree = "<group>"; };
+		6084C98E1AF83C630007861B /* 12.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 12.mp4; sourceTree = "<group>"; };
 		60FDA15F1ADF2924005B73A1 /* 7.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 7.mp4; sourceTree = "<group>"; };
 		60FDA1601ADF2BD3005B73A1 /* 8.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 8.mp4; sourceTree = "<group>"; };
 		A4AB22C816497D8EEF84A618 /* Pods-Photo Stunner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photo Stunner.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Photo Stunner/Pods-Photo Stunner.debug.xcconfig"; sourceTree = "<group>"; };
@@ -247,11 +245,10 @@
 				6084C9871AF83C630007861B /* 9.mp4 */,
 				6084C9881AF83C630007861B /* 10.mp4 */,
 				6084C9891AF83C630007861B /* 11.mp4 */,
-				6084C98A1AF83C630007861B /* 12.mp4 */,
 				6084C98B1AF83C630007861B /* 13.mp4 */,
 				6084C98C1AF83C630007861B /* 14.mp4 */,
 				6084C98D1AF83C630007861B /* 15.mp4 */,
-				6084C98E1AF83C630007861B /* 16.mp4 */,
+				6084C98E1AF83C630007861B /* 12.mp4 */,
 			);
 			path = "Sample MP4 Files";
 			sourceTree = "<group>";
@@ -523,11 +520,10 @@
 				6084C98F1AF83C6F0007861B /* 9.mp4 in Resources */,
 				6084C9901AF83C6F0007861B /* 10.mp4 in Resources */,
 				6084C9911AF83C6F0007861B /* 11.mp4 in Resources */,
-				6084C9921AF83C6F0007861B /* 12.mp4 in Resources */,
 				6084C9931AF83C6F0007861B /* 13.mp4 in Resources */,
 				6084C9941AF83C6F0007861B /* 14.mp4 in Resources */,
 				6084C9951AF83C6F0007861B /* 15.mp4 in Resources */,
-				6084C9961AF83C6F0007861B /* 16.mp4 in Resources */,
+				6084C9961AF83C6F0007861B /* 12.mp4 in Resources */,
 				60FDA1611ADF4857005B73A1 /* 7.mp4 in Resources */,
 				60FDA1621ADF4857005B73A1 /* 8.mp4 in Resources */,
 				B34789071AB79E2B009FF25C /* 4.mp4 in Resources */,
