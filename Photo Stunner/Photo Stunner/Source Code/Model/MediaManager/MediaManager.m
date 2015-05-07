@@ -23,7 +23,6 @@ NSString * const MediaManagerContentTypeKey = @"mediamanager content type key";
 NSString * const MediaManagerContentKey = @"mediamanager content key";
 
 #define ImageManagerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
-#define DefaultThumbnailSize CGSizeMake (100.0f, 100.0f)
 
 @interface MediaManager ()
 
@@ -48,7 +47,6 @@ NSString * const MediaManagerContentKey = @"mediamanager content key";
 @implementation MediaManager
 
 #define ImageManagerDirectory [NSTemporaryDirectory() stringByAppendingPathComponent:@"ImageManager"]
-#define DefaultThumbnailSize CGSizeMake (100.0f, 100.0f)
 
 #pragma mark life cycle
 
@@ -69,12 +67,18 @@ NSString * const MediaManagerContentKey = @"mediamanager content key";
         self.cache = [NSCache new];
         self.imageFilePaths = [NSMutableDictionary new];
         self.videoFilePaths = [NSMutableDictionary new];
-        self.thumbnailImageMaxSize = DefaultThumbnailSize;
+        self.thumbnailImageMaxSize = [[self class] defaultThumbnailSize];;
     }
     return self;
 }
 
 #pragma mark miscellaneous
+
++ (CGSize)defaultThumbnailSize {
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+    return CGSizeMake(screenSize.width * scale / 3.0f, screenSize.width * scale / 3.0f);
+}
 
 + (void)clearDirectory {
     dispatch_async([[self class] fileIOQueue], ^{
@@ -267,11 +271,13 @@ static NSString * const FilePathsThumbnailImagePathKey = @"filepaths thumbnail i
         }
         return;
     }
-        
+    
     dispatch_async([[self class] fileIOQueue], ^{
         UIImage *diskImage = [UIImage imageWithContentsOfFile:filePath];
         assert (diskImage);
+        
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self.cache setObject:diskImage forKey:filePath];
             if (completion) {
                 dispatch_async_main_safe(^{completion (filePath, diskImage);});
             }
@@ -529,6 +535,7 @@ static NSString * const FilePathsVideoThumbnailImagePathKey = @"filepaths video 
         assert (diskVideo);
         
         if (completion) {
+            [self.cache setObject:diskVideo forKey:filePath];
             dispatch_async_main_safe(^{completion (filePath, diskVideo);});
         }
     });

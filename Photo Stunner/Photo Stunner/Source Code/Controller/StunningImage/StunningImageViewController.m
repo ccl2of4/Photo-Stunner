@@ -64,7 +64,10 @@ static NSString * const ImageSection = @"image section";
     NSArray *sectionInfo = [[self class] sectionInfo];
     if (indexPath.section == [sectionInfo indexOfObject:VideoSection]) {
         UICollectionViewVideoCell *videoCell = (UICollectionViewVideoCell *)cell;
-        assert ([videoCell player]);
+
+        // this is needed in case the video is cached
+        // the conditional in the creation method will return false in that case
+        // since the cell is not visible until after it is finished being created
         [videoCell.player seekToTime:kCMTimeZero];
         [videoCell.player play];
     }
@@ -74,7 +77,9 @@ static NSString * const ImageSection = @"image section";
     NSArray *sectionInfo = [[self class] sectionInfo];
     if (indexPath.section == [sectionInfo indexOfObject:VideoSection]) {
         UICollectionViewVideoCell *videoCell = (UICollectionViewVideoCell *)cell;
-        assert ([videoCell player]);
+        
+        // even if the player wasn't created in time, it won't matter if it's nil here
+        // because it wouldn't have started playing anyway
         [videoCell.player pause];
     }
 }
@@ -87,13 +92,19 @@ static NSString * const ImageSection = @"image section";
     [self.mediaManager retrieveVideoForKey:timeRange completion:^(id key, AVAsset *video) {
         AVPlayer *player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:video]];
         [cell setPlayer:player];
-        [player play];
+        
+        // only play if the user is still looking at this cell
+        if ([[self.collectionView indexPathsForVisibleItems] containsObject:indexPath]) {
+            [player play];
+        }
+        
     }];
     return cell;
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView imageCellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellReuseIdentifier forIndexPath:indexPath];
+    [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
     
     id time = [self.mediaManager sortedImageKeys][indexPath.item];
     
