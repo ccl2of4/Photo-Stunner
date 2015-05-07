@@ -1,0 +1,61 @@
+Project name: Photo-Stunner
+Team members: Connor Lirot, Ryan Brooks
+
+Report the title of your app and a one or two line description
+Photo-Stunner
+This app can extract stills from videos
+This app can extract video subsets from a video
+This app can string together multiple video subsets from a singe video creating a highlight reel in a sense
+
+Why is your app worthwhile?
+Sometimes its hard to take a picture at the exact moment.  You could take a picture and bee too soon for too late and miss the moment.  This app encourages you to take videos for those moments and extract stills later.
+Also this app lets you trim the fat on videos that have content you with to remove.
+
+
+List the iOS APIs your app uses. 
+AVFoundations 
+	-AVPlayer
+	-ALAssets
+	-AVAssets
+	-AVAssetGenerator
+UICollectionView
+UIGestureRecogniser
+KVO
+
+
+
+
+List all third party libraries you use, and what they do for your app (each in their own paragraph). 
+No third parties
+
+
+List all third party services you use, and what they do for your app (each in their own paragraph). 
+Youtube mp4 downloader - to get sample videos to add to bundle cause its difficult to get .m4p on simulator camera roll.
+
+Discuss the most important or interesting thing you learned doing your project.
+Repository design pattern.
+
+Discuss the most difficult challenge you overcame and/or your most interesting debugging story.
+There was a bug where AVAssetImageGenerator would return a blank image.  went through the XCode Instruments and looked around.  threw out some asserts and realized that sometimes the AVAssetImageGenerator fails for no reason so we added error handling to everything and that fixed it.
+
+Report the count of lines of code in your project.
+     205 text files.
+     156 unique files.                                          
+      46 files ignored.
+
+http://cloc.sourceforge.net v 1.62  T=3.15 s (38.1 files/s, 2838.4 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Objective C                     56           1372            764           4646
+C/C++ Header                    54            361            659            609
+Swift                            3             66             49            201
+JSON                             6              0              0            141
+Bourne Shell                     1              6              0             72
+-------------------------------------------------------------------------------
+SUM:                           120           1805           1472           5669
+-------------------------------------------------------------------------------
+
+
+Tell us how to build and run your project. 
+Should be able to click run
