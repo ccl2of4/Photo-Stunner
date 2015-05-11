@@ -1,61 +1,117 @@
+Project Writeup
+
 Project name: Photo-Stunner
 Team members: Connor Lirot, Ryan Brooks
 
-Report the title of your app and a one or two line description
-Photo-Stunner
-This app can extract stills from videos
-This app can extract video subsets from a video
-This app can string together multiple video subsets from a singe video creating a highlight reel in a sense
+Report the title of your app and a one or two line description.
+The title of our app is Photo Stunner. 
+Through our application one can extract both stills and videos from videos in the users Photo Library.
+These extracted photos and videos can then be saved to the camera roll, or in case of multiple videos being extracted and can be stitched together into a single video before saving to the camera roll(like creating a highlight reel).
 
 Why is your app worthwhile?
-Sometimes its hard to take a picture at the exact moment.  You could take a picture and bee too soon for too late and miss the moment.  This app encourages you to take videos for those moments and extract stills later.
-Also this app lets you trim the fat on videos that have content you with to remove.
+Sometimes it is hard to take a picture at the exact moment.  
+You could take a picture and click the shudder button too soon for too late and miss the moment.
+If you choose to take a video of the moment you could ensure capturing it but taking a screenshot of a video is clumsy in it's own.
+Playing the video back in the camera roll it is hard to stop the video on the exact right moment to get a snapshot.
+This app lets you record the video to ensure you capture the moment and extract the still or video subset with ease to claim the exact frame of content you desire.
 
+List the iOS APIs your app uses.
+AVFoundations: This is the framework responsible for reading with audio/video in iOS.  We leveraged several of the classes in the framework to acheive our app's goal
+	-ALAssets/ALAssetLibrary: An ALAsset is an item(Video, Picture) taken from the users camera roll.  We used ALAssetLibrary and the enumeration methods to gain access to a users Videos in their Photo Library.  From there we can play the videos back as well as extract stills and subsets.
+	-AVAssets: An AVAsset is an item(Video) that is not taken from the users Photo Library.  Because of difficulties importing videos to the simulator Photo Library, we used the App Bundle and some preloaded videos to simulate the users library.  We used the Repository design pattern for this. 
+	-AVPlayer: This class houses an AVAsset or ALAsset or video streamed from URL.  Using this class let us play back the imported videos(we could even stream from the web if desired).
+	-AVAssetImageGenerator: This class is used in combination with the AVAsset objects.  Given an AVAsset and a CMTime the AVAssetImageGenerator will return the image nearest to the CMTime provided in an asyncronous completion block (or no image with failure).
 
-List the iOS APIs your app uses. 
-AVFoundations 
-	-AVPlayer
-	-ALAssets
-	-AVAssets
-	-AVAssetGenerator
-UICollectionView
-UIGestureRecogniser
-KVO
+UICollectionView: Collection View is Table Views brother who is much better looking, pumped up with steroids and has three arms.  We used this class because it is much more customizable than Table View.  You can see it in use (though it can be customized FAR beyond what we have done with it) on the intial screen where one can select the video, the tapping screen as the preview bar(snapshoting every 1/12 of the video as images and scaled down), the Extracted Screen with the collection view split up into 2 section, Images vs Videos, and lastly the Enlarged Preview Screen where the user can swipe left and right to toggle between close ups of the extracted videos and photos.
 
+UIGestureRecogniser: In our app we used both TapGestureRecogniser and LongPressGestureRecogniser.  Only on the Tap Screen did we have the need for GestureRecognizers that are not already provided by UIKit UIView subclasses.  On the Tap Screen the user can tap or hold on the AVPlayer(inside an AVPlayerLayer(inside a UIView as a .layer)) to dictate whether they want a photo or a video.  A tap will yeild a photo at the moment Touch, where a hold will yield a video between the moment Touch and the moment TouchUp given that the duration of the touch(not the time difference bewteen start and finish) is at least a half second and the duration between the start and finish is not zero. 
 
-
+KVO + Notifications: We used KVO and Notifications to send live communitaion between the Tap Screen and the Extracted Screen.  A cache(self perging dictionary) is used to house the images and the videos and both View Controllers need the information up to date.  With notifiations and KVO messages are sent and listened to (on insert when on Extract the CollectionView will update, on delete when on Tap Screen the tick marks that indicate location of extracted content will me removed).
 
 List all third party libraries you use, and what they do for your app (each in their own paragraph). 
-No third parties
-
+We did not use any third party libraries.  We tried OCMock (a testing framework) to make unit tests but it turns out that testing videos and extracting videos. It turns out that it is very hard to do without just clicking around so we decided to not use OCMock. (We forgot to remove it from the podfile and I forgot that it was still in the code when running CLOC. I apologize for this).
 
 List all third party services you use, and what they do for your app (each in their own paragraph). 
-Youtube mp4 downloader - to get sample videos to add to bundle cause its difficult to get .m4p on simulator camera roll.
+Youtube mp4 downloader: Because of the difficulties with simulator photo library videos we used a site to get sample videos off Youtube in .m4p format. Once ripped we added it to the app bundle and used our mock library loading class to read these in.
+
 
 Discuss the most important or interesting thing you learned doing your project.
-Repository design pattern.
+Two of the most important things experienced during this project was creating a structre that followed the repository design pattern and error proofing our appliction.  Both were topics talked about throughout our college careers(erorr check and oo designs) but there was seldom a time that a project would require us to do this.  Real experience refactoring and modifying code to achieve these goals felt like great practice for post college coding.
+
 
 Discuss the most difficult challenge you overcame and/or your most interesting debugging story.
-There was a bug where AVAssetImageGenerator would return a blank image.  went through the XCode Instruments and looked around.  threw out some asserts and realized that sometimes the AVAssetImageGenerator fails for no reason so we added error handling to everything and that fixed it.
+There was a bug where AVAssetImageGenerator would return a blank image.  We went through the XCode Instruments and looked around for what could possibly be causing the issue.  It was not immediatly clear so we threw out some asserts and break statements in our code and realized that sometimes the AVAssetImageGenerator fails for no reason(especially during the absolute first and last frame of a video).  This prompted our error proofing the app.  We checked the return and &error objects of all the asynchronous callbacks throughout our application.  It was a lot more work that simply ignoring the rare error and rerunning Simulator but the payoff was confidence in our application.
 
-Report the count of lines of code in your project.
-     205 text files.
-     156 unique files.                                          
-      46 files ignored.
+The second challenge(mentioned above as well) was the difficulty with getting videos in Simulator Camera Roll.  To go around this we enforced the repository design pattern in our app.  We made a abstract superclass with the interface desired for retrieving videos on request(a model controller in a sence).  Next we made two concrete subclasses, one that would use the superclass interface to load from camera roll and one that would use the superclass interface to load from app bundle.  This way we could proceed with the further production of the application (and would of made testing easier if we figured that out completly) without buying a developer account for $99.
 
-http://cloc.sourceforge.net v 1.62  T=3.15 s (38.1 files/s, 2838.4 lines/s)
+TOTAL
+-------------------
+      49 text files.
+      49 unique files.                              
+       7 files ignored.
+
+http://cloc.sourceforge.net v 1.62  T=0.19 s (216.0 files/s, 17616.6 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Objective C                     56           1372            764           4646
-C/C++ Header                    54            361            659            609
-Swift                            3             66             49            201
-JSON                             6              0              0            141
-Bourne Shell                     1              6              0             72
+Objective C                     18            622            181           1860
+Swift                            3             66             49            200
+C/C++ Header                    21            111            166            170
 -------------------------------------------------------------------------------
-SUM:                           120           1805           1472           5669
+SUM:                            42            799            396           2230
 -------------------------------------------------------------------------------
+
+
+BREAKDOWN
+-------------------
+Model:
+      16 text files.
+      16 unique files.                              
+       0 files ignored.
+
+http://cloc.sourceforge.net v 1.62  T=0.08 s (205.9 files/s, 17271.8 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Objective C                      6            221             44            711
+Swift                            2             31             31             92
+C/C++ Header                     8             52             76             84
+-------------------------------------------------------------------------------
+SUM:                            16            304            151            887
+-------------------------------------------------------------------------------
+
+View:
+      14 text files.
+      14 unique files.                              
+       2 files ignored.
+
+http://cloc.sourceforge.net v 1.62  T=0.05 s (226.9 files/s, 14086.1 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Objective C                      6            145             56            406
+C/C++ Header                     6             37             45             56
+-------------------------------------------------------------------------------
+SUM:                            12            182            101            462
+-------------------------------------------------------------------------------
+
+Controller:
+      14 text files.
+      14 unique files.                              
+       5 files ignored.
+
+http://cloc.sourceforge.net v 1.62  T=0.07 s (121.0 files/s, 16434.0 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Objective C                      4            235             60            704
+Swift                            1             35             18            108
+C/C++ Header                     4             15             28             19
+-------------------------------------------------------------------------------
+SUM:                             9            285            106            831
+-------------------------------------------------------------------------------
+
 
 
 Tell us how to build and run your project. 
-Should be able to click run
+Building and running have no special instructions.
